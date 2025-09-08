@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verificar código</title>
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/verify.css">
+</head>
+<body class="modal-open">
+
+  <!-- HOME REAL embutida atrás via iframe -->
+  <iframe src="home.html" class="home-bg" aria-hidden="true"></iframe>
+
+  <!-- MODAL -->
+  <div class="overlay" role="dialog" aria-modal="true" aria-label="Verificar código">
+    <main class="shell">
+      <section class="form-wrap">
+        <div class="brand">
+          <!-- LOGO -->
+          <a href="#" class="logo">SriLanka<span>Card</span></a>
+
+          <div>
+            <h1 class="title">Verificar código</h1>
+            <p class="subtitle">
+              Enviamos um código para <span id="emailText" style="font-weight:600"></span>.
+              Digite-o abaixo para continuar.
+            </p>
+          </div>
+        </div>
+
+        <form id="verify-form" action="#" method="post" novalidate>
+          <div class="field">
+            <label class="label" for="code">Código</label>
+            <input
+              class="input"
+              type="text"
+              id="code"
+              name="code"
+              placeholder="6 dígitos"
+              inputmode="numeric"
+              pattern="\\d{6}"
+              minlength="6"
+              maxlength="6"
+              required
+              aria-describedby="codeHelp">
+            <small id="codeHelp" class="hint">Digite os 6 dígitos enviados por email.</small>
+          </div>
+
+          <button class="btn" type="submit">Validar</button>
+
+          <p class="foot">
+            Não recebeu? <a class="link" href="#" id="resendLink">Reenviar código</a>
+            <span id="timer" class="hint" style="margin-left:8px"></span>
+          </p>
+        </form>
+      </section>
+
+      <aside class="media" aria-hidden="true">
+        <img src="assets/img/Login.png" alt="">
+      </aside>
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script src="assets/js/verify.js"></script>
+</body>
+</html>

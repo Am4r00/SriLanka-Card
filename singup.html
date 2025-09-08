@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Criar conta</title>
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="modal-open">
+
+  <!-- HOME REAL embutida atrás via iframe -->
+  <iframe src="home.html" class="home-bg" aria-hidden="true"></iframe>
+
+  <!-- MODAL: Cadastro -->
+  <div class="overlay" role="dialog" aria-modal="true" aria-label="Criar conta">
+    <main class="shell">
+      <section class="form-wrap">
+        <div class="brand">
+          <!-- LOGO (como texto) -->
+          <a href="#" class="logo">SriLanka<span>Card</span></a>
+
+          <div>
+            <h1 class="title">Criar conta</h1>
+            <p class="subtitle">Leva menos de um minuto.</p>
+          </div>
+        </div>
+
+        <form id="signup" action="#" method="post" novalidate>
+          <div class="field">
+            <label class="label" for="name">Nome completo</label>
+            <input class="input" type="text" id="name" name="name" placeholder="Seu nome" required>
+          </div>
+
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <input class="input" type="email" id="email" name="email" placeholder="voce@email.com" autocomplete="username" required>
+          </div>
+
+          <div class="field password-wrap">
+            <label class="label" for="password">Senha</label>
+            <input class="input" type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password" required minlength="6" aria-describedby="pwdHint">
+            <button class="toggle" type="button" aria-label="Mostrar senha" data-target="password" title="Mostrar/Ocultar senha">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+            <small id="pwdHint" class="hint">Mínimo de 6 caracteres.</small>
+          </div>
+
+          <div class="field password-wrap">
+            <label class="label" for="confirm">Confirmar senha</label>
+            <input class="input" type="password" id="confirm" name="confirm" placeholder="••••••••" autocomplete="new-password" required minlength="6" aria-describedby="matchErr">
+            <button class="toggle" type="button" aria-label="Mostrar senha" data-target="confirm" title="Mostrar/Ocultar senha">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+            <div id="matchErr" class="error">As senhas não coincidem.</div>
+          </div>
+
+          <div class="actions">
+            <label class="terms">
+              <input type="checkbox" id="terms" required>
+              <span>Concordo com os <a class="link" href="#">Termos</a> e a <a class="link" href="#">Política de Privacidade</a>.</span>
+            </label>
+          </div>
+
+          <button class="btn" type="submit">Criar conta</button>
+
+          <p class="foot">Já tem conta? <a class="link" href="login.html">Entrar</a></p>
+        </form>
+      </section>
+
+      <aside class="media" aria-hidden="true">
+        <img src="assets/img/Login.png" alt="">
+      </aside>
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script src="assets/js/signup.js"></script>
+</body>
+</html>

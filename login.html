@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body class="modal-open">
+
+  <!-- HOME REAL embutida atrás via iframe -->
+  <iframe src="home.html" class="home-bg" aria-hidden="true"></iframe>
+
+  <!-- MODAL DE LOGIN -->
+  <div class="overlay" role="dialog" aria-modal="true" aria-label="Tela de Login">
+    <main class="shell">
+      <section class="form-wrap">
+        <div class="brand">
+          <!-- LOGO -->
+          <a href="#" class="logo">SriLanka<span>Card</span></a>
+
+          <div>
+            <h1 class="title">Entrar</h1>
+            <p class="subtitle">Bem-vindo de volta — acesse sua conta.</p>
+          </div>
+        </div>
+
+        <form id="login-form" action="#" method="post" novalidate>
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <input class="input" type="email" id="email" name="email" placeholder="voce@email.com" autocomplete="username" required>
+          </div>
+
+          <div class="field password-wrap">
+            <label class="label" for="password">Senha</label>
+            <input class="input" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required minlength="6" aria-describedby="pwdHelp">
+            <button class="toggle" type="button" aria-label="Mostrar senha" title="Mostrar/Ocultar senha">
+              <svg id="eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+            <small id="pwdHelp" class="hint">Mínimo de 6 caracteres.</small>
+          </div>
+
+          <div class="actions">
+            <a class="link" href="forgot.html" title="Recuperar senha">Esqueci a senha</a>
+          </div>
+
+          <button class="btn" type="submit">Fazer Login</button>
+
+          <div class="sep">ou</div>
+
+          <p class="foot">Novo por aqui? <a class="link" href="singup.html">Criar conta</a></p>
+        </form>
+      </section>
+
+      <aside class="media" aria-hidden="true">
+        <img src="assets/img/Login.png" alt="">
+      </aside>
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script src="assets/js/login.js"></script>
+</body>
+</html>

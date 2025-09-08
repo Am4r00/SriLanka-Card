@@ -1,0 +1,86 @@
+/* Fonte base */
+body{
+  font-family:'Poppins',sans-serif;
+  margin:0;
+  padding:0;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+
+  /* >>> Imagem de fundo + overlay sutil para legibilidade <<< */
+  /* Troque o caminho da imagem abaixo se quiser */
+  background:
+    linear-gradient(rgba(2,6,23,.35), rgba(2,6,23,.35)), /* overlay escuro sutil */
+    url("/assets/img/ImagemFundoBoa.png") center center / cover no-repeat;
+}
+
+/* --------------------
+   Navbar
+-------------------- */
+.navbar{
+  background-color:rgba(0,0,0,.4);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  padding:1.2rem 3rem;
+}
+.navbar-container{
+  display:flex; justify-content:space-between; align-items:center;
+  max-width:1200px; margin:0 auto;
+}
+.logo{ font-size:1.5rem; font-weight:700; text-decoration:none; color:#fff; }
+.logo span{ font-weight:400; font-size:1.2rem; }
+
+.nav-links ul{
+  list-style:none; display:flex; gap:2.5rem; padding:0; margin:0;
+}
+.nav-links a{
+  text-decoration:none; color:#fff; font-weight:500; transition:color .3s ease;
+}
+.nav-links a:hover{ color:#A379D5; }
+
+.nav-actions{ display:flex; align-items:center; gap:1.5rem; }
+.login-link{ text-decoration:none; color:#fff; font-weight:500; transition:color .3s ease; }
+.login-link:hover{ color:#A379D5; }
+
+.cta-button{
+  background:#6C42A1; color:#fff; padding:.75rem 1.5rem; border:none; border-radius:50px;
+  font-weight:600; cursor:pointer; transition:background-color .3s ease;
+  box-shadow:0 0 15px rgba(108,66,161,.5);
+}
+.cta-button:hover{ background-color:#A379D5; }
+
+/* --------------------
+   Seção Principal
+-------------------- */
+.hero{
+  flex-grow:1; display:flex; justify-content:center; align-items:center;
+  text-align:center; padding:2rem;
+}
+.hero-content{ max-width:800px; }
+.hero-content h1{
+  font-size:4rem; font-weight:700; margin-bottom:.5rem; text-transform:uppercase; letter-spacing:.1rem;
+}
+.hero-content p{ font-size:1.25rem; font-weight:400; margin-bottom:2.5rem; }
+
+.hero-buttons{ display:flex; justify-content:center; gap:1.5rem; }
+.btn{
+  text-decoration:none; padding:1rem 2rem; border-radius:50px; font-weight:600;
+  transition:background-color .3s ease, color .3s ease, border-color .3s ease;
+}
+.btn.primary{ background-color:#6C42A1; color:#fff; }
+.btn.primary:hover{ background-color:#A379D5; }
+
+.btn.secondary{
+  background-color:transparent; border:2px solid #fff; color:#fff;
+}
+.btn.secondary:hover{ background-color:#fff; color:#6C42A1; }
+
+/* Responsividade */
+@media (max-width:768px){
+  .navbar-container{ flex-direction:column; gap:1.5rem; }
+  .nav-links ul{ flex-direction:column; text-align:center; gap:.5rem; }
+  .nav-actions{ width:100%; justify-content:center; }
+  .hero-content h1{ font-size:2.5rem; }
+  .hero-buttons{ flex-direction:column; }
+}

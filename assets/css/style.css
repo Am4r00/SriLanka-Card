@@ -1,0 +1,132 @@
+:root{
+  --bg-start:#4f46e5;
+  --bg-end:#9333ea;
+  --card-bg: rgba(255,255,255,.86);
+  --card-border: rgba(255,255,255,.35);
+  --text:#0f172a;
+  --muted:#64748b;
+  --ring:#7c3aed;
+  --btn-start:#6d28d9;
+  --btn-end:#4c1d95;
+  --radius: 18px;
+  --shadow-lg: 0 20px 45px rgba(2,6,23,.22);
+  --shadow-md: 0 10px 22px rgba(2,6,23,.18);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 800px at 15% 15%, rgba(255,255,255,.08), transparent 60%),
+    linear-gradient(135deg,var(--bg-start),var(--bg-end));
+}
+
+/* === HOME via IFRAME (fundo desfocado) === */
+.home-bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:none;
+  filter: blur(10px) brightness(0.85) saturate(1.05);
+  transform: scale(1.03);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* OVERLAY + MODAL */
+.overlay{
+  position:fixed; inset:0; display:grid; place-items:center;
+  background: rgba(15,23,42,.28);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  z-index:50; padding:24px; animation: fadeIn .18s ease-out both;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.shell{
+  width:100%; max-width:880px;
+  background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.10));
+  border:1px solid var(--card-border);
+  border-radius:28px; box-shadow:var(--shadow-lg); overflow:hidden;
+  display:grid; grid-template-columns:1fr; backdrop-filter: blur(8px);
+  animation: pop .18s ease-out both;
+}
+@keyframes pop{from{transform:translateY(8px);opacity:.96}to{transform:translateY(0);opacity:1}}
+
+.media{display:none; position:relative; background:rgba(255,255,255,.06)}
+.media img{width:100%; height:100%; object-fit:cover; display:block}
+.media::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent,rgba(0,0,0,.08))}
+
+.form-wrap{padding:48px 28px; background:var(--card-bg); backdrop-filter: blur(10px)}
+.brand{display:flex; flex-direction:column; align-items:flex-start; gap:12px; margin-bottom:12px}
+
+.title{
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:.2px;
+  margin:8px 0 6px;
+}
+.subtitle{color:var(--muted); margin:0 0 28px}
+
+/* LOGO */
+.logo{
+  font-size:1.5rem;
+  font-weight:700;
+  text-decoration:none;
+  color:#4f46e5;
+}
+.logo span{
+  font-weight:400;
+  font-size:1.2rem;
+  color:#9333ea;
+}
+
+.field{margin-bottom:18px}
+.label{display:block; font-size:14px; font-weight:600; color:#1f2937; margin-bottom:8px}
+.input{
+  width:100%; border-radius:14px; border:1px solid #e5e7eb; background:#fff;
+  padding:14px 16px; font-size:16px; outline:none;
+  transition: box-shadow .2s, border-color .2s, transform .05s;
+}
+.input:focus{border-color:var(--ring); box-shadow:0 0 0 4px rgba(124,58,237,.15)}
+.input:active{transform:translateY(.5px)}
+
+.password-wrap{position:relative}
+.toggle{
+  position:absolute; right:10px; top:50%; translate:0 -50%;
+  border:none; background:transparent; padding:8px; border-radius:10px; cursor:pointer;
+}
+.toggle:focus-visible{box-shadow:0 0 0 3px rgba(124,58,237,.25)}
+
+.hint{color:#94a3b8; font-size:12px}
+.error{color:#b91c1c; font-size:13px; margin-top:6px; display:none}
+
+.actions{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:6px 0 24px}
+.terms{display:flex; gap:8px; align-items:flex-start; font-size:13px; color:#334155}
+.terms input{margin-top:3px}
+
+.btn{
+  width:100%; border:none; cursor:pointer; border-radius:16px;
+  padding:14px 18px; font-size:16px; font-weight:700; color:#fff;
+  background:linear-gradient(135deg,var(--btn-start),var(--btn-end));
+  box-shadow:0 8px 22px rgba(76,29,149,.35);
+  transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(1px); box-shadow:0 6px 16px rgba(76,29,149,.35)}
+
+.foot{margin-top:18px; color:var(--muted); font-size:14px}
+.link{color:#2563eb; text-decoration:none; font-weight:600}
+.link:hover{text-decoration:underline}
+
+@media (min-width:900px){
+  .shell{grid-template-columns:1.05fr .95fr}
+  .form-wrap{padding:56px 56px}
+  .media{display:block; min-height:520px}
+}
+
+body.modal-open{overflow:hidden}
