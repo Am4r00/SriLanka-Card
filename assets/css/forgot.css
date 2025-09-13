@@ -98,4 +98,50 @@ body{
   .media{ display:block; min-height:520px }
 }
 
+/* Botão para fechar o modal */
+.close-btn {
+    position: fixed; /* Posiciona em relação à janela do navegador */
+    top: 20px;
+    right: 20px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.1s ease;
+    z-index: 60;
+    padding: 0 10px;
+}
+
+.close-btn:hover {
+    color: #a379d5;
+    transform: scale(1.1);
+}
+
+.close-btn span {
+    display: block;
+}
+
+/* O resto do seu CSS permanece o mesmo */
+.overlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(15, 23, 42, .28);
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    z-index: 50;
+    padding: 24px;
+    animation: fadeIn .18s ease-out both;
+}
+
+.shell {
+    /* Mantenha o position: relative; aqui se precisar de outros elementos */
+    position: relative;
+    width: 100%;
+    max-width: 880px;
+    /* ... (restante do código) */
+}
+
+
 body.modal-open{ overflow:hidden }

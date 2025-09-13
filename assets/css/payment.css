@@ -1,0 +1,328 @@
+:root {
+    --primary-color: #6C42A1;
+    --secondary-color: #A379D5;
+    --dark-bg: #030438; /* Fundo principal: Azul marinho/Roxo */
+    --light-bg: #1e293b; /* Fundo dos cards: Cinza escuro */
+    --text-color: #e2e8f0;
+    --subtle-text: #94a3b8;
+    --border-color: #334155;
+    --card-bg: #1e293b; /* Fundo dos cards de pagamento/carrinho */
+    --white: #fff;
+    --accent-color: #0d9488;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    background-color: var(--dark-bg); /* O novo fundo azul marinho */
+    line-height: 1.6;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1.2rem 3rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+}
+
+.logo span {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+.nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: color .3s ease;
+}
+
+.nav-links a:hover {
+    color: #A379D5;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.login-link {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: color .3s ease;
+}
+
+.login-link:hover {
+    color: #A379D5;
+}
+
+.cta-button {
+    background: #6C42A1;
+    color: #fff;
+    padding: .75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .3s ease;
+    box-shadow: 0 0 15px rgba(108, 66, 161, .5);
+}
+
+.cta-button:hover {
+    background-color: #A379D5;
+}
+
+/* --- Layout Principal --- */
+.main-content {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* --- Seção de Carrinho --- */
+.shopping-cart h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+.item-count {
+    color: var(--subtle-text);
+    font-size: 0.9rem;
+}
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--light-bg);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.item-image-name {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.item-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+.item-name {
+    font-weight: 600;
+    color: var(--text-color);
+}
+.item-description {
+    font-size: 0.8rem;
+    color: var(--subtle-text);
+}
+.item-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.original-price {
+    font-size: 0.8rem;
+    color: var(--subtle-text);
+    text-decoration: line-through;
+}
+.discount-price {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+.discount-badge {
+    background-color: #fca5a5;
+    color: #ef4444;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+.action-link {
+    font-size: 0.8rem;
+    color: var(--subtle-text);
+    text-decoration: none;
+}
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.quantity-control button {
+    background: var(--border-color);
+    color: var(--text-color);
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.quantity-control span {
+    font-weight: 500;
+}
+
+/* --- Seção de Pagamento --- */
+.payment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.payment-card, .discount-card {
+    background-color: var(--light-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.payment-card h3, .discount-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+}
+.payment-option {
+    display: flex;
+    flex-direction: column;
+    padding: 1.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+.payment-option input[type="radio"] {
+    display: none;
+}
+.payment-option label {
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+}
+.payment-form {
+    display: none; /* Escondido por padrão, JS vai mostrar */
+    margin-top: 1rem;
+}
+.payment-option.active .payment-form {
+    display: block;
+}
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--subtle-text);
+    margin-bottom: 0.25rem;
+}
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    outline: none;
+}
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+/* --- Seção de Desconto --- */
+.discount-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+.discount-input input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    background: transparent;
+}
+.remove-coupon {
+    background: none;
+    border: none;
+    color: var(--subtle-text);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.points-message {
+    background-color: #f0fdf4;
+    color: #16a34a;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+}
+.points-message span {
+    font-weight: 600;
+}
+
+/* --- Botão de Pagamento --- */
+.cta-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 5px 20px rgba(108, 66, 161, 0.3);
+}
+.cta-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* --- Responsividade --- */
+@media (max-width: 900px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .nav-links, .search-and-cart {
+        display: none;
+    }
+    .navbar .nav-container {
+        justify-content: center;
+    }
+}

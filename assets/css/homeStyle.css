@@ -48,6 +48,26 @@ body{
   font-weight:600; cursor:pointer; transition:background-color .3s ease;
   box-shadow:0 0 15px rgba(108,66,161,.5);
 }
+
+/* ... seu CSS existente da navbar ... */
+
+.cart-link {
+    display: flex; /* Para centralizar a imagem */
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease; /* Adicione uma pequena transição para um efeito visual */
+}
+
+.cart-link img {
+    width: 28px; /* O tamanho da imagem */
+    height: 28px;
+    filter: brightness(0) invert(1); /* Deixa a imagem branca para combinar com o texto */
+    transition: filter 0.3s ease;
+}
+
+.cart-link:hover img {
+    filter: brightness(1) saturate(10) hue-rotate(240deg); /* Aumenta a luminosidade e muda a cor para o hover */
+}
 .cta-button:hover{ background-color:#A379D5; }
 
 /* --------------------

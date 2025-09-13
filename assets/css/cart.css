@@ -1,0 +1,258 @@
+:root {
+    --primary-color: #6C42A1;
+    --secondary-color: #A379D5;
+    --dark-bg: #030438;
+    --light-bg: #1e293b;
+    --text-color: #e2e8f0;
+    --subtle-text: #94a3b8;
+    --border-color: #334155;
+    --card-bg: #1e293b;
+    --white: #fff;
+    --red-discount: #f04848;
+    --green-shipping: #5ac561;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    background-color: var(--dark-bg);
+    line-height: 1.6;
+}
+
+/* --- Estilos do fundo (iframe) --- */
+body.modal-open {
+    overflow: hidden;
+}
+
+.home-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter: blur(10px) brightness(0.85) saturate(1.05);
+    transform: scale(1.03);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* --- Layout Principal --- */
+.page-content {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.site-placeholder {
+    color: var(--white);
+    text-align: center;
+}
+
+/* --- Modal do Carrinho --- */
+.cart-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 450px;
+    height: 100vh;
+    background-color: var(--white);
+    color: #333;
+    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+}
+
+.cart-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.view-all-link {
+    font-weight: 500;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* --- Itens do Carrinho --- */
+.cart-items {
+    /* flex-grow: 1; -> removido para trazer o botão para cima */
+    padding: 1rem 0;
+}
+
+.cart-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.item-meta {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.item-info {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.free-shipping {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: #e8f5e9;
+    color: var(--green-shipping);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+
+.discount-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: #ffebee;
+    color: var(--red-discount);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+}
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.item-prices {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.old-price {
+    font-size: 0.9rem;
+    color: #888;
+    text-decoration: line-through;
+}
+
+.current-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.item-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 0.5rem;
+}
+
+.action-link {
+    font-size: 0.8rem;
+    color: #888;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 0.2rem;
+}
+
+.quantity-control button {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #333;
+}
+
+.quantity-control span {
+    font-weight: 600;
+}
+
+.remove-item-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.remove-item-btn img {
+    width: 20px;
+    height: 20px;
+    filter: invert(0.5);
+}
+
+/* --- Rodapé do Carrinho --- */
+.cart-footer {
+    padding-top: 1rem;
+    border-top: 1px solid #ccc;
+    margin-top: 2rem; /* Adicionado para trazer o botão mais para cima */
+}
+
+.cta-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 5px 20px rgba(108, 66, 161, 0.3);
+}
+
+.cta-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+    .cart-modal {
+        width: 100%;
+        max-width: none;
+        box-shadow: none;
+    }
+}
