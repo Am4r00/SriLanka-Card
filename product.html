@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadastrar Produto</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="modal-open">
+
+
+
+<iframe src="home.html" class="home-bg" aria-hidden="true"></iframe>
+
+<a href="home.html" class="close-btn" aria-label="Fechar">
+    <span>&times;</span>
+</a>
+
+<div class="overlay" role="dialog" aria-modal="true" aria-label="Cadastrar produto">
+    <main class="shell">
+        <section class="form-wrap">
+            <div class="brand">
+                <a href="#" class="logo">SriLanka<span>Card</span></a>
+
+                <div>
+                    <h1 class="title">Cadastro de Produto</h1>
+                    <p class="subtitle">Adicione um novo item ao seu catálogo.</p>
+                </div>
+            </div>
+
+            <form id="cadastro-produto" action="#" method="post" novalidate>
+                <div class="field">
+                    <label class="label" for="nome-produto">Nome do Produto</label>
+                    <input class="input" type="text" id="nome-produto" name="nome-produto" placeholder="Nome do Produto" required>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="quantidade">Quantidade</label>
+                    <div class="input-group">
+                        <input class="input" type="number" id="quantidade" name="quantidade" placeholder="Qtd." required>
+                        <div class="input-group-item">
+                            <label class="label" for="valor">Valor</label>
+                            <input class="input small-input" type="text" id="valor" name="valor" placeholder="R$ 00,00" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="descricao">Descrição</label>
+                    <textarea class="input" id="descricao" name="descricao" rows="4" placeholder="Detalhes do produto..."></textarea>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="imagem">Imagem do Produto</label>
+                    <input class="input" type="file" id="imagem" name="imagem" accept="image/*" required>
+                </div>
+
+                <button type="submit" class="btn">Cadastrar Produto</button>
+            </form>
+        </section>
+
+        <aside class="media" aria-hidden="true">
+            <img src="assets/img/Login.png" alt="Imagem de fundo, igual a do login">
+        </aside>
+    </main>
+</div>
+</body>
+</html>

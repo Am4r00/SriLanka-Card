@@ -95,6 +95,38 @@ body{
 .input:focus{border-color:var(--ring); box-shadow:0 0 0 4px rgba(124,58,237,.15)}
 .input:active{transform:translateY(.5px)}
 
+/* Container para alinhar os campos na mesma linha */
+.input-group {
+    display: flex;
+    align-items: center; /* Alinha os itens pela base, se o label for diferente */
+    gap: 15px; /* Espaço entre os campos */
+}
+
+/* Estilo para o campo de Bairro */
+.input-group .input[name="bairro"] {
+    width: 100%; /* Permite que ele cresça */
+    min-width: 150px; /* Largura mínima para o campo de bairro */
+}
+
+/* Estilo para o campo de Número */
+.input-group-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group-item .input {
+    width: 80px; /* Largura fixa para o campo de número */
+    max-width: 100px;
+    flex-shrink: 0; /* Impede que ele encolha */
+}
+
+/* Estilo para o campo de Bairro */
+.input-group .input[name="bairro"] {
+  width: 100%; /* Permite que ele cresça */
+  min-width: 150px; /* Largura mínima para o campo de bairro */
+}
+
+
 .password-wrap{position:relative}
 .toggle{
   position:absolute; right:10px; top:50%; translate:0 -50%;
