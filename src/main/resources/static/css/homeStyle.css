@@ -12,7 +12,7 @@ body{
   /* Troque o caminho da imagem abaixo se quiser */
   background:
     linear-gradient(rgba(2,6,23,.35), rgba(2,6,23,.35)), /* overlay escuro sutil */
-    url("/assets/img/ImagemFundoBoa.png") center center / cover no-repeat;
+    url("../img/ImagemFundoBoa.png") center center / cover no-repeat;
 }
 
 /* --------------------
@@ -103,4 +103,89 @@ body{
   .nav-actions{ width:100%; justify-content:center; }
   .hero-content h1{ font-size:2.5rem; }
   .hero-buttons{ flex-direction:column; }
+}
+
+.about-footer {
+    background-color: #0d0d1e; /* Um tom mais escuro para o rodapé */
+    padding: 4rem 3rem;
+    color: #a0aec0;
+    margin-top: auto; /* Garante que o rodapé fique no final da página */
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+.footer-info {
+    flex-basis: 30%;
+}
+
+.footer-info .logo {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.footer-info p {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.footer-links {
+    flex-basis: 20%;
+}
+
+.footer-links h3, .footer-social h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links a, .footer-social a {
+    text-decoration: none;
+    color: #a0aec0;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover, .footer-social a:hover {
+    color: var(--secondary-color);
+}
+
+.footer-social .social-icons a {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.footer-bottom {
+    border-top: 1px solid #2d3748;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #a0aec0;
+}
+
+/* Responsividade para o rodapé */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-info, .footer-links, .footer-social {
+        margin-bottom: 2rem;
+    }
 }
