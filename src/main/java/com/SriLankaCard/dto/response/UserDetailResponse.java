@@ -1,15 +1,14 @@
 package com.SriLankaCard.dto.response;
 
 import com.SriLankaCard.entity.enums.Funcao;
+import com.SriLankaCard.entity.enums.UserStatus;
 import lombok.Data;
 
 import java.util.Set;
-
 @Data
-public class UserResponse {
-    private Long id;
-    private String nome;
+public class UserDetailResponse {
+    private String name;
     private String email;
+    private UserStatus status;
     private Set<Funcao> funcoes;
-
 }

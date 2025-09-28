@@ -1,10 +1,9 @@
 package com.SriLankaCard.exception;
 
-import com.helpdesk.supportapi.dto.users.response.ResponseError;
-import com.helpdesk.supportapi.exception.business.EmailAlreadyUsedException;
-import com.helpdesk.supportapi.exception.business.InvalidStatusException;
-import com.helpdesk.supportapi.exception.domain.EmailNotFoundException;
-import com.helpdesk.supportapi.exception.domain.UserNotFoundException;
+import com.SriLankaCard.dto.response.ResponseError;
+import com.SriLankaCard.exception.dominio.EmailNotFoundException;
+import com.SriLankaCard.exception.dominio.UserNotFoundException;
+import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,11 +34,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailNotFoundException.class)
     public ResponseEntity<ResponseError> treatEmailNotFound(EmailNotFoundException exception) {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(InvalidStatusException.class)
-    public ResponseEntity<ResponseError> treatInvalidStatus(InvalidStatusException exception) {
-        return buildErrorResponse(exception, HttpStatus.MULTI_STATUS);
     }
 
     private ResponseEntity<ResponseError> buildErrorResponse(RuntimeException exception, HttpStatus httpStatus) {
