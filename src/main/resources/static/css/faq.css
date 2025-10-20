@@ -1,0 +1,192 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: linear-gradient(rgba(2,6,23,.5), rgba(2,6,23,.7)),
+    url("../img/ImagemFundoBoa.png") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+    background-color: rgba(0,0,0,.4);
+    backdrop-filter: blur(10px);
+    padding: 1.2rem 3rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+}
+.logo span { font-weight: 400; font-size: 1.2rem; }
+
+.nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    transition: color .3s;
+}
+.nav-links a:hover { color: #A379D5; }
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.login-link { color: #fff; text-decoration: none; }
+.login-link:hover { color: #A379D5; }
+
+.cta-button {
+    background: #6C42A1;
+    color: #fff;
+    padding: .75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(108,66,161,.5);
+    transition: background .3s;
+}
+.cta-button:hover { background-color: #A379D5; }
+
+.cart-link img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+}
+
+/* ---------- FAQ Section ---------- */
+.faq-section {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5rem 2rem;
+}
+
+.faq-container {
+    background-color: rgba(0,0,0,.4);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    max-width: 800px;
+    width: 100%;
+    padding: 3rem;
+    box-shadow: 0 0 20px rgba(108,66,161,.3);
+}
+
+.faq-container h1 {
+    font-size: 3rem;
+    color: #A379D5;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.intro {
+    text-align: center;
+    color: #e5e5e5;
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+}
+
+.faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+.faq-question {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 1rem 0;
+    transition: color 0.3s;
+}
+
+.faq-question:hover { color: #C7A7FF; }
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.faq-answer p {
+    font-size: 1rem;
+    color: #ddd;
+    line-height: 1.6;
+    padding: 0.5rem 0;
+}
+
+/* ---------- Rodapé ---------- */
+.about-footer {
+    background-color: #0d0d1e;
+    padding: 4rem 3rem;
+    color: #a0aec0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+.footer-info { flex-basis: 30%; }
+.footer-links { flex-basis: 20%; }
+
+.footer-links h3, .footer-social h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.footer-links a, .footer-social a {
+    text-decoration: none;
+    color: #a0aec0;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: color .2s ease;
+}
+.footer-links a:hover, .footer-social a:hover { color: #A379D5; }
+
+.footer-bottom {
+    border-top: 1px solid #2d3748;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .footer-container { flex-direction: column; text-align: center; }
+    .faq-container { padding: 2rem; }
+    .faq-container h1 { font-size: 2.2rem; }
+}
