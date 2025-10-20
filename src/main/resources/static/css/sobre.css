@@ -1,0 +1,171 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background: linear-gradient(rgba(2,6,23,.5), rgba(2,6,23,.7)),
+    url("../img/ImagemFundoBoa.png") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+    background-color: rgba(0,0,0,.4);
+    backdrop-filter: blur(10px);
+    padding: 1.2rem 3rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+}
+.logo span { font-weight: 400; font-size: 1.2rem; }
+
+.nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    transition: color .3s;
+}
+.nav-links a:hover { color: #A379D5; }
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.login-link { color: #fff; text-decoration: none; }
+.login-link:hover { color: #A379D5; }
+
+.cta-button {
+    background: #6C42A1;
+    color: #fff;
+    padding: .75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(108,66,161,.5);
+    transition: background .3s;
+}
+.cta-button:hover { background-color: #A379D5; }
+
+.cart-link img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+}
+
+/* ---------- Seção Sobre ---------- */
+.about-section {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 5rem 2rem;
+}
+
+.about-container {
+    background-color: rgba(0,0,0,.4);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    max-width: 900px;
+    padding: 3rem;
+    box-shadow: 0 0 20px rgba(108,66,161,.3);
+}
+
+.about-container h1 {
+    font-size: 3rem;
+    color: #A379D5;
+    margin-bottom: 1rem;
+}
+
+.about-container h2 {
+    color: #C7A7FF;
+    margin-top: 2.5rem;
+}
+
+.about-container p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #e5e5e5;
+}
+
+.about-container ul {
+    list-style: none;
+    padding-left: 0;
+}
+.about-container li {
+    margin: .6rem 0;
+    font-size: 1rem;
+}
+
+/* ---------- Rodapé ---------- */
+.about-footer {
+    background-color: #0d0d1e;
+    padding: 4rem 3rem;
+    color: #a0aec0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+.footer-info { flex-basis: 30%; }
+.footer-links { flex-basis: 20%; }
+
+.footer-links h3, .footer-social h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.footer-links a, .footer-social a {
+    text-decoration: none;
+    color: #a0aec0;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: color .2s ease;
+}
+.footer-links a:hover, .footer-social a:hover { color: #A379D5; }
+
+.footer-bottom {
+    border-top: 1px solid #2d3748;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .footer-container { flex-direction: column; text-align: center; }
+    .about-container { padding: 2rem; }
+    .about-container h1 { font-size: 2.2rem; }
+}
