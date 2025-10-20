@@ -1,7 +1,8 @@
 package com.SriLankaCard.dto.request;
 
-import com.SriLankaCard.entity.userEntity.Funcao;
-import com.SriLankaCard.entity.userEntity.UserStatus;
+
+import com.SriLankaCard.entity.userEntity.enums.Funcao;
+import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
