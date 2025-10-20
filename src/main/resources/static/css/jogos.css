@@ -325,6 +325,12 @@ body {
     transition: filter 0.3s ease;
 }
 
+a.product-card {
+    text-decoration: none;
+    color: inherit;
+}
+
+
 .cart-link:hover img {
     filter: brightness(1) saturate(10) hue-rotate(240deg); /* Aumenta a luminosidade e muda a cor para o hover */
 }
