@@ -91,8 +91,8 @@ body.modal-open {
 
 /* --- Itens do Carrinho --- */
 .cart-items {
-    /* flex-grow: 1; -> removido para trazer o botão para cima */
     padding: 1rem 0;
+    /* REMOVIDO: A propriedade flex-grow: 1; */
 }
 
 .cart-item {
@@ -223,11 +223,10 @@ body.modal-open {
     filter: invert(0.5);
 }
 
-/* --- Rodapé do Carrinho --- */
 .cart-footer {
     padding-top: 1rem;
     border-top: 1px solid #ccc;
-    margin-top: 2rem; /* Adicionado para trazer o botão mais para cima */
+    margin-top: 1rem; /* Alterado de 2rem para 1rem */
 }
 
 .cta-button {
@@ -248,7 +247,27 @@ body.modal-open {
     background-color: var(--secondary-color);
 }
 
-/* --- Responsividade --- */
+.close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    font-weight: 300;
+    color: #333;
+    text-decoration: none;
+    transition: transform 0.1s ease;
+    z-index: 101;
+}
+
+.close-btn:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.close-btn span {
+    display: block;
+}
+
 @media (max-width: 768px) {
     .cart-modal {
         width: 100%;
