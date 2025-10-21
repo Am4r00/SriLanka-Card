@@ -6,11 +6,10 @@ import lombok.Data;
 
 @Data
 public class ItemResponse {
-    Long cardId;
-    String nome;
-    Double valorUnitario;
-    Integer quantidade;
-    Double subtotal;
+    private String nome;
+    private Double valorUnitario;
+    private Integer quantidade;
+    private Double subtotal;
 
     public ItemResponse(Long id, String nome, Double valorUnitario, @NotNull @Min(1) Integer quantidade, Double subtotal) {
     }
