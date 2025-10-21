@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Funcionários | SriLanka Card</title>
+
+  <link rel="stylesheet" href="../static/css/homeStyle.css">
+  <link rel="stylesheet" href="../static/css/employe.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<!-- navbar -->
+<header class="navbar">
+  <div class="navbar-container">
+    <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+
+    <nav class="nav-links">
+      <ul>
+        <li><a href="giftcard.html">GiftCards</a></li>
+        <li><a href="jogos.html">Jogos</a></li>
+        <li><a href="product.html">Produto</a></li>
+        <li><a href="#" class="active">Funcionários</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="login.html" class="login-link">Login</a>
+      <a href="singup.html"><button class="cta-button">Cadastrar</button></a>
+      <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
+        <img src="../static/img/carrinho.png" alt="shopping-cart-icon">
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- conteúdo principal -->
+<main class="main-container">
+  <h1 class="page-title">Lista de Funcionários</h1>
+
+  <div class="table-container">
+    <table class="styled-table">
+      <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Função</th>
+        <th>Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>João Silva</td>
+        <td>Funcionário</td>
+        <td class="actions">
+          <a href="#" class="btn edit">Editar</a>
+          <a href="#" class="btn delete">Excluir</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Maria Oliveira</td>
+        <td>Funcionario</td>
+        <td class="actions">
+          <a href="#" class="btn edit">Editar</a>
+          <a href="#" class="btn delete">Excluir</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Carlos Souza</td>
+        <td>Admin</td>
+        <td class="actions">
+          <a href="#" class="btn edit">Editar</a>
+          <a href="#" class="btn delete">Excluir</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="button-container">
+    <a href="#" class="btn add">+ Adicionar Funcionário</a>
+  </div>
+</main>
+
+</body>
+</html>
