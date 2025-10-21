@@ -184,6 +184,40 @@ body{
     display: block;
 }
 
+.role-group {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-check {
+    display: none; /* oculta o checkbox real */
+}
+
+.btn-role {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: 2px solid #ffffff; /* borda branca quando não selecionado */
+    background-color: #ffffff;  /* fundo branco quando não selecionado */
+    color: #000000;             /* texto preto */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.btn-role:hover {
+    filter: brightness(0.95);
+}
+
+.btn-check:checked + .btn-role {
+    background-color: #5ac561; /* verde sucesso quando selecionado */
+    border-color: #5ac561;     /* borda verde */
+    color: #ffffff;            /* texto branco */
+}
+
+
+
 /* O resto do seu CSS permanece o mesmo */
 .overlay {
     position: fixed;
@@ -203,7 +237,6 @@ body{
     position: relative;
     width: 100%;
     max-width: 880px;
-    /* ... (restante do código) */
 }
 
 body.modal-open{overflow:hidden}
