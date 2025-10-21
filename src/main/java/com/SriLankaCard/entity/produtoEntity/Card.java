@@ -1,7 +1,7 @@
 package com.SriLankaCard.entity.produtoEntity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Entity
@@ -12,32 +12,35 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "card_name")
+    @Column(name = "card_name", nullable = false)
     @NotBlank
     private String name;
 
-    @Column(name = "card_observacoes")
+    @Column(name = "card_observacoes", nullable = false, length = 1000)
     @NotBlank
     private String observacoes;
 
-    @Column(name = "card_quantidade")
+    @Column(name = "card_quantidade", nullable = false)
     @NotBlank
+    @Min(0)
     private Integer quantidade;
 
-    @Column(name = "card_serial")
+    @Column(name = "card_serial",nullable = false,unique = true)
     @NotBlank
     private String serial;
 
-    @Column(name = "card_valor")
-    @NotBlank
+    @Column(name = "card_valor",nullable = false)
+    @NotNull
+    @DecimalMin("0.0")
     private Double valor;
 
-    @Column(name = "card_promocao")
+    @Column(name = "card_promocao",nullable = false)
     @NotBlank
     private boolean promocao;
 
-    @Column(name = "card_avaliacao")
-    @NotBlank
+    @Column(name = "card_avaliacao",nullable = false)
+    @NotNull
+    @Min(0) @Max(5)
     private Integer avaliacao;
 
 }
