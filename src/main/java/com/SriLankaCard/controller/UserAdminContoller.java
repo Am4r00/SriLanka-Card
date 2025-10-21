@@ -2,7 +2,8 @@ package com.SriLankaCard.controller;
 
 import com.SriLankaCard.dto.request.AdminCreateRequest;
 import com.SriLankaCard.dto.response.UserDetailResponse;
-import com.SriLankaCard.entity.userEntity.UserStatus;
+
+import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.service.AdminUserImple;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
