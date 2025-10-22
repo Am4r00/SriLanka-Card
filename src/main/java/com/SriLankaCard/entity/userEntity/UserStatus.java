@@ -1,4 +1,4 @@
-package com.SriLankaCard.entity.enums;
+package com.SriLankaCard.entity.userEntity.enums;
 
 public enum UserStatus {
     ATIVO("User Active"),

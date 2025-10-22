@@ -1,8 +1,8 @@
-package com.SriLankaCard.entity;
+package com.SriLankaCard.entity.userEntity;
 
-import com.SriLankaCard.entity.enums.Funcao;
-import com.SriLankaCard.entity.enums.UserStatus;
+import com.SriLankaCard.entity.userEntity.enums.Funcao;
 
+import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
