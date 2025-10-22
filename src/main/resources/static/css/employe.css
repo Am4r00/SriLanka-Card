@@ -1,0 +1,247 @@
+/* ------------- overrides para garantir fundo sem imagem ------------- */
+:root{
+    --primary-color:#6C42A1; --secondary-color:#A379D5; --dark-bg:#030438;
+    --light-bg:#1e293b; --text-color:#e2e8f0; --subtle-text:#94a3b8;
+    --border-color:#334155; --white:#fff; --success:#5ac561; --danger:#f04848;
+}
+
+html, body{
+    background-color:var(--dark-bg) !important;
+    background-image:none !important;
+    background-repeat:no-repeat !important;
+    background-size:cover !important;
+    min-height:100%;
+}
+
+/* remover imagens aplicadas em classes comuns de hero/banner */
+.hero, .promo-banner, .header-hero, .page-hero, .main-hero, .site-hero {
+    background-image: none !important;
+    background-color: transparent;
+}
+
+/* remover pseudo-elementos que possam conter imagem */
+html::before, html::after, body::before, body::after {
+    background-image: none !important;
+}
+
+/* remover imagem do footer/section caso exista */
+footer, .about-footer { background-image: none !important; }
+
+/* ===================== seu css de funcionarios ===================== */
+/* === ESTILO GLOBAL === */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* === NAVBAR === */
+.navbar {
+    background-color: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1.2rem 3rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+}
+
+.logo span {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+.nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: color .3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--secondary-color);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.login-link {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: color .3s ease;
+}
+
+.login-link:hover {
+    color: var(--secondary-color);
+}
+
+.cta-button {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: .75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .3s ease;
+    box-shadow: 0 0 15px rgba(108, 66, 161, .5);
+}
+
+.cta-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* === CONTAINER PRINCIPAL === */
+.container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+}
+
+.page-title{
+    text-align: center;
+}
+
+/* === TÍTULO === */
+.container h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+/* === BOTÃO PRINCIPAL === */
+.add.btn {
+    display: inline-block;
+    background: none;
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.add.btn:hover{
+    color: var(--secondary-color);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* centraliza horizontalmente */
+    margin-top: 1rem;
+}
+
+
+/* === TABELA DE FUNCIONÁRIOS === */
+.table-container {
+    background-color: var(--light-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    margin-left: 500px;
+    margin-right: 500px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-color);
+}
+
+.table-container th, .table-container td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-container th {
+    background-color: var(--dark-bg);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.table-container tr:hover {
+    background-color: rgba(255,255,255,0.03);
+}
+
+/* === BOTÕES DE AÇÃO === */
+.btn.edit,
+.btn.delete {
+    background: none;       /* sem fundo */
+    color: var(--white);    /* texto branco */
+    border: none;           /* sem borda */
+    padding: 6px;             /* sem padding */
+    cursor: pointer;        /* pointer ao passar o mouse */
+    text-decoration: underline; /* opcional: sublinha ao estilo link */
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.btn.edit:hover,
+.btn.delete:hover {
+    color: var(--secondary-color); /* muda cor ao passar o mouse */
+    text-decoration: underline;    /* mantém sublinhado */
+}
+
+
+/* === FORMULÁRIO DE CADASTRO/EDIÇÃO === */
+.form-container {
+    background-color: var(--light-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.form-container h2 { text-align:center; color:var(--white); margin-bottom:1.5rem; }
+
+.form-group { margin-bottom:1.2rem; }
+.form-group label { display:block; color:var(--subtle-text); margin-bottom:.5rem; }
+.form-group input, .form-group select {
+    width:100%; padding:.75rem 1rem; background-color:var(--dark-bg); color:var(--white);
+    border:1px solid var(--border-color); border-radius:8px; outline:none;
+}
+.form-group input:focus, .form-group select:focus { border-color:var(--secondary-color); }
+
+.submit-btn {
+    display:block; width:100%; background-color:var(--primary-color); color:var(--white);
+    border:none; padding:.75rem; font-weight:600; border-radius:50px; cursor:pointer; transition:background-color .3s;
+}
+.submit-btn:hover { background-color:var(--secondary-color); }
+
+/* === RESPONSIVIDADE === */
+@media (max-width:768px) {
+    .navbar ul { flex-direction:column; gap:1rem; }
+    .table-container { overflow-x:auto; }
+    .form-container { width:90%; padding:1.5rem; }
+}

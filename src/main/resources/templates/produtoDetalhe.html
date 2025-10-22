@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${produto.nome} + ' - SriLankaCard'">Detalhes do Produto</title>
+
+  <link rel="stylesheet" href="../static/css/produtoDetalhe.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+  <div class="navbar-container">
+    <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+
+    <nav class="nav-links">
+      <ul>
+        <li><a href="giftcard.html">GiftCards</a></li>
+        <li><a href="jogos.html">Jogos</a></li>
+        <li><a href="product.html">Produto</a></li>
+        <li><a href="#">Funcionarios</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="login.html" class="login-link">Login</a>
+      <a href="singup.html"><button class="cta-button">Cadastrar</button></a>
+      <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
+        <img src="../static/img/carrinho.png" alt="shopping-cart-icon">
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Conteúdo principal -->
+<main class="product-details">
+  <div class="product-container">
+    <div class="product-image">
+      <img th:src="@{${produto.imagemUrl}}" alt="Imagem do produto" />
+    </div>
+
+    <div class="product-info">
+      <h1 th:text="${produto.nome}">GTA VI</h1>
+      <p class="price" th:text="'R$ ' + ${#numbers.formatDecimal(produto.preco, 2, 'COMMA', 2, 'POINT')}">R$ 450,00</p>
+      <div class="rating">
+        ⭐⭐⭐⭐☆ <span>(4.5/5)</span>
+      </div>
+      <p class="description" th:text="${produto.descricao}">
+        Explore Vice City em uma nova geração de aventura e liberdade no universo GTA.
+      </p>
+
+      <div class="actions">
+        <button class="add-cart">Adicionar ao Carrinho 🛒</button>
+        <button class="buy-now">Comprar Agora 💳</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h2 class="logo">Sri<span>Lanka</span>Card</h2>
+      <p>O presente perfeito, a um clique de distância.</p>
+    </div>
+
+    <div class="footer-section">
+      <h3>Empresa</h3>
+      <ul>
+        <li><a href="sobre.html">Sobre nós</a></li>
+        <li><a href="#">Carreiras</a></li>
+        <li><a href="#">Parceiros</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Suporte</h3>
+      <ul>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="#">Contato</a></li>
+        <li><a href="#">Termos de Serviço</a></li>
+        <li><a href="#">Política de Privacidade</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Siga-nos</h3>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Twitter</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 SriLankaCard. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+</body>
+</html>

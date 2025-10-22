@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suporte - SriLankaCard</title>
+
+    <link rel="stylesheet" href="../static/css/faq.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="navbar-container">
+        <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+        <nav class="nav-links">
+            <ul>
+                <li><a href="giftcard.html">GiftCards</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="product.html">Produto</a></li>
+                <li><a href="funcionarios.html">Funcionarios</a></li>
+            </ul>
+        </nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-link">Login</a>
+            <a href="singup.html"><button class="cta-button">Cadastrar</button></a>
+            <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
+                <img src="../static/img/carrinho.png" alt="Carrinho">
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Conteúdo principal -->
+<main class="faq-section">
+    <div class="faq-container">
+        <h1>Suporte & FAQ</h1>
+        <p class="intro">
+            Encontre respostas rápidas para suas dúvidas sobre a <strong>SriLankaCard</strong> e nossos serviços.
+            Caso não encontre o que procura, entre em contato conosco!
+        </p>
+
+        <div class="faq-item">
+            <button class="faq-question">Como posso comprar um GiftCard?</button>
+            <div class="faq-answer">
+                <p>Você pode acessar a aba “GiftCards” no menu principal, escolher o cartão desejado, personalizar a mensagem e realizar o pagamento de forma rápida e segura.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">Posso enviar um cartão como presente para outra pessoa?</button>
+            <div class="faq-answer">
+                <p>Sim! Durante a personalização do seu cartão, você pode inserir o nome e o e-mail do destinatário. O presente será enviado digitalmente com sua mensagem personalizada.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">Quais formas de pagamento são aceitas?</button>
+            <div class="faq-answer">
+                <p>Aceitamos cartões de crédito, Pix e boleto bancário. O processamento é imediato para Pix e cartões de crédito.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">Meu código de resgate não funciona. O que fazer?</button>
+            <div class="faq-answer">
+                <p>Verifique se o código foi digitado corretamente e se ainda está dentro do prazo de validade. Caso o problema persista, entre em contato com o suporte informando o número do pedido.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">Como entrar em contato com o suporte?</button>
+            <div class="faq-answer">
+                <p>Você pode nos contatar pelo e-mail <strong>suporte@srilankacard.com</strong> ou pelo formulário de contato disponível na aba “Contato”.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Rodapé -->
+<footer class="about-footer">
+    <div class="footer-container">
+        <div class="footer-info">
+            <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+            <p>O presente perfeito, a um clique de distância.</p>
+        </div>
+        <div class="footer-links">
+            <h3>Empresa</h3>
+            <ul>
+                <li><a href="sobre.html">Sobre nós</a></li>
+                <li><a href="#">Carreiras</a></li>
+                <li><a href="#">Parceiros</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h3>Suporte</h3>
+            <ul>
+                <li><a href="suporte.html">FAQ</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="#">Termos de Serviço</a></li>
+                <li><a href="#">Política de Privacidade</a></li>
+            </ul>
+        </div>
+        <div class="footer-social">
+            <h3>Siga-nos</h3>
+            <div class="social-icons">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 SriLankaCard. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // Script para abrir e fechar perguntas da FAQ
+    document.querySelectorAll(".faq-question").forEach(button => {
+        button.addEventListener("click", () => {
+            const answer = button.nextElementSibling;
+            button.classList.toggle("active");
+            answer.style.maxHeight = button.classList.contains("active")
+                ? answer.scrollHeight + "px"
+                : null;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    color: #fff;
+    background-color: #070b2b;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #0d0d2e;
+    padding: 1.2rem 3rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+.logo span { color: #ccc; }
+
+.nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    transition: color .3s;
+}
+.nav-links a:hover { color: #A379D5; }
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+.cta-button {
+    background: #6C42A1;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: .6rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.cta-button:hover { background-color: #A379D5; }
+.cart-link img {
+    width: 28px;
+    filter: brightness(0) invert(1);
+}
+
+/* Conteúdo */
+.product-details {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 2rem;
+}
+
+.product-container {
+    display: flex;
+    gap: 3rem;
+    background-color: #0d0d3a;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 0 20px rgba(108,66,161,0.4);
+    max-width: 1000px;
+}
+
+.product-image img {
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-info h1 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #A379D5;
+    margin: 1rem 0;
+}
+
+.rating span {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.description {
+    color: #ddd;
+    line-height: 1.6;
+    margin: 1.5rem 0;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.add-cart, .buy-now {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.add-cart {
+    background: #6C42A1;
+    color: white;
+}
+.add-cart:hover { background: #A379D5; }
+
+.buy-now {
+    background: #f1c40f;
+    color: #000;
+}
+.buy-now:hover { background: #f7d75c; }
+
+/* ===========================
+   RODAPÉ COMPLETO
+=========================== */
+.footer {
+    background-color: #0d0d2e;
+    color: #ccc;
+    padding: 3rem 0 1rem;
+    font-size: 0.95rem;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-section {
+    flex: 1 1 200px;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: #bbb;
+    transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #A379D5;
+}
+
+.footer-bottom {
+    text-align: center;
+    color: #777;
+    font-size: 0.85rem;
+    padding-top: 1rem;
+    border-top: 1px solid #1c1c3c;
+}
