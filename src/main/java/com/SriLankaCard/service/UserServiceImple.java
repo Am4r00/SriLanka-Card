@@ -2,7 +2,7 @@ package com.SriLankaCard.service;
 
 import com.SriLankaCard.dto.request.RegisterUserRequest;
 import com.SriLankaCard.dto.response.UserResponse;
-import com.SriLankaCard.entity.User;
+import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.entity.userEntity.enums.Funcao;
 import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.exception.dominio.ListIsEmptyException;

@@ -1,6 +1,6 @@
 package com.SriLankaCard.service;
 
-import com.SriLankaCard.entity.User;
+import com.SriLankaCard.entity.userEntity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

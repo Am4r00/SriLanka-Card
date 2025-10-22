@@ -2,7 +2,7 @@ package com.SriLankaCard.service;
 
 import com.SriLankaCard.dto.request.LoginRequest;
 import com.SriLankaCard.dto.response.LoginResponse;
-import com.SriLankaCard.entity.User;
+import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

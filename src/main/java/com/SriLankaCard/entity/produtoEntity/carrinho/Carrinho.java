@@ -42,7 +42,7 @@ public class Carrinho {
         if (existente == null) {
             ItemCarrinho novo = new ItemCarrinho();
             novo.setCard(card);
-            novo.setNome(card.getName());
+            novo.setNome(card.getNome());
             novo.setValorUnitario(card.getValor());
             novo.setQuantidade(quantidade);
             novo.setCarrinho(this);

@@ -1,6 +1,6 @@
 package com.SriLankaCard.service;
 
-import com.SriLankaCard.entity.User;
+import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
