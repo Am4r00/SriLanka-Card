@@ -1,6 +1,7 @@
 package com.SriLankaCard.dto.response;
 
-import com.SriLankaCard.entity.userEntity.Funcao;
+
+import com.SriLankaCard.entity.userEntity.enums.Funcao;
 import lombok.Data;
 
 import java.util.Set;

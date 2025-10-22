@@ -5,7 +5,8 @@ import com.SriLankaCard.dto.request.RegisterUserRequest;
 import com.SriLankaCard.dto.request.LoginRequest;
 import com.SriLankaCard.dto.response.UserDetailResponse;
 import com.SriLankaCard.dto.response.UserResponse;
-import com.SriLankaCard.entity.User;
+import com.SriLankaCard.entity.userEntity.User;
+
 
 public class UserMapper {
 

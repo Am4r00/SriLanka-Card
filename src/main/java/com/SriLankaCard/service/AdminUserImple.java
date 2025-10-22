@@ -3,7 +3,7 @@ package com.SriLankaCard.service;
 import com.SriLankaCard.dto.request.AdminCreateRequest;
 import com.SriLankaCard.dto.response.UserDetailResponse;
 import com.SriLankaCard.dto.response.UserResponse;
-import com.SriLankaCard.entity.User;
+import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
