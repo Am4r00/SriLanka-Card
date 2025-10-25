@@ -40,7 +40,26 @@ public class CardServiceImplements implements CardService{
 
     @Override
     public CardResponse atualiarCard(Long id, CardAdjustRequest adjust) {
-        return null;
+        if(id == null || id < 0 || adjust == null){
+            throw new RuntimeException("ERRO PERSONALIZADO !!");
+        }
+
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!!"));
+
+        if(adjust.getNome() != null){
+            card.setNome(adjust.getNome());
+        }
+        if(adjust.getObservacoes() != null){
+            card.setObservacoes(adjust.getObservacoes());
+        }
+        if(adjust.getValor() != null){
+            card.setValor(adjust.getValor());
+        }
+
+        cardRepository.save(card);
+
+        return CardMapper.toCardResponseByCard(card);
     }
 
     @Override
