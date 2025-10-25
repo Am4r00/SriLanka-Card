@@ -8,6 +8,7 @@ import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class CardServiceImplements implements CardService{
     }
 
     @Override
+    @Transactional
     public CardResponse criarCard(CardRequest request) {
         if(request == null){
             throw new RuntimeException("ERRO PERSONALIZADO !!");
@@ -42,6 +44,7 @@ public class CardServiceImplements implements CardService{
     }
 
     @Override
+    @Transactional
     public CardResponse atualiarCard(Long id, CardAdjustRequest adjust) {
         if(id == null || id < 0 || adjust == null){
             throw new RuntimeException("ERRO PERSONALIZADO !!");
@@ -66,6 +69,7 @@ public class CardServiceImplements implements CardService{
     }
 
     @Override
+    @Transactional
     public List<CardResponse> listarCards() {
         List<Card> listaCards = cardRepository.findAll();
 
@@ -74,6 +78,7 @@ public class CardServiceImplements implements CardService{
     }
 
     @Override
+    @Transactional
     public void deletarCard(Long id) {
         if(id == null || id < 0){
             throw  new RuntimeException("ERRO PESONALIZADO !!!!");
@@ -84,6 +89,7 @@ public class CardServiceImplements implements CardService{
     }
 
     @Override
+    @Transactional
     public CardResponse atualizarPromocao(Boolean promo, Long id) {
         if(promo == null || id == null || id < 0){
             throw new RuntimeException("ERRO PERSONALIZADO !!!");

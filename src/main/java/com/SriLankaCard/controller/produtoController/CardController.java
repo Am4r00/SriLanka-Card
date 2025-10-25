@@ -1,14 +1,15 @@
 package com.SriLankaCard.controller.produtoController;
 
+import com.SriLankaCard.dto.request.cards.CardAdjustRequest;
 import com.SriLankaCard.dto.request.cards.CardRequest;
 import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
 import com.SriLankaCard.service.produtoService.CardService;
 import com.SriLankaCard.service.produtoService.CardServiceImplements;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cards")
@@ -25,5 +26,14 @@ public class CardController {
         return cardServiceImplements.criarCard(request);
     }
 
+    @PostMapping("atualizar/{id}")
+    public CardResponse atualizarCard(@PathVariable Long id, @Valid @RequestBody CardAdjustRequest adjust){
+        return cardServiceImplements.atualiarCard(id, adjust);
+    }
+
+    @GetMapping("/listar")
+    public List<CardResponse> listar(){
+        return cardServiceImplements.listarCards();
+    }
 
 }
