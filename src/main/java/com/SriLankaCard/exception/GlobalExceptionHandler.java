@@ -1,6 +1,6 @@
 package com.SriLankaCard.exception;
 
-import com.SriLankaCard.dto.response.ResponseError;
+import com.SriLankaCard.dto.response.exceptionHandler.ResponseError;
 import com.SriLankaCard.exception.dominio.EmailNotFoundException;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
