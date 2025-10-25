@@ -36,4 +36,9 @@ public class CardController {
         return cardServiceImplements.listarCards();
     }
 
+    @DeleteMapping("/deletar/{id}")
+    public void deletarCard(@PathVariable Long id){
+        cardServiceImplements.deletarCard(id);
+    }
+
 }
