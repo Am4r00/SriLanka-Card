@@ -26,7 +26,7 @@ public class CardController {
         return cardServiceImplements.criarCard(request);
     }
 
-    @PostMapping("atualizar/{id}")
+    @PatchMapping("atualizar/{id}")
     public CardResponse atualizarCard(@PathVariable Long id, @Valid @RequestBody CardAdjustRequest adjust){
         return cardServiceImplements.atualiarCard(id, adjust);
     }
@@ -40,5 +40,12 @@ public class CardController {
     public void deletarCard(@PathVariable Long id){
         cardServiceImplements.deletarCard(id);
     }
+
+    @PatchMapping("/cards/{id}/promocao/{promo}")
+    public CardResponse atualizarPromocao(@PathVariable("id") Long id,
+                                          @PathVariable("promo") boolean promo) {
+        return cardServiceImplements.atualizarPromocao(promo, id);
+    }
+
 
 }
