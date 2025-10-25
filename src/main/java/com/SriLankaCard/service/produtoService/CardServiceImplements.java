@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CardServiceImplements implements CardService{
     private CardRepository cardRepository;
@@ -64,7 +65,10 @@ public class CardServiceImplements implements CardService{
 
     @Override
     public List<CardResponse> listarCards() {
-        return List.of();
+        List<Card> listaCards = cardRepository.findAll();
+
+        return listaCards.stream().map(CardMapper::toCardResponseByCard)
+                .collect(Collectors.toList());
     }
 
     @Override
