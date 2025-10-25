@@ -4,7 +4,7 @@ import com.SriLankaCard.dto.request.user.login.LoginRequest;
 import com.SriLankaCard.dto.response.login.LoginResponse;
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
-import com.SriLankaCard.repository.UserRepository;
+import com.SriLankaCard.repository.userRepository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

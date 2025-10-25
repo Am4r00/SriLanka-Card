@@ -14,7 +14,7 @@ public class CardRequest {
     @NotBlank
     private String observacoes;
 
-    @NotBlank
+    @NotNull
     @Min(0)
     private Integer quantidade;
 

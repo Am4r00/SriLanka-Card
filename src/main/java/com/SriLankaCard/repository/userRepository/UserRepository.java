@@ -1,4 +1,4 @@
-package com.SriLankaCard.repository;
+package com.SriLankaCard.repository.userRepository;
 
 import com.SriLankaCard.entity.userEntity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

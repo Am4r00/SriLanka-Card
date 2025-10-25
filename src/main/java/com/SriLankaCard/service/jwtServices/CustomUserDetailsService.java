@@ -1,7 +1,7 @@
 package com.SriLankaCard.service.jwtServices;
 
 import com.SriLankaCard.entity.userEntity.User;
-import com.SriLankaCard.repository.UserRepository;
+import com.SriLankaCard.repository.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

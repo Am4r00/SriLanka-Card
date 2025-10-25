@@ -8,7 +8,7 @@ import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.exception.dominio.ListIsEmptyException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
 import com.SriLankaCard.mapper.UserMapper;
-import com.SriLankaCard.repository.UserRepository;
+import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.utils.RegisterValidation;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
