@@ -21,7 +21,7 @@ public class Card {
     private String observacoes;
 
     @Column(name = "card_quantidade", nullable = false)
-    @NotBlank
+    @NotNull
     @Min(0)
     private Integer quantidade;
 
@@ -35,7 +35,6 @@ public class Card {
     private Double valor;
 
     @Column(name = "card_promocao",nullable = false)
-    @NotBlank
     private boolean promocao;
 
     @Column(name = "card_avaliacao",nullable = false)

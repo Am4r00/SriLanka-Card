@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/public/**", "/users/create-user", "/users/create-user/**").permitAll()
+                        .requestMatchers("/auth/**", "/public/**", "/users/create-user", "/users/create-user/**", "/cards/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(c -> {}) // habilita Basic Auth

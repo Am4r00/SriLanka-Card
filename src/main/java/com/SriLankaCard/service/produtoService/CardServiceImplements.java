@@ -7,11 +7,13 @@ import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class CardServiceImplements implements CardService{
     private CardRepository cardRepository;
     private PasswordEncoder passwordEncoder;

@@ -22,8 +22,6 @@ public class CardRequest {
     @DecimalMin("0.0")
     private Double valor;
 
-    @NotBlank
     private boolean promocao;
-
 
 }
