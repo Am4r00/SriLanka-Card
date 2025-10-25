@@ -9,6 +9,7 @@ import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CardServiceImplements implements CardService{
     private CardRepository cardRepository;
@@ -25,6 +26,13 @@ public class CardServiceImplements implements CardService{
             throw new RuntimeException("ERRO PERSONALIZADO !!");
         }
         Card card = CardMapper.toCardByCardRequest(request);
+
+        String raw = UUID.randomUUID().toString().replace("-", "").toUpperCase();  // 32 hex
+        String serial = raw.replaceFirst("(.{5})(.{5})(.{5})(.{5})(.{2}).*", "$1-$2-$3-$4-$5");
+
+        card.setSerial(passwordEncoder.encode(serial));
+        card.setAvaliacao(0);
+
         cardRepository.save(card);
 
         return CardMapper.toCardResponseByCard(card);
