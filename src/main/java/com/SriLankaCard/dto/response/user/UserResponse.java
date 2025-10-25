@@ -1,4 +1,4 @@
-package com.SriLankaCard.dto.response;
+package com.SriLankaCard.dto.response.user;
 
 
 import com.SriLankaCard.entity.userEntity.enums.Funcao;

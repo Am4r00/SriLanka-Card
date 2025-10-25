@@ -1,4 +1,4 @@
-package com.SriLankaCard.dto.request;
+package com.SriLankaCard.dto.request.user.admin;
 
 import com.SriLankaCard.entity.userEntity.enums.Funcao;
 import com.SriLankaCard.entity.userEntity.enums.UserStatus;

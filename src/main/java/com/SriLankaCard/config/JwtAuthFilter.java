@@ -1,7 +1,7 @@
 package com.SriLankaCard.config;
 
-import com.SriLankaCard.service.CustomUserDetailsService;
-import com.SriLankaCard.service.JwtService;
+import com.SriLankaCard.service.jwtServices.CustomUserDetailsService;
+import com.SriLankaCard.service.jwtServices.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,8 +1,8 @@
-package com.SriLankaCard.controller;
+package com.SriLankaCard.controller.authController;
 
-import com.SriLankaCard.dto.request.LoginRequest;
-import com.SriLankaCard.dto.response.LoginResponse;
-import com.SriLankaCard.service.AuthService;
+import com.SriLankaCard.dto.request.user.login.LoginRequest;
+import com.SriLankaCard.dto.response.login.LoginResponse;
+import com.SriLankaCard.service.jwtServices.AuthService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

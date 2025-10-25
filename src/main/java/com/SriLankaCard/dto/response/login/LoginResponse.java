@@ -1,4 +1,4 @@
-package com.SriLankaCard.dto.response;
+package com.SriLankaCard.dto.response.login;
 
 import lombok.Data;
 

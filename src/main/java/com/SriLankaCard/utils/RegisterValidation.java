@@ -1,9 +1,8 @@
 package com.SriLankaCard.utils;
 
-import com.SriLankaCard.dto.request.AdminCreateRequest;
-import com.SriLankaCard.dto.request.RegisterUserRequest;
+import com.SriLankaCard.dto.request.user.admin.AdminCreateRequest;
+import com.SriLankaCard.dto.request.user.userPublic.RegisterUserRequest;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
-import com.SriLankaCard.mapper.UserMapper;
 
 
 public class RegisterValidation {

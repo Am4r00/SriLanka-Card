@@ -1,4 +1,4 @@
-package com.SriLankaCard.dto.request;
+package com.SriLankaCard.dto.request.cards;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;

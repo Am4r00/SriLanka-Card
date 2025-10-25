@@ -1,10 +1,10 @@
 package com.SriLankaCard.mapper;
 
-import com.SriLankaCard.dto.request.AdminCreateRequest;
-import com.SriLankaCard.dto.request.RegisterUserRequest;
-import com.SriLankaCard.dto.request.LoginRequest;
-import com.SriLankaCard.dto.response.UserDetailResponse;
-import com.SriLankaCard.dto.response.UserResponse;
+import com.SriLankaCard.dto.request.user.admin.AdminCreateRequest;
+import com.SriLankaCard.dto.request.user.userPublic.RegisterUserRequest;
+import com.SriLankaCard.dto.request.user.login.LoginRequest;
+import com.SriLankaCard.dto.response.user.UserDetailResponse;
+import com.SriLankaCard.dto.response.user.UserResponse;
 import com.SriLankaCard.entity.userEntity.User;
 
 

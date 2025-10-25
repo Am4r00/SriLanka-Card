@@ -1,8 +1,8 @@
-package com.SriLankaCard.controller;
+package com.SriLankaCard.controller.userController;
 
-import com.SriLankaCard.dto.request.RegisterUserRequest;
-import com.SriLankaCard.dto.response.UserResponse;
-import com.SriLankaCard.service.UserServiceImple;
+import com.SriLankaCard.dto.request.user.userPublic.RegisterUserRequest;
+import com.SriLankaCard.dto.response.user.UserResponse;
+import com.SriLankaCard.service.userServices.publicService.UserServiceImple;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

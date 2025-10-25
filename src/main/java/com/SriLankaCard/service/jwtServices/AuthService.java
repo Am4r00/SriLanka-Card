@@ -1,7 +1,7 @@
-package com.SriLankaCard.service;
+package com.SriLankaCard.service.jwtServices;
 
-import com.SriLankaCard.dto.request.LoginRequest;
-import com.SriLankaCard.dto.response.LoginResponse;
+import com.SriLankaCard.dto.request.user.login.LoginRequest;
+import com.SriLankaCard.dto.response.login.LoginResponse;
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.UserRepository;

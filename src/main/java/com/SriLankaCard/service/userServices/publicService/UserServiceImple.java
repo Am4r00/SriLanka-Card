@@ -1,7 +1,7 @@
-package com.SriLankaCard.service;
+package com.SriLankaCard.service.userServices.publicService;
 
-import com.SriLankaCard.dto.request.RegisterUserRequest;
-import com.SriLankaCard.dto.response.UserResponse;
+import com.SriLankaCard.dto.request.user.userPublic.RegisterUserRequest;
+import com.SriLankaCard.dto.response.user.UserResponse;
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.entity.userEntity.enums.Funcao;
 import com.SriLankaCard.entity.userEntity.enums.UserStatus;

@@ -1,4 +1,4 @@
-package com.SriLankaCard.dto.request;
+package com.SriLankaCard.dto.request.user.login;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

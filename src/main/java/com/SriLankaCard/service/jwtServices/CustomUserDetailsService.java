@@ -1,4 +1,4 @@
-package com.SriLankaCard.service;
+package com.SriLankaCard.service.jwtServices;
 
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.repository.UserRepository;
