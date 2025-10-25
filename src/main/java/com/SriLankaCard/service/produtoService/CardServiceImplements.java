@@ -83,6 +83,16 @@ public class CardServiceImplements implements CardService{
 
     @Override
     public CardResponse atualizarPromocao(Boolean promo, Long id) {
-        return null;
+        if(promo == null || id == null || id < 0){
+            throw new RuntimeException("ERRO PERSONALIZADO !!!");
+        }
+
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!!"));
+
+        card.setPromocao(promo);
+        cardRepository.save(card);
+
+        return CardMapper.toCardResponseByCard(card);
     }
 }
