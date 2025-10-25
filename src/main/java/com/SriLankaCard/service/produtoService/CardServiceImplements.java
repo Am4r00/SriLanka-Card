@@ -73,7 +73,12 @@ public class CardServiceImplements implements CardService{
 
     @Override
     public void deletarCard(Long id) {
-
+        if(id == null || id < 0){
+            throw  new RuntimeException("ERRO PESONALIZADO !!!!");
+        }
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!"));
+        cardRepository.deleteById(id);
     }
 
     @Override
