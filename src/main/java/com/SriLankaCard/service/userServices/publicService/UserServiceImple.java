@@ -49,6 +49,7 @@ public class UserServiceImple implements UserService {
     }
 
     @Override
+    @Transactional
     public List<UserResponse> findAll() {
         List<User> listaUsuarios = userRepository.findAll();
         if (listaUsuarios.isEmpty()) {

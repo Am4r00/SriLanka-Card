@@ -20,23 +20,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 1) Admin em memória (fallback)
-    @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetails(PasswordEncoder encoder) {
-        var admin = User.withUsername("admin")      // login = "admin"
-                .password(encoder.encode("12345678"))
-                .roles("ADMIN")                     // vira "ROLE_ADMIN"
-                .build();
-        return new InMemoryUserDetailsManager(admin);
-    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/public/**", "/users/create-user", "/users/create-user/**", "/cards/**").permitAll()
+                        .requestMatchers("/auth/**", "/public/**", "/users/create-user","/admin/**", "/cards/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(c -> {}) // habilita Basic Auth
