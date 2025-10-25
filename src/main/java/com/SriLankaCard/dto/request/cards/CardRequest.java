@@ -12,7 +12,7 @@ public class CardRequest {
     private String nome;
 
     @NotBlank
-    private String observacao;
+    private String observacoes;
 
     @NotBlank
     @Min(0)
