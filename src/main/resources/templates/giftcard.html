@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GiftCards - SriLankaCard</title>
-  <link rel="stylesheet" href="../static/css/giftcard.css">
+  <link rel="stylesheet" href="/css/giftcard.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
       <ul>
         <li><a href="giftcard.html">GiftCards</a></li>
         <li><a href="jogos.html">Jogos</a></li>
-        <li><a href="product.html">Produto</a></li>
+        <li><a href="produto.html">Produto</a></li>
         <li><a href="#">Sobre</a></li>
       </ul>
     </nav>
@@ -32,7 +32,7 @@
     </div>
 
     <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAClElEQVR4nO2Zz4tNYRjHn0GRxJb5kfwYxo+SJhv/AJJY2akxjWEkaUrZWSmb2UhZWDAZZjRJQlYWw1JWNpRSMxjKDSmLkfno7X5vTrr33DvXc849b82nzubc+3y/z7fO+573fY/ZIgUDOAi8J52vwDOgD2izIgJ8YGGMFTIMMJNocrrK721AO3AC+KH/HbOiARxQmGlgf53/DirIS4sZYDnwRWG2WcxQHiOBIYsZymMlMGExA2xRkM+FnL2anLJ7LGaAOwpyymIGOKkg4xYzQI+CzC6Ok6IATNB6nnsEGWp1CuCtR5DtEpv9b7GFe9+U90UPsbAq/iTBrS4dNgCwSqvweWCjl+ikggy6CDYA0C/Pp+YFcEait91E6xAGuPueCNgp0Y9uoikA3XqkvgMrzQuNk7B4DHS7CdcAuCSv6+YNcE/iA+7iCYAl2sUG9po3wFmJ33IXTwDsk8+bTJZFwC4ZzLiLV19JXLAs0Dip7OM3ZeSxBvgJ/Aa6svCoGN1XkP6M9E9L/0kW+kmjczIazUj/hfSPZqGfNNpd64DPQXuHtEvACm/9alNjMApscNYeke5VT900wwcy7HPUXKZdaKDXS7ee6bAMbzhqHpbmKy/NRkx7Zfoug9lw2EuzEdOl+o7izS9gbW5BFOahc4h54EquIRTkvBq4ZjED7FGQ1xYzlKfLsOkJtFvM8Pd9ctxiBhhQkCmLGWB1YrlyGVgfpmaLEeAIMOc4DU+1MswhxyBzwLpWBRlVE+El2aHrUdp3FWA8pWYs/xTlpiqr1o7EvS7dK9WoKaXUfMur93+bqrxPOhttiiZqMidx3hUejU5dj3Vv0qsmr8/YldOVJOHx2exVY3mgwXpXj0y4wul9akPN1ITCP3VAko9hrlVKAAAAAElFTkSuQmCC" alt="shopping-cart-icon">
+      <img src="/img/carrinho.png" alt="shopping-cart-icon">
     </a>
   </div>
 </header>
@@ -77,10 +77,32 @@
         </div>
       </div>
 
+      <!-- Botões de teste da API -->
+      <div class="api-test-buttons" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
+        <h4 style="margin: 0 0 15px 0; color: #007bff;">🧪 Teste de APIs - Cards</h4>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button onclick="listarCards()" class="btn btn-primary" style="padding: 8px 16px; border: none; border-radius: 4px; background: #007bff; color: white; cursor: pointer;">
+            📋 Listar Cards
+          </button>
+          <button onclick="criarCard()" class="btn btn-success" style="padding: 8px 16px; border: none; border-radius: 4px; background: #28a745; color: white; cursor: pointer;">
+            ➕ Criar Card
+          </button>
+          <button onclick="atualizarCard()" class="btn btn-warning" style="padding: 8px 16px; border: none; border-radius: 4px; background: #ffc107; color: black; cursor: pointer;">
+            ✏️ Atualizar Card
+          </button>
+          <button onclick="cardTester.listarCards()" class="btn btn-info" style="padding: 8px 16px; border: none; border-radius: 4px; background: #17a2b8; color: white; cursor: pointer;">
+            🔄 Recarregar
+          </button>
+        </div>
+        <p style="margin: 10px 0 0 0; font-size: 12px; color: #6c757d;">
+          💡 Faça login primeiro para testar as APIs. Os cards serão carregados automaticamente.
+        </p>
+      </div>
+
       <div class="product-grid">
 
         <div class="product-card">
-          <img src="../static/img/spotify.png" alt="Logo Spotify" class="product-logo">
+          <img src="/img/spotify.png" alt="Logo Spotify" class="product-logo">
           <div class="product-details">
             <h3>Spotify</h3>
             <p>R$ 50,00</p>
@@ -88,7 +110,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/shopee.jpg" alt="Logo Shopee" class="product-logo">
+          <img src="/img/shopee.jpg" alt="Logo Shopee" class="product-logo">
           <div class="product-details">
             <h3>Shopee</h3>
             <p>R$ 50,00</p>
@@ -96,7 +118,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/steam-gift-card.png" alt="Logo Steam" class="product-logo">
+          <img src="/img/steam-gift-card.png" alt="Logo Steam" class="product-logo">
           <div class="product-details">
             <h3>Steam</h3>
             <p>R$ 100,00</p>
@@ -104,7 +126,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/ifood.png" alt="Logo Ifood" class="product-logo">
+          <img src="/img/ifood.png" alt="Logo Ifood" class="product-logo">
           <div class="product-details">
             <h3>Ifood</h3>
             <p>R$ 20,00</p>
@@ -112,7 +134,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/apple-gift-card.png" alt="Logo apple" class="product-logo">
+          <img src="/img/apple-gift-card.png" alt="Logo apple" class="product-logo">
           <div class="product-details">
             <h3>Apple</h3>
             <p>R$ 50,00</p>
@@ -120,7 +142,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/uber.png" alt="Logo Uber" class="product-logo">
+          <img src="/img/uber.png" alt="Logo Uber" class="product-logo">
           <div class="product-details">
             <h3>Uber</h3>
             <p>R$ 100,00</p>
@@ -128,7 +150,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/netflix.jpg" alt="Logo Netflix" class="product-logo">
+          <img src="/img/netflix.jpg" alt="Logo Netflix" class="product-logo">
           <div class="product-details">
             <h3>Netflix</h3>
             <p>R$ 50,00</p>
@@ -136,7 +158,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/playstation-gift-card.png" alt="Logo Playstation" class="product-logo">
+          <img src="/img/playstation-gift-card.png" alt="Logo Playstation" class="product-logo">
           <div class="product-details">
             <h3>Playstation</h3>
             <p>R$ 20,00</p>
@@ -144,7 +166,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/paramount.jpg" alt="Logo Paramount" class="product-logo">
+          <img src="/img/paramount.jpg" alt="Logo Paramount" class="product-logo">
           <div class="product-details">
             <h3>Paramount</h3>
             <p>R$ 30,00</p>
@@ -152,7 +174,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/xbox.png" alt="Logo Xbox" class="product-logo">
+          <img src="/img/xbox.png" alt="Logo Xbox" class="product-logo">
           <div class="product-details">
             <h3>Xbox</h3>
             <p>R$ 100,00</p>
@@ -160,7 +182,7 @@
         </div>
 
         <div class="product-card">
-          <img src="../static/img/airbnb.png" alt="Logo Airbnb" class="product-logo">
+          <img src="/img/airbnb.png" alt="Logo Airbnb" class="product-logo">
           <div class="product-details">
             <h3>AirBNB</h3>
             <p>R$ 20,00</p>
@@ -172,6 +194,8 @@
   </div>
 
 </main>
+
+<script src="/js/card-api-test.js"></script>
 
 </body>
 

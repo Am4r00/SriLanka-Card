@@ -27,10 +27,10 @@ if (pwd && confirmPwd){
   confirmPwd.addEventListener('input', checkMatch);
 }
 
-// Submit demo
+// Submit com API real
 const form = document.getElementById('signup');
 if (form){
-  form.addEventListener('submit', (e)=>{
+  form.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const allValid = form.checkValidity() && checkMatch() && document.getElementById('terms').checked;
 
@@ -40,22 +40,51 @@ if (form){
       return;
     }
 
-    const payload = {
-      name: document.getElementById('name').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      password: pwd.value
-    };
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = pwd.value;
+    const tipo = document.getElementById('tipo').value;
 
-    // TODO: Substitua pelo seu endpoint real:
-    // fetch('/api/auth/signup', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(payload)
-    // })
-    // .then(r => r.json())
-    // .then(data => console.log(data))
-    // .catch(err => console.error(err));
+    try {
+      let endpoint, payload;
 
-    alert('Cadastro enviado! (plugue sua API aqui)');
+      if (tipo === 'ADMIN') {
+        // Para admin, usar endpoint específico
+        endpoint = '/admin/create-user';
+        payload = { name, email };
+      } else {
+        // Para usuário comum
+        endpoint = '/users/create-user';
+        payload = { name, email, password };
+      }
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Usuário criado com sucesso:', data);
+        
+        if (tipo === 'ADMIN') {
+          alert(`Admin criado com sucesso!\nEmail: ${email}\nSenha padrão: SenhaFixa123`);
+        } else {
+          alert(`Usuário criado com sucesso!\nEmail: ${email}`);
+        }
+        
+        // Redirecionar para login
+        window.location.href = '/login';
+      } else {
+        const errorData = await response.json();
+        alert(`Erro ao criar usuário: ${errorData.message || 'Erro desconhecido'}`);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      alert('Erro ao conectar com o servidor. Verifique sua conexão.');
+    }
   });
 }

@@ -22,18 +22,13 @@
             <ul>
                 <li><a href="giftcard.html">GiftCards</a></li>
                 <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="produto.html">Produto</a></li>
                 <li><a href="employe.html">Funcionarios</a></li>
             </ul>
         </nav>
 
         <div class="nav-actions">
-            <div id="user-info" style="display: none; margin-right: 15px; color: white; font-size: 14px;">
-                <span id="user-email"></span>
-                <button onclick="logout()" style="margin-left: 10px; padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                    Logout
-                </button>
-            </div>
-            <a href="login.html" class="login-link" id="login-link">Login</a>
+            <a href="login.html" class="login-link">Login</a>
             <a href="singup.html"><button class="cta-button">Cadastrar</button></a>
             <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
                 <img src="/img/carrinho.png" alt="shopping-cart-icon">
@@ -44,13 +39,34 @@
 
 <main class="hero">
     <div class="hero-content">
-        <h1>O PRESENTE PERFEITO</h1>
-        <p>Selecione um cartão, personalize e surpreenda quem você ama.</p>
-        <div class="hero-buttons">
-            <a href="#" class="btn primary">Explorar Cartões</a>
-            <a href="#" class="btn secondary">Criar Cartão</a>
-            <a href="#" class="btn primary">Comprar Agora</a>
+        <h1>PAINEL ADMINISTRATIVO</h1>
+        <p>Gerencie usuários, cards e configurações do sistema.</p>
+        
+        <!-- Botões de teste da API Administrativa -->
+        <div class="api-test-buttons" style="margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.9); border-radius: 12px; border-left: 4px solid #dc3545;">
+            <h4 style="margin: 0 0 20px 0; color: #dc3545;">👑 Teste de APIs - Administração</h4>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                <button onclick="obterPerfilUsuario()" class="btn btn-info" style="padding: 10px 20px; border: none; border-radius: 6px; background: #17a2b8; color: white; cursor: pointer;">
+                    👤 Meu Perfil
+                </button>
+                <button onclick="listarUsuarios()" class="btn btn-primary" style="padding: 10px 20px; border: none; border-radius: 6px; background: #007bff; color: white; cursor: pointer;">
+                    📋 Listar Usuários
+                </button>
+                <button onclick="criarAdmin()" class="btn btn-success" style="padding: 10px 20px; border: none; border-radius: 6px; background: #28a745; color: white; cursor: pointer;">
+                    ➕ Criar Admin
+                </button>
+                <button onclick="atualizarStatusUsuario()" class="btn btn-warning" style="padding: 10px 20px; border: none; border-radius: 6px; background: #ffc107; color: black; cursor: pointer;">
+                    ✏️ Atualizar Status
+                </button>
+            </div>
+            <p style="margin: 0; font-size: 12px; color: #6c757d;">
+                💡 Faça login como admin primeiro para testar as APIs administrativas.
+            </p>
         </div>
+
+        <!-- Containers para exibir dados -->
+        <div id="profile-container"></div>
+        <div id="users-container"></div>
     </div>
 </main>
 
@@ -91,32 +107,7 @@
     </div>
 </footer>
 
-<script>
-// Gerenciar estado de login
-document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('token');
-    const userEmail = localStorage.getItem('userEmail');
-    const userInfo = document.getElementById('user-info');
-    const loginLink = document.getElementById('login-link');
-    
-    if (token && userEmail) {
-        // Usuário logado
-        userInfo.style.display = 'block';
-        loginLink.style.display = 'none';
-        document.getElementById('user-email').textContent = `Olá, ${userEmail}`;
-    } else {
-        // Usuário não logado
-        userInfo.style.display = 'none';
-        loginLink.style.display = 'block';
-    }
-});
-
-function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-    window.location.reload();
-}
-</script>
+<script src="/js/admin-api-test.js"></script>
 
 </body>
 
