@@ -26,14 +26,13 @@ public class UserController {
 
     @GetMapping("/list")
     public List<UserResponse> findAllUsers(Authentication authentication) {
-        // aqui você poderia checar se é admin (opcional, pois já pode estar no SecurityConfig)
         return userServiceImple.findAll();
     }
 
 
     @GetMapping("/me")
     public UserResponse getCurrentUser(Authentication authentication) {
-        String email = authentication.getName(); // pega o email do token JWT
-        return userServiceImple.findByEmail(email); // retorna apenas seu próprio usuário
+        String email = authentication.getName();
+        return userServiceImple.findByEmail(email);
     }
 }

@@ -21,8 +21,8 @@ public class UserAdminContoller {
     private final AdminUserImple adminUserImple;
     private final UserRepository userRepository;
 
-    // senha padrão fixa
-    private static final String DEFAULT_ADMIN_PASSWORD = "SenhaFixa123";
+
+    private static final String DEFAULT_ADMIN_PASSWORD = "admin12345678";
 
     public UserAdminContoller(AdminUserImple adminUserImple, UserRepository userRepository) {
         this.adminUserImple = adminUserImple;
@@ -31,7 +31,6 @@ public class UserAdminContoller {
 
     @PostMapping("/create-user")
     public ResponseEntity<UserDetailResponse> createAdminPublic(@RequestBody AdminCreateRequest req) {
-        // força campos importantes
         req.setPassword(DEFAULT_ADMIN_PASSWORD);
         req.setStatus(UserStatus.ATIVO);
         req.setFuncoes(Set.of(Funcao.ADMIN));
@@ -40,7 +39,6 @@ public class UserAdminContoller {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // Endpoints administrativos restantes devem ser protegidos
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update-user/{id}/{status}")
     public UserDetailResponse updateUser(@PathVariable Long id, @PathVariable("status") UserStatus status){
