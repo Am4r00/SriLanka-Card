@@ -6,6 +6,7 @@ import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.entity.userEntity.enums.Funcao;
 import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.exception.dominio.ListIsEmptyException;
+import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
 import com.SriLankaCard.mapper.UserMapper;
 import com.SriLankaCard.repository.userRepository.UserRepository;
@@ -28,7 +29,12 @@ public class UserServiceImple implements UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    @Transactional
+    public UserResponse findByEmail(String email) {
+        var user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+        return UserMapper.toUserResponse(user);
+    }
     @Override
     @Transactional
     public UserResponse createUser(RegisterUserRequest user) {

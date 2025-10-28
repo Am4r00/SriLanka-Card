@@ -32,26 +32,56 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        if (path.startsWith("/auth") || path.equals("/users/create-user")) {
+        // LIBERA endpoints públicos
+        if (path.equals("/users/create-user") || 
+            path.startsWith("/auth") || 
+            path.startsWith("/admin") ||
+            path.startsWith("/static") ||
+            path.startsWith("/css") ||
+            path.startsWith("/js") ||
+            path.startsWith("/img") ||
+            path.equals("/") ||
+            path.equals("/home") ||
+            path.equals("/login") ||
+            path.equals("/singup") ||
+            path.equals("/giftcard") ||
+            path.equals("/jogos") ||
+            path.equals("/employe") ||
+            path.equals("/cart") ||
+            path.equals("/contato") ||
+            path.equals("/faq") ||
+            path.equals("/forgot") ||
+            path.equals("/payment") ||
+            path.equals("/produto") ||
+            path.equals("/produtoDetalhe") ||
+            path.equals("/sobre") ||
+            path.equals("/verify") ||
+            path.equals("/addEmploye") ||
+            path.equals("/home_admin") ||
+            path.equals("/test") ||
+            path.equals("/static-test")) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        // captura token
         String authHeader = request.getHeader("Authorization");
-        String token = null;
-        String username = null;
-
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-            username = jwtService.extractUsername(token);
-        }
+            String token = authHeader.substring(7);
+            try {
+                String username = jwtService.extractUsername(token);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwtService.isTokenValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (jwtService.isTokenValid(token, userDetails)) {
+                        UsernamePasswordAuthenticationToken authToken =
+                                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
+                }
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
 
