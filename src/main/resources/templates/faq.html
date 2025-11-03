@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Suporte - SriLankaCard</title>
 
-    <link rel="stylesheet" href="../static/css/faq.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/faq.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,27 +15,7 @@
 
 <body>
 
-<!-- Navbar -->
-<header class="navbar">
-    <div class="navbar-container">
-        <a href="home.html" class="logo">SriLanka<span>Card</span></a>
-        <nav class="nav-links">
-            <ul>
-                <li><a href="giftcard.html">GiftCards</a></li>
-                <li><a href="jogos.html">Jogos</a></li>
-                <li><a href="product.html">Produto</a></li>
-                <li><a href="funcionarios.html">Funcionarios</a></li>
-            </ul>
-        </nav>
-        <div class="nav-actions">
-            <a href="login.html" class="login-link">Login</a>
-            <a href="signup.html"><button class="cta-button">Cadastrar</button></a>
-            <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
-                <img src="../static/img/carrinho.png" alt="Carrinho">
-            </a>
-        </div>
-    </div>
-</header>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
 <!-- Conteúdo principal -->
 <main class="faq-section">
@@ -81,43 +63,7 @@
     </div>
 </main>
 
-<!-- Rodapé -->
-<footer class="about-footer">
-    <div class="footer-container">
-        <div class="footer-info">
-            <a href="home.html" class="logo">SriLanka<span>Card</span></a>
-            <p>O presente perfeito, a um clique de distância.</p>
-        </div>
-        <div class="footer-links">
-            <h3>Empresa</h3>
-            <ul>
-                <li><a href="sobre.html">Sobre nós</a></li>
-                <li><a href="#">Carreiras</a></li>
-                <li><a href="#">Parceiros</a></li>
-            </ul>
-        </div>
-        <div class="footer-links">
-            <h3>Suporte</h3>
-            <ul>
-                <li><a href="suporte.html">FAQ</a></li>
-                <li><a href="#">Contato</a></li>
-                <li><a href="#">Termos de Serviço</a></li>
-                <li><a href="#">Política de Privacidade</a></li>
-            </ul>
-        </div>
-        <div class="footer-social">
-            <h3>Siga-nos</h3>
-            <div class="social-icons">
-                <a href="#">Facebook</a>
-                <a href="#">Instagram</a>
-                <a href="#">Twitter</a>
-            </div>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2025 SriLankaCard. Todos os direitos reservados.</p>
-    </div>
-</footer>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
 <script>
     // Script para abrir e fechar perguntas da FAQ
