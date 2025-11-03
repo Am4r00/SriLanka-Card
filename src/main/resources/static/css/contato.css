@@ -1,6 +1,4 @@
-/* ===========================
-   BASE GERAL
-=========================== */
+
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -8,16 +6,6 @@ body {
     background-color: #070b2b;
 }
 
-/*
-   Atenção: As classes .navbar, .logo, .nav-links, .nav-actions, .cta-button, .cart-link
-   e todas as classes relativas ao .footer FORAM REMOVIDAS
-   para evitar conflito com os fragmentos do Thymeleaf.
-*/
-
-
-/* ===========================
-   FORMULÁRIO DE CONTATO
-=========================== */
 .contact {
     display: flex;
     justify-content: center;
