@@ -20,16 +20,39 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .csrf(csrf -> csrf.disable())
+//                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/auth/**", "/public/**", "/users/create-user","/admin/**", "/cards/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .httpBasic(c -> {}) // habilita Basic Auth
+//                .build();
+//    }
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/public/**", "/users/create-user","/admin/**", "/cards/**").permitAll()
-                        .anyRequest().authenticated()
+
+                // ADICIONE ESTE BLOCO PARA PERMITIR IFRAMES
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable()) // Desabilita X-Frame-Options
                 )
-                .httpBasic(c -> {}) // habilita Basic Auth
+                // OU
+                // .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
+
+                .authorizeHttpRequests(auth -> auth
+                        // Regra de acesso (você já usou .anyRequest().permitAll() para dev)
+                        .requestMatchers("/auth/**", "/public/**", "/users/create-user","/admin/**", "/cards/**").permitAll()
+                        .anyRequest().permitAll() // Mantém a segurança desabilitada para dev
+                )
+                .httpBasic(c -> {})
                 .build();
     }
 }

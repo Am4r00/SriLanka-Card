@@ -1,0 +1,93 @@
+.navbar {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    padding: 1.2rem 3rem;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+}
+.logo span {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+.nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #A379D5;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.login-link,
+.logout-link {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.login-link:hover,
+.logout-link:hover {
+    color: #A379D5;
+}
+
+.cta-button {
+    background: #6C42A1;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 0 15px rgba(108, 66, 161, 0.5);
+}
+
+.cta-button:hover {
+    background-color: #A379D5;
+}
+
+.cart-link img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+
+.cart-link:hover img {
+    filter: brightness(1) saturate(10) hue-rotate(240deg);
+}
+
+.user-name {
+    font-weight: 500;
+    color: #ddd;
+}
