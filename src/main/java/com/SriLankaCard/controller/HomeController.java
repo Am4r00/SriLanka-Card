@@ -41,8 +41,8 @@ public class HomeController {
     }
 
     @GetMapping("/jogos")
-    public String showJogosdPage() {
-        return "giftcard";
+    public String showJogosPage() {
+        return "jogos";
     }
 
     @GetMapping("/produto")

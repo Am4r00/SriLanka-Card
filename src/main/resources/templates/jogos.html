@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jogos - SriLankaCard</title>
-  <link rel="stylesheet" href="../static/css/jogos.css">
+
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+  <link rel="stylesheet" th:href="@{/css/jogos.css}">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,36 +17,14 @@
 
 <body>
 
-<header class="navbar">
-  <div class="navbar-container">
-    <a href="home.html" class="logo">SriLanka<span>Card</span></a>
-
-    <nav class="nav-links">
-      <ul>
-        <li><a href="giftcard.html">GiftCards</a></li>
-        <li><a href="jogos.html">Jogos</a></li>
-        <li><a href="product.html">Produto</a></li>
-        <li><a href="#">Sobre</a></li>
-      </ul>
-    </nav>
-
-    <div class="nav-actions">
-      <a href="login.html" class="login-link">Login</a>
-      <a href="signup.html"><button class="cta-button">Cadastrar</button></a>
-    </div>
-
-    <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAClElEQVR4nO2Zz4tNYRjHn0GRxJb5kfwYxo+SJhv/AJJY2akxjWEkaUrZWSmb2UhZWDAZZjRJQlYWw1JWNpRSMxjKDSmLkfno7X5vTrr33DvXc849b82nzubc+3y/z7fO+573fY/ZIgUDOAi8J52vwDOgD2izIgJ8YGGMFTIMMJNocrrK721AO3AC+KH/HbOiARxQmGlgf53/DirIS4sZYDnwRWG2WcxQHiOBIYsZymMlMGExA2xRkM+FnL2anLJ7LGaAOwpyymIGOKkg4xYzQI+CzC6Ok6IATNB6nnsEGWp1CuCtR5DtEpv9b7GFe9+U90UPsbAq/iTBrS4dNgCwSqvweWCjl+ikggy6CDYA0C/Pp+YFcEait91E6xAGuPueCNgp0Y9uoikA3XqkvgMrzQuNk7B4DHS7CdcAuCSv6+YNcE/iA+7iCYAl2sUG9po3wFmJ33IXTwDsk8+bTJZFwC4ZzLiLV19JXLAs0Dip7OM3ZeSxBvgJ/Aa6svCoGN1XkP6M9E9L/0kW+kmjczIazUj/hfSPZqGfNNpd64DPQXuHtEvACm/9alNjMApscNYeke5VT900wwcy7HPUXKZdaKDXS7ee6bAMbzhqHpbmKy/NRkx7Zfoug9lw2EuzEdOl+o7izS9gbW5BFOahc4h54EquIRTkvBq4ZjED7FGQ1xYzlKfLsOkJtFvM8Pd9ctxiBhhQkCmLGWB1YrlyGVgfpmaLEeAIMOc4DU+1MswhxyBzwLpWBRlVE+El2aHrUdp3FWA8pWYs/xTlpiqr1o7EvS7dK9WoKaXUfMur93+bqrxPOhttiiZqMidx3hUejU5dj3Vv0qsmr8/YldOVJOHx2exVY3mgwXpXj0y4wul9akPN1ITCP3VAko9hrlVKAAAAAElFTkSuQmCC" alt="shopping-cart-icon">
-    </a>
-  </div>
-</header>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
 <main class="jogos-main">
 
   <section class="promo-banner">
     <div class="banner-content">
       <h2>OFERTAS EXCLUSIVAS EM JOGOS</h2>
-      <a href="#" class="buy-now-button">Ver Ofertas ></a>
+      <a th:href="@{/ofertas}" class="buy-now-button">Ver Ofertas ></a>
     </div>
   </section>
 
@@ -51,14 +33,14 @@
     <aside class="sidebar">
       <h3>Categorias</h3>
       <ul class="category-list">
-        <li><a href="#">PC</a></li>
-        <li><a href="#">PlayStation</a></li>
-        <li><a href="#">Xbox</a></li>
-        <li><a href="#">Ação</a></li>
-        <li><a href="#">Aventura</a></li>
-        <li><a href="#">RPG</a></li>
-        <li><a href="#">Estratégia</a></li>
-        <li><a href="#">Esportes</a></li>
+        <li><a th:href="@{/jogos/pc}">PC</a></li>
+        <li><a th:href="@{/jogos/playstation}">PlayStation</a></li>
+        <li><a th:href="@{/jogos/xbox}">Xbox</a></li>
+        <li><a th:href="@{/jogos/acao}">Ação</a></li>
+        <li><a th:href="@{/jogos/aventura}">Aventura</a></li>
+        <li><a th:href="@{/jogos/rpg}">RPG</a></li>
+        <li><a th:href="@{/jogos/estrategia}">Estratégia</a></li>
+        <li><a th:href="@{/jogos/esportes}">Esportes</a></li>
       </ul>
     </aside>
 
@@ -81,72 +63,72 @@
 
       <div class="product-grid">
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/GTA%20V1.jpg" alt="Logo GTA VI" class="product-logo">
+        <a th:href="@{/produto/gta-vi}" class="product-card">
+          <img th:src="@{/img/GTA_V1.jpg}" alt="Logo GTA VI" class="product-logo">
           <div class="product-details">
             <h3>GTA VI</h3>
             <p>R$ 450,00</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/cyberpunk.png" alt="Logo Cyberpunk 2077" class="product-logo">
+        <a th:href="@{/produto/cyberpunk}" class="product-card">
+          <img th:src="@{/img/cyberpunk.png}" alt="Logo Cyberpunk 2077" class="product-logo">
           <div class="product-details">
             <h3>Cyberpunk 2077</h3>
             <p>R$ 299,90</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/the%20witcher%203.png" alt="Logo The Witcher 3" class="product-logo">
+        <a th:href="@{/produto/thewitcher3}" class="product-card">
+          <img th:src="@{/img/the_witcher_3.png}" alt="Logo The Witcher 3" class="product-logo">
           <div class="product-details">
             <h3>The Witcher 3</h3>
             <p>R$ 99,90</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/fc26.jpg" alt="Logo EAFC 26" class="product-logo">
+        <a th:href="@{/produto/eafc26}" class="product-card">
+          <img th:src="@{/img/fc26.jpg}" alt="Logo EAFC 26" class="product-logo">
           <div class="product-details">
             <h3>EA FC 26</h3>
             <p>R$ 350,00</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/red%20dead%202.png" alt="Logo Red Dead Redemption 2" class="product-logo">
+        <a th:href="@{/produto/rdr2}" class="product-card">
+          <img th:src="@{/img/red_dead_2.png}" alt="Logo Red Dead Redemption 2" class="product-logo">
           <div class="product-details">
             <h3>Red Dead Redemption 2</h3>
             <p>R$ 250,00</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/forza-horizon-5_64md.1200.webp" alt="Logo Forza" class="product-logo">
+        <a th:href="@{/produto/forzah5}" class="product-card">
+          <img th:src="@{/img/forza-horizon-5.webp}" alt="Logo Forza" class="product-logo">
           <div class="product-details">
             <h3>Forza Horizon 5</h3>
             <p>R$ 115,00</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/god%20of%20war.jpg" alt="Logo God of War" class="product-logo">
+        <a th:href="@{/produto/gow}" class="product-card">
+          <img th:src="@{/img/god_of_war.jpg}" alt="Logo God of War" class="product-logo">
           <div class="product-details">
             <h3>God of War</h3>
             <p>R$ 200,00</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/the%20last%20of%20us.jpg" alt="Logo The Last of Us" class="product-logo">
+        <a th:href="@{/produto/tlof}" class="product-card">
+          <img th:src="@{/img/the_last_of_us.jpg}" alt="Logo The Last of Us" class="product-logo">
           <div class="product-details">
             <h3>The Last of Us</h3>
             <p>R$ 300,00</p>
           </div>
         </a>
 
-        <a href="produtoDetalhe.html" class="product-card">
-          <img src="../static/img/Ghost_of_Tsushima_capa.png" alt="Logo Ghost of Tsushima" class="product-logo">
+        <a th:href="@{/produto/tsushima}" class="product-card">
+          <img th:src="@{/img/Ghost_of_Tsushima_capa.png}" alt="Logo Ghost of Tsushima" class="product-logo">
           <div class="product-details">
             <h3>Ghost of Tsushima</h3>
             <p>R$ 250,00</p>
