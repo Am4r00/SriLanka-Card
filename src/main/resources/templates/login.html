@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body class="modal-open">
 
-<iframe id="home-bg-iframe" src="about:blank" class="home-bg" aria-hidden="true"></iframe>
+<iframe id="home-bg-iframe" th:src="@{/}" class="home-bg" aria-hidden="true"></iframe>
 
-<a href="#" class="close-btn" aria-label="Fechar" onclick="history.back()">
+<a th:href="@{/}" class="close-btn" aria-label="Fechar" onclick="history.back()">
   <span>&times;</span>
 </a>
 
@@ -20,7 +20,7 @@
   <main class="shell">
     <section class="form-wrap">
       <div class="brand">
-        <a href="#" class="logo">SriLanka<span>Card</span></a>
+        <a th:href="@{/}" class="logo">SriLanka<span>Card</span></a>
 
         <div>
           <h1 class="title">Entrar</h1>
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <form id="login-form" action="#" method="post" novalidate>
+      <form id="login-form" th:action="@{/auth/login}" method="post" novalidate>
         <div class="field">
           <label class="label" for="email">Email</label>
           <input class="input" type="email" id="email" name="email" placeholder="voce@email.com" autocomplete="username" required>
@@ -47,35 +47,30 @@
         </div>
 
         <div class="actions">
-          <a class="link" href="forgot.html" title="Recuperar senha">Esqueci a senha</a>
+          <a class="link" th:href="@{/forgot}" title="Recuperar senha">Esqueci a senha</a>
         </div>
 
         <button class="btn" type="submit">Fazer Login</button>
 
         <div class="sep">ou</div>
 
-        <p class="foot">Novo por aqui? <a class="link" href="singup.html">Criar conta</a></p>
+        <p class="foot">Novo por aqui?
+          <a class="link" th:href="@{/singup}">Criar conta</a>
+        </p>
       </form>
     </section>
 
     <aside class="media" aria-hidden="true">
-      <img src="/img/Login.png" alt="">
+      <img th:src="@{/img/login.png}" alt="">
     </aside>
 
   </main>
 </div>
 
-<script src="/js/login.js"></script>
+<script th:src="@{/js/login.js}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const iframe = document.getElementById('home-bg-iframe');
-    if (iframe) {
-      const previousPageUrl = document.referrer;
-      if (previousPageUrl) {
-        iframe.src = previousPageUrl;
-      }
-    }
-  });
+  // O JavaScript complexo foi removido. O fundo agora é carregado
+  // diretamente pelo th:src="@{/}" no iframe.
 </script>
 </body>
 </html>

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contato - SriLankaCard</title>
 
-    <link rel="stylesheet" href="/css/contato.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/contato.css}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,41 +16,14 @@
 
 <body>
 
-<!-- ===========================
-     NAVBAR PADRONIZADA
-=========================== -->
-<header class="navbar">
-    <div class="navbar-container">
-        <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
-        <nav class="nav-links">
-            <ul>
-                <li><a href="giftcard.html">GiftCards</a></li>
-                <li><a href="jogos.html">Jogos</a></li>
-                <li><a href="produto.html">Produtos</a></li>
-                <li><a href="#">Funcionários</a></li>
-            </ul>
-        </nav>
-
-        <div class="nav-actions">
-            <a href="login.html" class="login-link">Login</a>
-            <a href="signup.html"><button class="cta-button">Cadastrar</button></a>
-            <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
-                <img src="/img/carrinho.png" alt="Carrinho de Compras">
-            </a>
-        </div>
-    </div>
-</header>
-
-<!-- ===========================
-     SEÇÃO DE CONTATO
-=========================== -->
 <main class="contact">
     <div class="contact-container">
         <h1>Fale Conosco</h1>
         <p>Tem alguma dúvida, sugestão ou precisa de ajuda? Envie sua mensagem abaixo e nossa equipe entrará em contato o mais breve possível.</p>
 
-        <form class="contact-form" action="#" method="post">
+        <form class="contact-form" th:action="@{/contato}" method="post">
             <div class="form-group">
                 <label for="nome">Nome completo</label>
                 <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
@@ -73,49 +49,7 @@
     </div>
 </main>
 
-<!-- ===========================
-     RODAPÉ PADRONIZADO
-=========================== -->
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-section">
-            <h2 class="logo">Sri<span>Lanka</span>Card</h2>
-            <p>O presente perfeito, a um clique de distância.</p>
-        </div>
-
-        <div class="footer-section">
-            <h3>Empresa</h3>
-            <ul>
-                <li><a href="sobre.html">Sobre nós</a></li>
-                <li><a href="#">Carreiras</a></li>
-                <li><a href="#">Parceiros</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h3>Suporte</h3>
-            <ul>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="contato.html">Contato</a></li>
-                <li><a href="#">Termos de Serviço</a></li>
-                <li><a href="#">Política de Privacidade</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h3>Siga-nos</h3>
-            <ul>
-                <li><a href="#">Facebook</a></li>
-                <li><a href="#">Instagram</a></li>
-                <li><a href="#">Twitter</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>© 2025 SriLankaCard. Todos os direitos reservados.</p>
-    </div>
-</footer>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
 </body>
 </html>

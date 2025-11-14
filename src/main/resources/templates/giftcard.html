@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GiftCards - SriLankaCard</title>
-  <link rel="stylesheet" href="/css/giftcard.css">
+
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/giftcard.css}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,36 +15,14 @@
 
 <body>
 
-<header class="navbar">
-  <div class="navbar-container">
-    <a href="home.html" class="logo">SriLanka<span>Card</span></a>
-
-    <nav class="nav-links">
-      <ul>
-        <li><a href="giftcard.html">GiftCards</a></li>
-        <li><a href="jogos.html">Jogos</a></li>
-        <li><a href="produto.html">Produto</a></li>
-        <li><a href="#">Sobre</a></li>
-      </ul>
-    </nav>
-
-    <div class="nav-actions">
-      <a href="login.html" class="login-link">Login</a>
-      <a href="singup.html"><button class="cta-button">Cadastrar</button></a>
-    </div>
-
-    <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
-      <img src="/img/carrinho.png" alt="shopping-cart-icon">
-    </a>
-  </div>
-</header>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
 <main class="giftcards-main">
 
   <section class="promo-banner">
     <div class="banner-content">
       <h2>20% OFF EM TODOS OS GIFT CARDS</h2>
-      <a href="#" class="buy-now-button">Comprar Agora ></a>
+      <a th:href="@{/comprar}" class="buy-now-button">Comprar Agora ></a>
     </div>
   </section>
 
@@ -51,12 +31,12 @@
     <aside class="sidebar">
       <h3>Categorias</h3>
       <ul class="category-list">
-        <li><a href="#">Geral</a></li>
-        <li><a href="#">Música</a></li>
-        <li><a href="#">Entretenimento</a></li>
-        <li><a href="#">Eletrônicos</a></li>
-        <li><a href="#">Alimentação</a></li>
-        <li><a href="#">Outros produtos</a></li>
+        <li><a th:href="@{/giftcards/geral}">Geral</a></li>
+        <li><a th:href="@{/giftcards/musica}">Música</a></li>
+        <li><a th:href="@{/giftcards/entretenimento}">Entretenimento</a></li>
+        <li><a th:href="@{/giftcards/eletronicos}">Eletrônicos</a></li>
+        <li><a th:href="@{/giftcards/alimentacao}">Alimentação</a></li>
+        <li><a th:href="@{/giftcards/outros}">Outros produtos</a></li>
       </ul>
     </aside>
 
@@ -77,32 +57,10 @@
         </div>
       </div>
 
-      <!-- Botões de teste da API -->
-      <div class="api-test-buttons" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
-        <h4 style="margin: 0 0 15px 0; color: #007bff;">🧪 Teste de APIs - Cards</h4>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <button onclick="listarCards()" class="btn btn-primary" style="padding: 8px 16px; border: none; border-radius: 4px; background: #007bff; color: white; cursor: pointer;">
-            📋 Listar Cards
-          </button>
-          <button onclick="criarCard()" class="btn btn-success" style="padding: 8px 16px; border: none; border-radius: 4px; background: #28a745; color: white; cursor: pointer;">
-            ➕ Criar Card
-          </button>
-          <button onclick="atualizarCard()" class="btn btn-warning" style="padding: 8px 16px; border: none; border-radius: 4px; background: #ffc107; color: black; cursor: pointer;">
-            ✏️ Atualizar Card
-          </button>
-          <button onclick="cardTester.listarCards()" class="btn btn-info" style="padding: 8px 16px; border: none; border-radius: 4px; background: #17a2b8; color: white; cursor: pointer;">
-            🔄 Recarregar
-          </button>
-        </div>
-        <p style="margin: 10px 0 0 0; font-size: 12px; color: #6c757d;">
-          💡 Faça login primeiro para testar as APIs. Os cards serão carregados automaticamente.
-        </p>
-      </div>
-
       <div class="product-grid">
 
         <div class="product-card">
-          <img src="/img/spotify.png" alt="Logo Spotify" class="product-logo">
+          <img th:src="@{/img/spotify.png}" alt="Logo Spotify" class="product-logo">
           <div class="product-details">
             <h3>Spotify</h3>
             <p>R$ 50,00</p>
@@ -110,7 +68,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/shopee.jpg" alt="Logo Shopee" class="product-logo">
+          <img th:src="@{/img/shopee.jpg}" alt="Logo Shopee" class="product-logo">
           <div class="product-details">
             <h3>Shopee</h3>
             <p>R$ 50,00</p>
@@ -118,7 +76,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/steam-gift-card.png" alt="Logo Steam" class="product-logo">
+          <img th:src="@{/img/steam-gift-card.png}" alt="Logo Steam" class="product-logo">
           <div class="product-details">
             <h3>Steam</h3>
             <p>R$ 100,00</p>
@@ -126,7 +84,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/ifood.png" alt="Logo Ifood" class="product-logo">
+          <img th:src="@{/img/ifood.png}" alt="Logo Ifood" class="product-logo">
           <div class="product-details">
             <h3>Ifood</h3>
             <p>R$ 20,00</p>
@@ -134,7 +92,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/apple-gift-card.png" alt="Logo apple" class="product-logo">
+          <img th:src="@{/img/apple-gift-card.png}" alt="Logo apple" class="product-logo">
           <div class="product-details">
             <h3>Apple</h3>
             <p>R$ 50,00</p>
@@ -142,7 +100,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/uber.png" alt="Logo Uber" class="product-logo">
+          <img th:src="@{/img/uber.png}" alt="Logo Uber" class="product-logo">
           <div class="product-details">
             <h3>Uber</h3>
             <p>R$ 100,00</p>
@@ -150,7 +108,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/netflix.jpg" alt="Logo Netflix" class="product-logo">
+          <img th:src="@{/img/netflix.jpg}" alt="Logo Netflix" class="product-logo">
           <div class="product-details">
             <h3>Netflix</h3>
             <p>R$ 50,00</p>
@@ -158,7 +116,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/playstation-gift-card.png" alt="Logo Playstation" class="product-logo">
+          <img th:src="@{/img/playstation-gift-card.png}" alt="Logo Playstation" class="product-logo">
           <div class="product-details">
             <h3>Playstation</h3>
             <p>R$ 20,00</p>
@@ -166,7 +124,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/paramount.jpg" alt="Logo Paramount" class="product-logo">
+          <img th:src="@{/img/paramount.jpg}" alt="Logo Paramount" class="product-logo">
           <div class="product-details">
             <h3>Paramount</h3>
             <p>R$ 30,00</p>
@@ -174,7 +132,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/xbox.png" alt="Logo Xbox" class="product-logo">
+          <img th:src="@{/img/xbox.png}" alt="Logo Xbox" class="product-logo">
           <div class="product-details">
             <h3>Xbox</h3>
             <p>R$ 100,00</p>
@@ -182,7 +140,7 @@
         </div>
 
         <div class="product-card">
-          <img src="/img/airbnb.png" alt="Logo Airbnb" class="product-logo">
+          <img th:src="@{/img/airbnb.png}" alt="Logo Airbnb" class="product-logo">
           <div class="product-details">
             <h3>AirBNB</h3>
             <p>R$ 20,00</p>
@@ -195,8 +153,5 @@
 
 </main>
 
-<script src="/js/card-api-test.js"></script>
-
 </body>
-
 </html>
