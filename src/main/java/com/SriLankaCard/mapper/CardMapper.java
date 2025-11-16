@@ -3,6 +3,7 @@ package com.SriLankaCard.mapper;
 import com.SriLankaCard.dto.request.cards.CardRequest;
 import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
 import com.SriLankaCard.entity.produtoEntity.Card;
+import com.SriLankaCard.entity.carrinhoEntity.ItemCarrinho;
 
 public class CardMapper {
 
@@ -28,14 +29,12 @@ public class CardMapper {
         return response;
     }
 
-    public static CardResponse toCardResponseByCardRequest(CardRequest request){
-        CardResponse response = new CardResponse();
-        response.setNome(request.getNome());
-        response.setObservacoes(request.getObservacoes());
-        response.setQuantidade(request.getQuantidade());
-        response.setValor(request.getValor());
-        response.setPromocao(request.isPromocao());
+    public static ItemCarrinho toItemCarrinhoByCard(Card card){
+        ItemCarrinho itemCarrinho = new ItemCarrinho();
 
-        return response;
+        itemCarrinho.setId(card.getId());
+        itemCarrinho.setPrecoUnitario(card.getValor());
+
+        return itemCarrinho;
     }
 }
