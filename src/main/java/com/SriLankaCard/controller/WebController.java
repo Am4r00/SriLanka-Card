@@ -21,9 +21,9 @@ public class WebController {
         return "login";
     }
 
-    @GetMapping("/singup")
-    public String singup() {
-        return "singup";
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
     }
 
     @GetMapping("/giftcard")

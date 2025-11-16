@@ -1,6 +1,5 @@
 package com.SriLankaCard.config;
 
-import com.SriLankaCard.config.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.springframework.security.authorization.SingleResultAuthorizationManager.permitAll;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -32,18 +29,37 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // endpoints públicos
-                        .requestMatchers("/auth/**", "/users/create-user").permitAll()
+
+                        // 🌟 ROTAS WEB PÚBLICAS
+                        .requestMatchers(
+                                "/", "/home", "/login", "/signup",
+                                "/contato", "/faq", "/sobre", "/giftcard",
+                                "/jogos", "/produto", "/funcionarios", "/cart",
+                                "/forgot", "/payment", "/verify", "/addEmploye",
+                                "/home_admin", "/test", "/static-test"
+                        ).permitAll()
+
+                        .requestMatchers("/error", "/error/**").permitAll()
+
+                        // 🌟 LIBERANDO AS ROTAS QUE VOCÊ REALMENTE USA
+                        .requestMatchers("/users/create-user").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/**").permitAll()
-                        .requestMatchers("/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**").hasRole("ADMIN")
-                        .requestMatchers("/cards/listar").hasAnyRole("ADMIN", "USUARIO")
-                        // páginas HTML públicas
-                        .requestMatchers("/", "/home", "/login", "/singup", "/giftcard", "/jogos", "/employe", "/cart", "/contato", "/faq", "/forgot", "/payment", "/produto", "/produtoDetalhe", "/sobre", "/verify", "/addEmploye", "/home_admin", "/test", "/static-test").permitAll()
-                        .requestMatchers("/static/**", "/css/**", "/js/**", "/img/**").permitAll()
+
+                        // 🌟 LIBERANDO ARQUIVOS ESTÁTICOS
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
+
+                        // 🌟 ROTAS PROTEGIDAS POR ROLE
+                        .requestMatchers("/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/cards/listar")
+                        .hasAnyRole("ADMIN", "USUARIO")
+
+                        // RESTO PRECISA JWT
                         .anyRequest().authenticated()
                 );
 
-        // adicionar o filtro JWT antes do filtro de autenticação do Spring
+        // JWT Filter
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
