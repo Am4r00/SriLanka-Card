@@ -21,86 +21,7 @@ body {
     line-height: 1.6;
 }
 
-/* --- Navbar --- */
-.navbar {
-    background-color: rgba(0, 0, 0, .4);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 1.2rem 3rem;
-}
-
-.navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-decoration: none;
-    color: #fff;
-}
-
-.logo span {
-    font-weight: 400;
-    font-size: 1.2rem;
-}
-
-.nav-links ul {
-    list-style: none;
-    display: flex;
-    gap: 2.5rem;
-    padding: 0;
-    margin: 0;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: 500;
-    transition: color .3s ease;
-}
-
-.nav-links a:hover {
-    color: var(--secondary-color);
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.login-link {
-    text-decoration: none;
-    color: #fff;
-    font-weight: 500;
-    transition: color .3s ease;
-}
-
-.login-link:hover {
-    color: var(--secondary-color);
-}
-
-.cta-button {
-    background: var(--primary-color);
-    color: var(--white);
-    padding: .75rem 1.5rem;
-    border: none;
-    border-radius: 50px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color .3s ease;
-    box-shadow: 0 0 15px rgba(108, 66, 161, .5);
-}
-
-.cta-button:hover {
-    background-color: var(--secondary-color);
-}
-
+/* --- Navbar (REMOVIDO) --- */
 
 /* --- Conteúdo Principal (Ajustado) --- */
 .jogos-main {
@@ -311,30 +232,11 @@ body {
     }
 }
 
-.cart-link {
-    display: flex; /* Para centralizar a imagem */
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease; /* Adicione uma pequena transição para um efeito visual */
-}
-
-.cart-link img {
-    width: 28px; /* O tamanho da imagem */
-    height: 28px;
-    filter: brightness(0) invert(1); /* Deixa a imagem branca para combinar com o texto */
-    transition: filter 0.3s ease;
-}
-
 a.product-card {
     text-decoration: none;
     color: inherit;
 }
 
-
-.cart-link:hover img {
-    filter: brightness(1) saturate(10) hue-rotate(240deg); /* Aumenta a luminosidade e muda a cor para o hover */
-}
-.cta-button:hover{ background-color:#A379D5; }
 @media (max-width: 600px) {
     .promo-banner {
         flex-direction: column;

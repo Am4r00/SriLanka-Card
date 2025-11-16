@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SriLanka Card</title>
+
+    <link rel="stylesheet" href="/css/homeStyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="navbar-container">
+        <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+
+        <nav class="nav-links">
+            <ul>
+                <li><a href="giftcard.html">GiftCards</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="produto.html">Produto</a></li>
+                <li><a href="employe.html">Funcionarios</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="login.html" class="login-link">Login</a>
+            <a href="signup.html"><button class="cta-button">Cadastrar</button></a>
+            <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
+                <img src="/img/carrinho.png" alt="shopping-cart-icon">
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="hero">
+    <div class="hero-content">
+        <h1>PAINEL ADMINISTRATIVO</h1>
+        <p>Gerencie usuários, cards e configurações do sistema.</p>
+        
+        <!-- Botões de teste da API Administrativa -->
+        <div class="api-test-buttons" style="margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.9); border-radius: 12px; border-left: 4px solid #dc3545;">
+            <h4 style="margin: 0 0 20px 0; color: #dc3545;">👑 Teste de APIs - Administração</h4>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                <button onclick="obterPerfilUsuario()" class="btn btn-info" style="padding: 10px 20px; border: none; border-radius: 6px; background: #17a2b8; color: white; cursor: pointer;">
+                    👤 Meu Perfil
+                </button>
+                <button onclick="listarUsuarios()" class="btn btn-primary" style="padding: 10px 20px; border: none; border-radius: 6px; background: #007bff; color: white; cursor: pointer;">
+                    📋 Listar Usuários
+                </button>
+                <button onclick="criarAdmin()" class="btn btn-success" style="padding: 10px 20px; border: none; border-radius: 6px; background: #28a745; color: white; cursor: pointer;">
+                    ➕ Criar Admin
+                </button>
+                <button onclick="atualizarStatusUsuario()" class="btn btn-warning" style="padding: 10px 20px; border: none; border-radius: 6px; background: #ffc107; color: black; cursor: pointer;">
+                    ✏️ Atualizar Status
+                </button>
+            </div>
+            <p style="margin: 0; font-size: 12px; color: #6c757d;">
+                💡 Faça login como admin primeiro para testar as APIs administrativas.
+            </p>
+        </div>
+
+        <!-- Containers para exibir dados -->
+        <div id="profile-container"></div>
+        <div id="users-container"></div>
+    </div>
+</main>
+
+<footer id="sobre" class="about-footer">
+    <div class="footer-container">
+        <div class="footer-info">
+            <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+            <p>O presente perfeito, a um clique de distância.</p>
+        </div>
+        <div class="footer-links">
+            <h3>Empresa</h3>
+            <ul>
+                <li><a href="sobre.html">Sobre nós</a></li>
+                <li><a href="#">Carreiras</a></li>
+                <li><a href="#">Parceiros</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h3>Suporte</h3>
+            <ul>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contato.html">Contato</a></li>
+                <li><a href="#">Termos de Serviço</a></li>
+                <li><a href="#">Política de Privacidade</a></li>
+            </ul>
+        </div>
+        <div class="footer-social">
+            <h3>Siga-nos</h3>
+            <div class="social-icons">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 SriLankaCard. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<script src="/js/admin-api-test.js"></script>
+
+</body>
+
+</html>

@@ -14,22 +14,56 @@ if (toggle && pwd && eye) {
   });
 }
 
-// Submit “fake” para demo
+// Submit com API real
 const form = document.getElementById('login-form');
 if (form) {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
     const pass  = document.getElementById('password').value.trim();
+    
     if (!email || !pass) {
       alert('Preencha email e senha.');
       return;
     }
-    // Aqui você chama sua API real, ex.:
-    // fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, password: pass }) })
-    //   .then(r => r.json()).then(console.log).catch(console.error);
 
-    alert('Login enviado! (plugue sua API aqui)');
+    try {
+      const response = await fetch('/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          email: email, 
+          password: pass 
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Salvar token no localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userEmail', email);
+        
+        // Mostrar informações do login
+        console.log('Login realizado com sucesso:', data);
+        alert(`Login realizado com sucesso!\nToken: ${data.token.substring(0, 50)}...`);
+        
+        // Redirecionar para home ou página admin se for admin
+        if (data.user && data.user.funcoes && data.user.funcoes.includes('ADMIN')) {
+          window.location.href = '/home_admin';
+        } else {
+          window.location.href = '/home';
+        }
+      } else {
+        const errorData = await response.json();
+        alert(`Erro no login: ${errorData.message || 'Credenciais inválidas'}`);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      alert('Erro ao conectar com o servidor. Verifique sua conexão.');
+    }
   });
 }
 

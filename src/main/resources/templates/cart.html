@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Carrinho - SriLankaCard</title>
-    <link rel="stylesheet" href="../static/css/cart.css" />
+
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,9 +13,9 @@
 
 <body class="modal-open">
 
-<iframe id="home-bg-iframe" src="about:blank" class="home-bg" aria-hidden="true"></iframe>
+<<iframe id="home-bg-iframe" th:src="@{/}" class="home-bg" aria-hidden="true"></iframe>
 
-<a href="#" class="close-btn" aria-label="Fechar" onclick="history.back()">
+<a th:href="@{/}" class="close-btn" aria-label="Fechar" onclick="history.back()">
     <span>&times;</span>
 </a>
 
@@ -25,7 +26,7 @@
 
     <div class="cart-items">
         <div class="cart-item">
-            <img src="../static/img/apple-gift-card.png" alt="Gift Card Spotify" class="item-image" />
+            <img th:src="@{/img/apple-gift-card.png}" alt="Gift Card Apple" class="item-image" />
             <div class="item-details">
                 <span class="item-title">Apple Gift Card</span>
                 <div class="item-meta">
@@ -58,7 +59,7 @@
         </div>
 
         <div class="cart-item">
-            <img src="../static/img/playstation-gift-card.png" alt="Gift Card Google Play" class="item-image" />
+            <img th:src="@{/img/playstation-gift-card.png}" alt="Gift Card PlayStation" class="item-image" />
             <div class="item-details">
                 <span class="item-title">PlayStation Gift Card</span>
                 <div class="item-meta">
@@ -91,7 +92,7 @@
         </div>
 
         <div class="cart-item">
-            <img src="../static/img/steam-gift-card.png" alt="Gift Card Netflix" class="item-image" />
+            <img th:src="@{img/steam-gift-card.png}" alt="Gift Card Steam" class="item-image" />
             <div class="item-details">
                 <span class="item-title">Steam Gift Card</span>
                 <div class="item-meta">
@@ -123,7 +124,7 @@
     </div>
 
     <footer class="cart-footer">
-        <a href="payment.html"><button class="cta-button">Comprar</button></a>
+        <a th:href="@{/payment}"><button class="cta-button">Comprar</button></a>
     </footer>
 </aside>
 

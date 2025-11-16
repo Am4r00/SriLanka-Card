@@ -1,0 +1,38 @@
+<header th:fragment="header" class="navbar">
+    <div class="navbar-container">
+        <a th:href="@{/}" class="logo">SriLanka<span>Card</span></a>
+
+        <nav class="nav-links">
+            <ul>
+                <li><a th:href="@{/giftcard}">GiftCards</a></li>
+                <li><a th:href="@{/jogos}">Jogos</a></li>
+
+                <!-- Apenas administradores -->
+                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/produto}">Produto</a>
+                </li>
+                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/funcionarios}">Funcionários</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="nav-actions">
+            <!-- Caso não esteja logado -->
+            <div th:if="${not #authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/login}" class="login-link">Login</a>
+                <a th:href="@{/signup}"><button class="cta-button">Cadastrar</button></a>
+            </div>
+
+            <!-- Caso esteja logado -->
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <span th:text="${#authentication.name}" class="user-name"></span>
+                <a th:href="@{/logout}" class="logout-link">Sair</a>
+            </div>
+
+            <a th:href="@{/cart}" class="cart-link" aria-label="Carrinho de Compras">
+                <img th:src="@{/img/carrinho.png}" alt="shopping-cart-icon">
+            </a>
+        </div>
+    </div>
+</header>
