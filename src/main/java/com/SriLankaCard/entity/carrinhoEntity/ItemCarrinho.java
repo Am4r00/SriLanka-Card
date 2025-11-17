@@ -1,6 +1,7 @@
 package com.SriLankaCard.entity.carrinhoEntity;
 
 import com.SriLankaCard.entity.produtoEntity.Card;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class ItemCarrinho {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "carrinho_id", nullable = false)
+    @JsonIgnore
     private Carrinho carrinho;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,6 +28,7 @@ public class ItemCarrinho {
 
     @Column(nullable = false)
     private Double precoUnitario;
+
 
     public ItemCarrinho() {
     }

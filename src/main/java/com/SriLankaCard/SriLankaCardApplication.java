@@ -32,7 +32,6 @@ public class SriLankaCardApplication {
                 admin.setEmail(emailAdmin);
                 admin.setPassword(passwordEncoder.encode("12345678"));
                 admin.setFuncao(Set.of(Funcao.ADMIN));
-                admin.setFuncao(Set.of(Funcao.USUARIO));
                 admin.setStatus(UserStatus.ATIVO);
 
                 repository.save(admin);
