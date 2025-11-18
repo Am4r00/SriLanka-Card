@@ -80,7 +80,7 @@ function renderizarCarrinho(carrinho) {
         const div = document.createElement('div');
         div.className = 'cart-item';
 
-        const nome = item.nomeProduto || `Produto #${item.produtoId}`;
+        const nome = (item.nome || `${item.nome}`).toLowerCase();
         const imgSrc = resolverImagem(item);
 
         const precoUnit = Number(item.precoUnitario) || 0;
@@ -125,6 +125,101 @@ function renderizarCarrinho(carrinho) {
             await carregarCarrinho(); // recarrega carrinho depois de remover
         });
     });
+
+    function resolverImagem(item) {
+        const nome = (item.nome || `${item.nome}`).toLowerCase();
+
+        // 👉 Gift cards / serviços
+        if (nome.includes('apple')) {
+            return '/img/apple-gift-card.png';
+        }
+
+        if (nome.includes('steam')) {
+            return '/img/steam-gift-card.png';
+        }
+
+        if (nome.includes('playstation') || nome.includes('psn') || nome.includes('ps4') || nome.includes('ps5')) {
+            return '/img/playstation-gift-card.png';
+        }
+
+        if (nome.includes('xbox') || nome.includes("xbox card")) {
+            return '/img/xbox.png';
+        }
+
+        if (nome.includes('airbnb')) {
+            return '/img/airbnb.png';
+        }
+
+        if (nome.includes('ifood')) {
+            return '/img/ifood.png';
+        }
+
+        if (nome.includes('netflix')) {
+            return '/img/netflix.jpg';
+        }
+
+        if (nome.includes('paramount')) {
+            return '/img/paramount.jpg';
+        }
+
+        if (nome.includes('spotify')) {
+            return '/img/spotify.png';
+        }
+
+        if (nome.includes('uber')) {
+            return '/img/uber.png';
+        }
+
+        if (nome.includes('shopee')) {
+            return '/img/shopee.jpg';
+        }
+
+        // 👉 Jogos específicos
+        if (nome.includes('cyberpunk')) {
+            return '/img/cyberpunk.png';
+        }
+
+        if (nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc')) {
+            return '/img/fc26.jpg';
+        }
+
+        if (nome.includes('forza')) {
+            return '/img/forza-horizon-5-64md.1200.webp';
+        }
+
+        if (nome.includes('ghost of tsushima') || nome.includes('tsushima')) {
+            return '/img/Ghost_of_Tsushima_capa.png';
+        }
+
+        if (nome.includes('god of war')) {
+            return '/img/god-of-war.jpg';
+        }
+
+        if (nome.includes('gta')) {
+            return '/img/gta.jpg';
+        }
+
+        if (nome.includes('red dead')) {
+            return '/img/red-dead-2.png';
+        }
+
+        if (nome.includes('the last of us')) {
+            return '/img/the-last-of-us.jpg';
+        }
+
+        if (nome.includes('witcher')) {
+            return '/img/the-witcer-3';
+        }
+
+        // 👉 fallback genérico pra qualquer outro gift card / produto
+        if (nome.includes('gift') || nome.includes('card')) {
+            return '/img/default-card.jpg';
+        }
+
+        // 👉 fallback final pra qualquer coisa que não bateu em nada
+        return '/img/default-card.jpg';
+    }
+
 }
 
 
@@ -148,98 +243,6 @@ async function removerItem(produtoId) {
     }
 }
 
-function resolverImagem(item) {
-    const nome = (item.nomeProduto || '').toLowerCase();
 
-    // 👉 Gift cards / serviços
-    if (nome.includes('apple')) {
-        return '/img/apple-gift-card.png';
-    }
-
-    if (nome.includes('steam')) {
-        return '/img/steam-gift-card.png';
-    }
-
-    if (nome.includes('playstation') || nome.includes('psn') || nome.includes('ps4') || nome.includes('ps5')) {
-        return '/img/playstation-gift-card.png';
-    }
-
-    if (nome.includes('xbox')) {
-        return '/img/xbox.png';
-    }
-
-    if (nome.includes('airbnb')) {
-        return '/img/airbnb.png';
-    }
-
-    if (nome.includes('ifood')) {
-        return '/img/ifood.png';
-    }
-
-    if (nome.includes('netflix')) {
-        return '/img/netflix.jpg';
-    }
-
-    if (nome.includes('paramount')) {
-        return '/img/paramount.jpg';
-    }
-
-    if (nome.includes('spotify')) {
-        return '/img/spotify.png';
-    }
-
-    if (nome.includes('uber')) {
-        return '/img/uber.png';
-    }
-
-    if (nome.includes('shopee')) {
-        return '/img/shopee.jpg';
-    }
-
-    // 👉 Jogos específicos
-    if (nome.includes('cyberpunk')) {
-        return '/img/cyberpunk.png';
-    }
-
-    if (nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc')) {
-        return '/img/fc26.jpg';
-    }
-
-    if (nome.includes('forza')) {
-        return '/img/forza-horizon-5-64md.1200.webp';
-    }
-
-    if (nome.includes('ghost of tsushima') || nome.includes('tsushima')) {
-        return '/img/Ghost_of_Tsushima_capa.png';
-    }
-
-    if (nome.includes('god of war')) {
-        return '/img/god of war.jpg';
-    }
-
-    if (nome.includes('gta')) {
-        return '/img/GTA V1.jpg';
-    }
-
-    if (nome.includes('red dead')) {
-        return '/img/red dead 2.png';
-    }
-
-    if (nome.includes('the last of us')) {
-        return '/img/the last of us.jpg';
-    }
-
-    if (nome.includes('witcher')) {
-        return '/img/the witcher 3.png';
-    }
-
-    // 👉 fallback genérico pra qualquer outro gift card / produto
-    if (nome.includes('gift') || nome.includes('card')) {
-        return '/img/default-card.jpg';
-    }
-
-    // 👉 fallback final pra qualquer coisa que não bateu em nada
-    return '/img/default-card.jpg';
-}
 
 
