@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SriLankaCard - Painel Administrativo</title>
+    <link rel="stylesheet" th:href="@{/css/usuariosdetalhe.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            color: #6a1b9a;
+            border-bottom-color: #6a1b9a;
+        }
+        .tab:hover {
+            color: #6a1b9a;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .product-table th, .product-table td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .product-table th {
+            background-color: #f8f8f8;
+            color: #333;
+            font-weight: 600;
+        }
+        .product-table tr:hover {
+            background-color: #fafafa;
+        }
+        .btn-danger {
+            background-color: #e53935;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c62828;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-ativo {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-inativo {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .funcoes-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            margin: 2px;
+            background-color: #6a1b9a;
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo">
+            <h2>SriLankaCard</h2>
+            <h3>Painel Administrativo</h3>
+        </div>
+        <div>
+            <a th:href="@{/home_admin}" class="btn btn-primary" style="margin-right: 10px; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </header>
+
+    <!-- Abas -->
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('users')">
+            <i class="fas fa-users"></i> Usuários
+        </button>
+        <button class="tab" onclick="switchTab('products')">
+            <i class="fas fa-box"></i> Produtos
+        </button>
+    </div>
+
+    <!-- Conteúdo da aba Usuários -->
+    <div id="users-tab" class="tab-content active">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3>Gerenciar Usuários</h3>
+            <button class="btn btn-primary" onclick="openCreateUserModal()">
+                <i class="fas fa-plus"></i> Novo Usuário
+            </button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchUserInput" class="search-input" placeholder="Buscar por nome ou email..." onkeyup="filterUsers()">
+        </div>
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Funções</th>
+                    <th>Status</th>
+                    <th class="actions-cell">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando usuários...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Conteúdo da aba Produtos -->
+    <div id="products-tab" class="tab-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3>Gerenciar Produtos</h3>
+            <button class="btn btn-primary" onclick="openCreateProductModal()">
+                <i class="fas fa-plus"></i> Novo Produto
+            </button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchProductInput" class="search-input" placeholder="Buscar por nome..." onkeyup="filterProducts()">
+        </div>
+
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Observações</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                    <th>Promoção</th>
+                    <th class="actions-cell">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando produtos...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL DE CRIAÇÃO/EDIÇÃO DE USUÁRIO -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeUserModal()">&times;</span>
+        <h2 id="userModalTitle">Criar Usuário</h2>
+        <form id="userForm" onsubmit="saveUser(event)">
+            <input type="hidden" id="userId">
+            
+            <div class="form-group">
+                <label for="userName">Nome Completo *</label>
+                <input type="text" id="userName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="userEmail">Email *</label>
+                <input type="email" id="userEmail" required>
+            </div>
+
+            <div class="form-group">
+                <label for="userPassword">Senha *</label>
+                <input type="password" id="userPassword" required>
+            </div>
+
+            <div class="form-group">
+                <label for="userRole">Função *</label>
+                <select id="userRole" required>
+                    <option value="USUARIO">Usuário</option>
+                    <option value="ADMIN">Administrador</option>
+                    <option value="ESTOQUISTA">Estoquista</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="userStatus">Status *</label>
+                <select id="userStatus" required>
+                    <option value="ATIVO">Ativo</option>
+                    <option value="INATIVO">Inativo</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn" onclick="closeUserModal()" style="margin-left: 10px;">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DE CRIAÇÃO/EDIÇÃO DE PRODUTO -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeProductModal()">&times;</span>
+        <h2 id="productModalTitle">Criar Produto</h2>
+        <form id="productForm" onsubmit="saveProduct(event)">
+            <input type="hidden" id="productId">
+            
+            <div class="form-group">
+                <label for="productName">Nome *</label>
+                <input type="text" id="productName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productObservacoes">Observações *</label>
+                <textarea id="productObservacoes" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="productValor">Valor *</label>
+                <input type="number" id="productValor" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productQuantidade">Quantidade *</label>
+                <input type="number" id="productQuantidade" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="productPromocao"> Em Promoção
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn" onclick="closeProductModal()" style="margin-left: 10px;">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/admin-panel.js}"></script>
+
+</body>
+</html>

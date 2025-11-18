@@ -46,14 +46,73 @@ if (form) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('userEmail', email);
         
-        // Mostrar informações do login
-        console.log('Login realizado com sucesso:', data);
-        alert(`Login realizado com sucesso!\nToken: ${data.token.substring(0, 50)}...`);
+        // Salvar token em cookie também (para requisições de navegação)
+        document.cookie = `jwt_token=${data.token}; path=/; max-age=${60 * 60 * 10}; SameSite=Lax`;
         
-        // Redirecionar para home ou página admin se for admin
-        if (data.user && data.user.funcoes && data.user.funcoes.includes('ADMIN')) {
+        // Mostrar informações do login
+        console.log('=== LOGIN: Dados recebidos ===');
+        console.log('Data completa:', JSON.stringify(data, null, 2));
+        console.log('Funções recebidas:', data.funcoes);
+        console.log('Tipo de funcoes:', typeof data.funcoes);
+        console.log('É array?', Array.isArray(data.funcoes));
+        console.log('Valor bruto:', data.funcoes);
+        
+        // Verificar se é admin e redirecionar
+        // O backend retorna funcoes como Set<Funcao> que vira array no JSON
+        let isAdmin = false;
+        
+        if (data.funcoes) {
+          // Se for array (formato mais comum)
+          if (Array.isArray(data.funcoes)) {
+            console.log('Funções é um array:', data.funcoes);
+            // Verificar cada elemento do array
+            data.funcoes.forEach((f, index) => {
+              console.log(`Função[${index}]:`, f, 'Tipo:', typeof f);
+            });
+            
+            isAdmin = data.funcoes.some(f => {
+              // Pode vir como string "ADMIN" ou objeto {name: "ADMIN"}
+              const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
+              console.log('Comparando função:', funcaoValue, 'com ADMIN');
+              const match = funcaoValue === 'ADMIN' || funcaoValue === 'ROLE_ADMIN' || funcaoValue.includes('ADMIN');
+              console.log('Match:', match);
+              return match;
+            });
+            console.log('Verificação array - isAdmin:', isAdmin);
+          } 
+          // Se for string
+          else if (typeof data.funcoes === 'string') {
+            console.log('Funções é uma string:', data.funcoes);
+            isAdmin = data.funcoes.includes('ADMIN') || data.funcoes === 'ADMIN';
+            console.log('Verificação string - isAdmin:', isAdmin);
+          }
+          // Se for objeto (Set serializado de forma diferente)
+          else if (typeof data.funcoes === 'object' && data.funcoes !== null) {
+            console.log('Funções é um objeto:', data.funcoes);
+            const funcoesArray = Object.values(data.funcoes);
+            console.log('Valores do objeto:', funcoesArray);
+            isAdmin = funcoesArray.some(f => {
+              const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
+              return funcaoValue === 'ADMIN' || funcaoValue.includes('ADMIN');
+            });
+            console.log('Verificação objeto - isAdmin:', isAdmin);
+          }
+        } else {
+          console.warn('⚠️ Funções não encontradas na resposta!');
+        }
+        
+        console.log('=== RESULTADO FINAL ===');
+        console.log('isAdmin:', isAdmin);
+        console.log('Redirecionando para:', isAdmin ? '/home_admin' : '/home');
+        
+        // Redirecionar baseado no tipo de usuário
+        if (isAdmin) {
+          console.log('Redirecionando para /home_admin');
+          alert('Login realizado com sucesso! Redirecionando para área administrativa...');
           window.location.href = '/home_admin';
         } else {
+          console.log('Redirecionando para /home');
+          alert('Login realizado com sucesso!');
           window.location.href = '/home';
         }
       } else {

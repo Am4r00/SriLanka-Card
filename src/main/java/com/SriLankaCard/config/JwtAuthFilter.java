@@ -32,12 +32,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // 🌟 ROTAS DO AUTHCONTROLLER
             "/auth/login",
             "/auth/registrar",
+            
+            // 🌟 ROTAS DE ADMIN (API)
+            "/admin/create-user",
+            "/admin/create-user-common",
+            "/admin/test-create-admin",
+            "/admin/update-user-to-admin",
+            
+            // 🌟 ROTAS DE CARDS (API)
+            "/cards/listar",
 
             // OUTRAS PÁGINAS HTML
             "/contato", "/faq", "/sobre", "/giftcard",
             "/jogos", "/produto", "/funcionarios", "/cart",
             "/forgot", "/payment", "/verify", "/addEmploye",
-            "/home_admin", "/test", "/static-test"
+            "/test", "/static-test",
+            "/produtoDetalhe"
+            // /home_admin foi removido - precisa autenticação ADMIN
     );
 
     public JwtAuthFilter(JwtService jwtService, CustomUserDetailsService userDetailsService) {
@@ -68,14 +79,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         // 🔥 VERIFICAÇÃO DE TOKEN
+        // Tentar pegar do header Authorization primeiro
         String authHeader = request.getHeader("Authorization");
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        String token = null;
+        
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        } else {
+            // Se não tiver no header, tentar pegar do cookie
+            jakarta.servlet.http.Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (jakarta.servlet.http.Cookie cookie : cookies) {
+                    if ("jwt_token".equals(cookie.getName())) {
+                        token = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        String token = authHeader.substring(7);
 
         try {
             String username = jwtService.extractUsername(token);

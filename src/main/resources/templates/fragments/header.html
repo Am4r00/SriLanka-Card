@@ -18,16 +18,10 @@
         </nav>
 
         <div class="nav-actions">
-            <!-- Caso não esteja logado -->
-            <div th:if="${not #authorization.expression('isAuthenticated()')}">
+            <!-- Elementos serão atualizados dinamicamente via JavaScript -->
+            <div id="auth-container">
                 <a th:href="@{/login}" class="login-link">Login</a>
                 <a th:href="@{/signup}"><button class="cta-button">Cadastrar</button></a>
-            </div>
-
-            <!-- Caso esteja logado -->
-            <div th:if="${#authorization.expression('isAuthenticated()')}">
-                <span th:text="${#authentication.name}" class="user-name"></span>
-                <a th:href="@{/logout}" class="logout-link">Sair</a>
             </div>
 
             <a th:href="@{/cart}" class="cart-link" aria-label="Carrinho de Compras">

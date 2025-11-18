@@ -17,14 +17,11 @@ public class AdminCreateRequest {
     @Email
     private String email;
 
-    @NotBlank
+    // Password, status e funcoes são opcionais pois podem ser definidos pelo controller
     @Size(min = 8, max = 18)
     private String password;
 
-    @NotNull
     private UserStatus status;
 
-    @NotEmpty
-    @Size(min = 1, message = "Pelo menos uma posição deve ser atribuída")
     private Set<Funcao> funcoes;
 }

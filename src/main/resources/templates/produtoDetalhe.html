@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="${produto.nome} + ' - SriLankaCard'">Detalhes do Produto</title>
+  <title>Detalhes do Produto - SriLankaCard</title>
 
-  <link rel="stylesheet" href="/css/produtoDetalhe.css">
+  <link rel="stylesheet" th:href="@{/css/produtoDetalhe.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,95 +15,118 @@
 
 <body>
 
-<!-- Navbar -->
-<header class="navbar">
-  <div class="navbar-container">
-    <a href="home.html" class="logo">SriLanka<span>Card</span></a>
-
-    <nav class="nav-links">
-      <ul>
-        <li><a href="giftcard.html">GiftCards</a></li>
-        <li><a href="jogos.html">Jogos</a></li>
-        <li><a href="produto.html">Produto</a></li>
-        <li><a href="#">Funcionarios</a></li>
-      </ul>
-    </nav>
-
-    <div class="nav-actions">
-      <a href="login.html" class="login-link">Login</a>
-      <a href="signup.html"><button class="cta-button">Cadastrar</button></a>
-      <a href="cart.html" class="cart-link" aria-label="Carrinho de Compras">
-        <img src="/img/carrinho.png" alt="shopping-cart-icon">
-      </a>
-    </div>
-  </div>
-</header>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
 <!-- Conteúdo principal -->
 <main class="product-details">
-  <div class="product-container">
-    <div class="product-image">
-      <img th:src="@{${produto.imagemUrl}}" alt="Imagem do produto" />
-    </div>
-
-    <div class="product-info">
-      <h1 th:text="${produto.nome}">GTA VI</h1>
-      <p class="price" th:text="'R$ ' + ${#numbers.formatDecimal(produto.preco, 2, 'COMMA', 2, 'POINT')}">R$ 450,00</p>
-      <div class="rating">
-        ⭐⭐⭐⭐☆ <span>(4.5/5)</span>
-      </div>
-      <p class="description" th:text="${produto.descricao}">
-        Explore Vice City em uma nova geração de aventura e liberdade no universo GTA.
-      </p>
-
-      <div class="actions">
-        <button class="add-cart">Adicionar ao Carrinho 🛒</button>
-        <button class="buy-now">Comprar Agora 💳</button>
-      </div>
-    </div>
+  <div class="product-container" id="product-container">
+    <div class="loading">Carregando produto...</div>
   </div>
 </main>
 
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-section">
-      <h2 class="logo">Sri<span>Lanka</span>Card</h2>
-      <p>O presente perfeito, a um clique de distância.</p>
-    </div>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
-    <div class="footer-section">
-      <h3>Empresa</h3>
-      <ul>
-        <li><a href="sobre.html">Sobre nós</a></li>
-        <li><a href="#">Carreiras</a></li>
-        <li><a href="#">Parceiros</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-section">
-      <h3>Suporte</h3>
-      <ul>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="#">Contato</a></li>
-        <li><a href="#">Termos de Serviço</a></li>
-        <li><a href="#">Política de Privacidade</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-section">
-      <h3>Siga-nos</h3>
-      <ul>
-        <li><a href="#">Facebook</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Twitter</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p>© 2025 SriLankaCard. Todos os direitos reservados.</p>
-  </div>
-</footer>
-
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/produtos.js}"></script>
+<script th:src="@{/js/header.js}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const container = document.getElementById('product-container');
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    if (!productId) {
+      container.innerHTML = '<div class="error">Produto não encontrado.</div>';
+      return;
+    }
+    
+    try {
+      const product = await loadProductDetails(parseInt(productId));
+      
+      if (!product) {
+        container.innerHTML = '<div class="error">Produto não encontrado.</div>';
+        return;
+      }
+      
+      // Determinar imagem
+      const imageMap = {
+        'spotify': '/img/spotify.png',
+        'shopee': '/img/shopee.jpg',
+        'steam': '/img/steam-gift-card.png',
+        'ifood': '/img/ifood.png',
+        'apple': '/img/apple-gift-card.png',
+        'uber': '/img/uber.png',
+        'netflix': '/img/netflix.jpg',
+        'playstation': '/img/playstation-gift-card.png',
+        'paramount': '/img/paramount.jpg',
+        'xbox': '/img/xbox.png',
+        'airbnb': '/img/airbnb.png',
+        'gta': '/img/GTA_V1.jpg',
+        'cyberpunk': '/img/cyberpunk.png',
+        'witcher': '/img/the_witcher_3.png',
+        'eafc': '/img/fc26.jpg',
+        'red dead': '/img/red_dead_2.png',
+        'forza': '/img/forza-horizon-5.webp',
+        'god of war': '/img/god_of_war.jpg',
+        'last of us': '/img/the_last_of_us.jpg',
+        'ghost': '/img/Ghost_of_Tsushima_capa.png'
+      };
+      
+      let imageUrl = '/img/steam-gift-card.png';
+      const productNameLower = product.nome.toLowerCase();
+      for (const [key, url] of Object.entries(imageMap)) {
+        if (productNameLower.includes(key)) {
+          imageUrl = url;
+          break;
+        }
+      }
+      
+      const promoBadge = product.promocao ? '<span class="promo-badge">PROMOÇÃO</span>' : '';
+      const oldPrice = product.promocao ? `<span class="old-price">${formatPrice(product.valor * 1.1)}</span>` : '';
+      const stockStatus = product.quantidade > 0 ? 
+        '<span class="in-stock">Em estoque</span>' : 
+        '<span class="out-of-stock">Esgotado</span>';
+      
+      container.innerHTML = `
+        <div class="product-image">
+          <img src="${imageUrl}" alt="${product.nome}" onerror="this.src='/img/steam-gift-card.png'">
+        </div>
+        <div class="product-info">
+          <h1>${product.nome}</h1>
+          <div class="price-container">
+            ${oldPrice}
+            <p class="price">${formatPrice(product.valor)}</p>
+          </div>
+          <div class="rating">
+            ⭐⭐⭐⭐☆ <span>(4.5/5)</span>
+          </div>
+          <p class="description">${product.observacoes || 'Descrição não disponível.'}</p>
+          <div class="stock-info">${stockStatus}</div>
+          ${promoBadge}
+          <div class="actions">
+            <button class="add-cart" ${product.quantidade <= 0 ? 'disabled' : ''} data-product-id="${product.id}">
+              Adicionar ao Carrinho 🛒
+            </button>
+            <button class="buy-now" ${product.quantidade <= 0 ? 'disabled' : ''} onclick="window.location.href='/payment'">
+              Comprar Agora 💳
+            </button>
+          </div>
+        </div>
+      `;
+      
+      // Adicionar evento ao botão de adicionar ao carrinho
+      const addCartBtn = container.querySelector('.add-cart');
+      if (addCartBtn) {
+        addCartBtn.addEventListener('click', () => {
+          addToCart(product);
+        });
+      }
+      
+    } catch (error) {
+      console.error('Erro ao carregar produto:', error);
+      container.innerHTML = '<div class="error">Erro ao carregar produto. Tente novamente mais tarde.</div>';
+    }
+  });
+</script>
 </body>
 </html>

@@ -9,4 +9,5 @@ public interface AdminUserService {
     UserDetailResponse adminCreateUser(AdminCreateRequest user);
     UserResponse deleteUser(Long id);
     UserDetailResponse adjustStatus(Long id, UserStatus status);
+    UserDetailResponse updateUserToAdmin(String email);
 }

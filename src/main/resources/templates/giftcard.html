@@ -57,101 +57,33 @@
         </div>
       </div>
 
-      <div class="product-grid">
-
-        <div class="product-card">
-          <img th:src="@{/img/spotify.png}" alt="Logo Spotify" class="product-logo">
-          <div class="product-details">
-            <h3>Spotify</h3>
-            <p>R$ 50,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/shopee.jpg}" alt="Logo Shopee" class="product-logo">
-          <div class="product-details">
-            <h3>Shopee</h3>
-            <p>R$ 50,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/steam-gift-card.png}" alt="Logo Steam" class="product-logo">
-          <div class="product-details">
-            <h3>Steam</h3>
-            <p>R$ 100,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/ifood.png}" alt="Logo Ifood" class="product-logo">
-          <div class="product-details">
-            <h3>Ifood</h3>
-            <p>R$ 20,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/apple-gift-card.png}" alt="Logo apple" class="product-logo">
-          <div class="product-details">
-            <h3>Apple</h3>
-            <p>R$ 50,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/uber.png}" alt="Logo Uber" class="product-logo">
-          <div class="product-details">
-            <h3>Uber</h3>
-            <p>R$ 100,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/netflix.jpg}" alt="Logo Netflix" class="product-logo">
-          <div class="product-details">
-            <h3>Netflix</h3>
-            <p>R$ 50,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/playstation-gift-card.png}" alt="Logo Playstation" class="product-logo">
-          <div class="product-details">
-            <h3>Playstation</h3>
-            <p>R$ 20,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/paramount.jpg}" alt="Logo Paramount" class="product-logo">
-          <div class="product-details">
-            <h3>Paramount</h3>
-            <p>R$ 30,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/xbox.png}" alt="Logo Xbox" class="product-logo">
-          <div class="product-details">
-            <h3>Xbox</h3>
-            <p>R$ 100,00</p>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <img th:src="@{/img/airbnb.png}" alt="Logo Airbnb" class="product-logo">
-          <div class="product-details">
-            <h3>AirBNB</h3>
-            <p>R$ 20,00</p>
-          </div>
-        </div>
+      <div class="product-grid" id="product-grid">
+        <!-- Produtos serão carregados dinamicamente via JavaScript -->
       </div>
     </div>
 
   </div>
 
 </main>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/produtos.js}"></script>
+<script th:src="@{/js/header.js}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Filtrar apenas gift cards (excluir jogos)
+    loadProducts('.product-grid', (card) => {
+      const nome = card.nome.toLowerCase();
+      // Excluir jogos conhecidos
+      const isJogo = nome.includes('gta') || nome.includes('cyberpunk') || 
+                     nome.includes('witcher') || nome.includes('eafc') || 
+                     nome.includes('red dead') || nome.includes('forza') ||
+                     nome.includes('god of war') || nome.includes('last of us') ||
+                     nome.includes('ghost');
+      return !isJogo; // Retornar todos que não são jogos
+    });
+  });
+</script>
 
 </body>
 </html>

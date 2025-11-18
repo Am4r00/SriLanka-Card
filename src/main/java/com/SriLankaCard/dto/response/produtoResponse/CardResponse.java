@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CardResponse {
+    private Long id;
+    
     @NotBlank
     private String nome;
 
