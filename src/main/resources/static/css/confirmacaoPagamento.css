@@ -1,0 +1,104 @@
+/* confirmacaoPagamento.css */
+
+/* --- Variáveis (Re-definidas para garantir acesso) --- */
+:root {
+    --primary-color: #6C42A1;
+    --secondary-color: #A379D5;
+    --dark-bg: #030438;
+    --light-bg: #1e293b;
+    --text-color: #e2e8f0;
+    --subtle-text: #94a3b8;
+    --white: #fff;
+    --success-check-color: #10b981; /* Verde forte */
+}
+
+/* 1. Ajusta o corpo e o main-content para centralizar o conteúdo verticalmente */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    /* Sobrescreve as regras de max-width e margin do payment.css */
+    max-width: none;
+    margin: 0;
+    padding: 0;
+
+    /* APLICAÇÃO DA CENTRALIZAÇÃO com Flexbox */
+    flex-grow: 1; /* Faz o main-content ocupar todo o espaço abaixo da navbar */
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+}
+
+/* 2. Sobrescreve as regras de Grid do content-wrapper */
+.content-wrapper {
+    /* Sobrescreve as regras de Grid para que o layout seja flexível/bloco */
+    display: block;
+    grid-template-columns: none;
+    gap: 0;
+
+    width: 100%;
+    /* Limita a largura do container para evitar que o card ocupe 100% da tela */
+    max-width: 1200px;
+    padding: 0 2rem; /* Mantém o padding lateral */
+}
+
+
+/* --- Estilo da Mensagem de Sucesso --- */
+
+.success-message {
+    /* Substitui margin: 50px auto; por 0 auto; para melhor centralização */
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    /* Utiliza as variáveis de cor */
+    background-color: var(--light-bg);
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+    max-width: 500px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.success-icon {
+    font-size: 5rem; /* Aumentado para mais destaque */
+    color: var(--success-check-color);
+    margin-bottom: 1.5rem;
+}
+
+.success-message h1 {
+    font-size: 2.2rem;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.success-message p {
+    font-size: 1rem;
+    color: var(--subtle-text);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.back-home-button {
+    display: inline-block;
+    padding: .75rem 2rem;
+    /* Usa as variáveis do CTA */
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.back-home-button:hover {
+    background-color: var(--secondary-color);
+}
