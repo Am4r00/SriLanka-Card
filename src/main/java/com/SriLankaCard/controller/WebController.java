@@ -105,4 +105,9 @@ public class WebController {
     public String staticTest() {
         return "static-test";
     }
+
+    @GetMapping("/confirmacaoPagamento")
+    public String showConfirmacaoPage() {
+        return "confirmacaoPagamento";
+    }
 }

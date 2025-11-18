@@ -85,19 +85,26 @@ body {
 }
 
 .cta-button {
-    background: #6C42A1;
-    color: #fff;
-    padding: .75rem 1.5rem;
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    padding: 1.1rem;
+    background-color: var(--primary-color);
+    color: var(--white);
     border: none;
-    border-radius: 50px;
-    font-weight: 600;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: background-color .3s ease;
-    box-shadow: 0 0 15px rgba(108, 66, 161, .5);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 25px rgba(108, 66, 161, 0.5);
 }
 
 .cta-button:hover {
-    background-color: #A379D5;
+    background-color: var(--secondary-color);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(163, 121, 213, 0.6);
 }
 
 /* --- Layout Principal --- */

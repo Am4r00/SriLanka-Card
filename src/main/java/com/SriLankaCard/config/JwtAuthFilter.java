@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/contato", "/faq", "/sobre", "/giftcard",
             "/jogos", "/produto", "/funcionarios", "/cart",
             "/forgot", "/payment", "/verify", "/addEmploye",
-            "/home_admin", "/test", "/static-test"
+            "/home_admin", "/test", "/static-test","/confirmacaoPagamento"
     );
 
     public JwtAuthFilter(JwtService jwtService, CustomUserDetailsService userDetailsService) {
