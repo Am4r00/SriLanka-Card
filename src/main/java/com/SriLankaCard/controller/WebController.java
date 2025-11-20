@@ -1,7 +1,9 @@
 package com.SriLankaCard.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WebController {
@@ -45,6 +47,11 @@ public class WebController {
     public String cart() {
         return "cart";
     }
+    
+    @GetMapping("/funcionarios")
+    public String funcionarios() {
+        return "funcionarios";
+    }
 
     @GetMapping("/contato")
     public String contato() {
@@ -72,7 +79,11 @@ public class WebController {
     }
 
     @GetMapping("/produtoDetalhe")
-    public String produtoDetalhe() {
+    public String produtoDetalhe(@RequestParam(required = false) Long id, Model model) {
+        // O produto será carregado via JavaScript se o ID for fornecido
+        if (id != null) {
+            model.addAttribute("productId", id);
+        }
         return "produtoDetalhe";
     }
 
@@ -105,6 +116,20 @@ public class WebController {
     public String staticTest() {
         return "static-test";
     }
+    
+    @GetMapping("/test-admin")
+    public String testAdmin() {
+        return "test-admin";
+    }
+    
+    @GetMapping("/update-to-admin")
+    public String updateToAdmin() {
+        return "update-to-admin";
+    }
+    
+    @GetMapping("/usuariodetalhe")
+    public String usuarioDetalhe() {
+        return "usuariodetalhe";
 
     @GetMapping("/confirmacaoPagamento")
     public String showConfirmacaoPage() {

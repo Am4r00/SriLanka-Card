@@ -3,7 +3,6 @@ package com.SriLankaCard.controller.produtoController;
 import com.SriLankaCard.dto.request.cards.CardAdjustRequest;
 import com.SriLankaCard.dto.request.cards.CardRequest;
 import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
-import com.SriLankaCard.service.produtoService.CardService;
 import com.SriLankaCard.service.produtoService.CardServiceImplements;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,11 @@ public class CardController {
     @GetMapping("/listar")
     public List<CardResponse> listar(){
         return cardServiceImplements.listarCards();
+    }
+
+    @GetMapping("/{id}")
+    public CardResponse buscarPorId(@PathVariable Long id){
+        return cardServiceImplements.buscarPorId(id);
     }
 
     @DeleteMapping("/deletar/{id}")

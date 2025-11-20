@@ -20,6 +20,7 @@ public class CardMapper {
 
     public static CardResponse toCardResponseByCard(Card card){
         CardResponse response = new CardResponse();
+        response.setId(card.getId());
         response.setNome(card.getNome());
         response.setObservacoes(card.getObservacoes());
         response.setQuantidade(card.getQuantidade());

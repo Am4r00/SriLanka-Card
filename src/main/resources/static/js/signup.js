@@ -1,60 +1,185 @@
-form.addEventListener('submit', async (e)=>{
-  e.preventDefault();
+// Variáveis globais
+const form = document.getElementById('signup');
+const pwd = document.getElementById('password');
+const confirm = document.getElementById('confirm');
 
-  const allValid = form.checkValidity() && checkMatch() && document.getElementById('terms').checked;
-
-  if(!allValid){
-    form.reportValidity?.();
-    checkMatch();
-    return;
-  }
-
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = pwd.value;
-
-  try {
-    let endpoint, payload;
-
-    // 🔥 LÓGICA PRINCIPAL
-    if (password === "admin12345678") {
-      // criar ADMIN
-      endpoint = '/admin/create-user';
-      payload = { name, email };
-
+// Função para verificar se as senhas coincidem
+function checkMatch() {
+  const passwordValue = pwd ? pwd.value : '';
+  const confirmValue = confirm ? confirm.value : '';
+  const matchErr = document.getElementById('matchErr');
+  
+  if (matchErr) {
+    if (passwordValue && confirmValue && passwordValue !== confirmValue) {
+      matchErr.style.display = 'block';
+      return false;
     } else {
-      // criar USUÁRIO COMUM
-      endpoint = '/users/create-user';
-      payload = { name, email, password };
+      matchErr.style.display = 'none';
+      return true;
+    }
+  }
+  return true;
+}
+
+// Adicionar listener para verificar senhas em tempo real
+if (pwd && confirm) {
+  pwd.addEventListener('input', checkMatch);
+  confirm.addEventListener('input', checkMatch);
+}
+
+// Mostrar/ocultar senha
+const toggles = document.querySelectorAll('.toggle[data-target]');
+toggles.forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    const targetId = toggle.getAttribute('data-target');
+    const targetInput = document.getElementById(targetId);
+    if (targetInput) {
+      const isHidden = targetInput.type === 'password';
+      targetInput.type = isHidden ? 'text' : 'password';
+      toggle.setAttribute('aria-label', isHidden ? 'Ocultar senha' : 'Mostrar senha');
+    }
+  });
+});
+
+// Submit do formulário
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name')?.value.trim();
+    const email = document.getElementById('email')?.value.trim();
+    const password = pwd ? pwd.value : '';
+    const terms = document.getElementById('terms')?.checked;
+
+    // Validações
+    if (!name || !email || !password) {
+      alert('Preencha todos os campos obrigatórios.');
+      return;
     }
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
+    if (!checkMatch()) {
+      alert('As senhas não coincidem.');
+      return;
+    }
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Usuário criado com sucesso:', data);
+    if (!terms) {
+      alert('Você precisa aceitar os termos e condições.');
+      return;
+    }
 
+    console.log('=== SIGNUP: Iniciando cadastro ===');
+    console.log('Nome:', name);
+    console.log('Email:', email);
+    console.log('Senha digitada:', password);
+    console.log('É senha de admin?', password === 'admin12345678');
+
+    try {
+      let endpoint, payload;
+
+      // 🔥 LÓGICA PRINCIPAL
       if (password === "admin12345678") {
-        alert(`Administrador criado!\nEmail: ${email}\nSenha fixa: admin12345678`);
+        // criar ADMIN - usar endpoint de admin sem senha (senha será definida automaticamente)
+        endpoint = '/admin/create-user';
+        payload = { 
+          name: name, 
+          email: email
+          // password, status e funcoes serão definidos pelo backend
+        };
+        console.log('✅ Criando ADMIN com senha especial');
+        console.log('Endpoint:', endpoint);
+        console.log('Payload:', payload);
+
       } else {
-        alert(`Usuário criado com sucesso!\nEmail: ${email}`);
+        // criar USUÁRIO COMUM - usar endpoint de admin mas especificando função USUARIO
+        endpoint = '/admin/create-user-common';
+        payload = { 
+          name: name, 
+          email: email,
+          password: password
+        };
+        console.log('✅ Criando USUÁRIO COMUM');
+        console.log('Endpoint:', endpoint);
+        console.log('Payload:', payload);
       }
 
-      window.location.href = '/login';
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
 
-    } else {
-      const errorData = await response.json();
-      alert(`Erro ao criar usuário: ${errorData.message || 'Erro desconhecido'}`);
+      console.log('=== RESPOSTA DO SERVIDOR ===');
+      console.log('Status:', response.status);
+      console.log('OK?', response.ok);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('=== USUÁRIO CRIADO COM SUCESSO ===');
+        console.log('Dados retornados:', JSON.stringify(data, null, 2));
+        console.log('Funções do usuário criado:', data.funcoes);
+
+        if (password === "admin12345678") {
+          alert(`✅ Administrador criado com sucesso!\n\nEmail: ${email}\nSenha: admin12345678\n\nFunções: ${JSON.stringify(data.funcoes)}\n\nAgora você pode fazer login e será redirecionado para /home_admin`);
+        } else {
+          alert(`✅ Usuário criado com sucesso!\n\nEmail: ${email}\n\nFunções: ${JSON.stringify(data.funcoes)}`);
+        }
+
+        window.location.href = '/login';
+
+      } else {
+        // Se o erro for que o email já existe E a senha é admin12345678, tentar atualizar para ADMIN
+        if (response.status === 400 || response.status === 409) {
+          let errorData;
+          try {
+            errorData = await response.json();
+            const errorMessage = errorData.message || errorData.error || '';
+            console.log('Erro recebido:', errorMessage);
+            
+            // Se o email já existe e a senha é admin12345678, atualizar para ADMIN
+            if (password === "admin12345678" && errorMessage.includes("já") && errorMessage.includes("usado")) {
+              console.log('⚠️ Email já existe. Tentando atualizar para ADMIN...');
+              
+              const updateResponse = await fetch(`/admin/update-user-to-admin?email=${encodeURIComponent(email)}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+              
+              if (updateResponse.ok) {
+                const updatedData = await updateResponse.json();
+                console.log('✅ Usuário atualizado para ADMIN:', updatedData);
+                alert(`✅ Usuário existente atualizado para ADMIN!\n\nEmail: ${email}\nSenha: admin12345678\n\nFunções: ${JSON.stringify(updatedData.funcoes)}\n\nAgora você pode fazer login e será redirecionado para /home_admin`);
+                window.location.href = '/login';
+                return;
+              } else {
+                console.error('❌ Erro ao atualizar para ADMIN:', updateResponse);
+              }
+            }
+          } catch (e) {
+            console.error('Erro ao processar resposta de erro:', e);
+          }
+        }
+        
+        let errorMessage = 'Erro desconhecido';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
+          console.error('❌ Erro do servidor:', errorData);
+        } catch (e) {
+          errorMessage = `Erro ${response.status}: ${response.statusText}`;
+          console.error('❌ Erro na resposta:', response);
+        }
+        alert(`❌ Erro ao criar usuário: ${errorMessage}`);
+      }
+
+    } catch (error) {
+      console.error('❌ Erro na requisição:', error);
+      alert(`❌ Erro ao conectar com o servidor: ${error.message || 'Verifique sua conexão.'}`);
     }
-
-  } catch (error) {
-    console.error('Erro na requisição:', error);
-    alert('Erro ao conectar com o servidor. Verifique sua conexão.');
-  }
-});
+  });
+} else {
+  console.error('Formulário de signup não encontrado!');
+}

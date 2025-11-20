@@ -6,6 +6,10 @@ import com.SriLankaCard.dto.request.user.login.LoginRequest;
 import com.SriLankaCard.dto.response.user.UserDetailResponse;
 import com.SriLankaCard.dto.response.user.UserResponse;
 import com.SriLankaCard.entity.userEntity.User;
+import com.SriLankaCard.entity.userEntity.enums.Funcao;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class UserMapper {
@@ -61,7 +65,20 @@ public class UserMapper {
         user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());
         user.setStatus(dto.getStatus());
-        user.setFuncao(dto.getFuncoes());
+        
+        // SEMPRE definir as funções - garantir que não seja null
+        if (dto.getFuncoes() != null && !dto.getFuncoes().isEmpty()) {
+            user.setFuncao(new HashSet<>(dto.getFuncoes())); // Criar nova instância para garantir
+            System.out.println("=== MAPPER: Funções definidas ===");
+            System.out.println("Funções recebidas do DTO: " + dto.getFuncoes());
+            System.out.println("Funções no User após set: " + user.getFuncao());
+        } else {
+            System.out.println("=== MAPPER: ERRO - Funções vazias ou null no DTO ===");
+            System.out.println("DTO funcoes: " + dto.getFuncoes());
+            // Mesmo assim, tentar definir como ADMIN se não foi fornecido
+            user.setFuncao(new HashSet<>(Set.of(Funcao.ADMIN)));
+            System.out.println("Funções definidas como ADMIN por fallback: " + user.getFuncao());
+        }
 
         return user;
     }

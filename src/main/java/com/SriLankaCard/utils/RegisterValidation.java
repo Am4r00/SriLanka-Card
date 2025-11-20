@@ -31,11 +31,23 @@ public class RegisterValidation {
         RegisterUserRequest basic = new RegisterUserRequest();
         basic.setName(req.getName());
         basic.setEmail(req.getEmail());
-        basic.setPassword(req.getPassword());
-        checkRegister(basic);
+        // Password pode ser null se será definido pelo controller
+        if (req.getPassword() != null && !req.getPassword().isEmpty()) {
+            basic.setPassword(req.getPassword());
+            checkRegister(basic);
+        } else {
+            // Validar apenas name e email se password não foi fornecido
+            if(req.getName() == null || req.getName().isEmpty())
+                throw new InvalidArgumentsException("Nome é obrigatório.");
+            if (req.getEmail() == null || req.getEmail().isEmpty())
+                throw new InvalidArgumentsException("E-mail é obrigatório.");
+            basic.setEmail(req.getEmail().toLowerCase());
+        }
 
         req.setEmail(basic.getEmail());
 
+        // Status e funcoes podem ser definidos pelo controller, então só validar se não foram fornecidos
+        // (mas o controller já deve ter definido antes de chamar esta validação)
         if(req.getStatus() == null)
             throw new InvalidArgumentsException("É nescessário passar algum Status");
 

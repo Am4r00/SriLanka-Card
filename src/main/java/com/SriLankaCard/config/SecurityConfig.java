@@ -34,16 +34,26 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/home", "/login", "/signup",
                                 "/contato", "/faq", "/sobre", "/giftcard",
-                                "/jogos", "/produto", "/funcionarios", "/cart",
-                                "/forgot", "/payment", "/verify", "/addEmploye",
-                                "/home_admin", "/test", "/static-test","/confirmacaoPagamento"
+                                "/jogos"
                         ).permitAll()
 
-                        .requestMatchers("/error", "/error/**").permitAll()
 
-                        // 🌟 LIBERANDO AS ROTAS QUE VOCÊ REALMENTE USA
+                        // 🌟 ROTAS PRIVADAS — NECESSITAM LOGIN
+                        .requestMatchers("/produto", "/funcionarios", "/cart")
+                        .authenticated()
+                        
+                        // 🌟 ROTAS ADMIN — NECESSITAM ROLE ADMIN
+                        .requestMatchers("/home_admin", "/usuariodetalhe")
+                        .hasRole("ADMIN")
+
+                        // 🌟 LIBERANDO AS ROTAS DE API NECESSÁRIAS
                         .requestMatchers("/users/create-user").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/admin/create-user", "/admin/create-user-common", "/admin/test-create-admin", "/admin/update-user-to-admin").permitAll()
+                        .requestMatchers("/admin/**").authenticated()
+                        
+                        // 🌟 API DE CARDS - Listar é público, criar/atualizar/deletar precisa de ADMIN
+                        .requestMatchers("/cards/listar", "/cards/{id}").permitAll()
                         .requestMatchers("/admin/**").permitAll()
 
                         // 🌟 LIBERANDO ARQUIVOS ESTÁTICOS
@@ -55,14 +65,14 @@ public class SecurityConfig {
                         // 🌟 ROTAS PROTEGIDAS POR ROLE
                         .requestMatchers("/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**")
                         .hasRole("ADMIN")
-                        .requestMatchers("/cards/listar")
-                        .hasAnyRole("ADMIN", "USUARIO")
 
-                        // RESTO PRECISA JWT
+                        // 🌟 ARQUIVOS ESTÁTICOS
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
+
+                        // RESTO PRECISA AUTENTICAÇÃO
                         .anyRequest().authenticated()
                 );
 
-        // JWT Filter
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
