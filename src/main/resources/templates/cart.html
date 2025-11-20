@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-br">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Carrinho - SriLankaCard</title>
 
+    <!-- AQUI LIGA O CSS DO CARRINHO -->
     <link rel="stylesheet" th:href="@{/css/cart.css}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -13,7 +13,7 @@
 
 <body class="modal-open">
 
-<<iframe id="home-bg-iframe" th:src="@{/}" class="home-bg" aria-hidden="true"></iframe>
+<iframe id="home-bg-iframe" th:src="@{/}" class="home-bg" aria-hidden="true"></iframe>
 
 <a th:href="@{/}" class="close-btn" aria-label="Fechar" onclick="history.back()">
     <span>&times;</span>
@@ -21,110 +21,22 @@
 
 <aside class="cart-modal">
     <header class="cart-header">
-        <h2>Meu Carrinho (3)</h2>
+        <!-- Esse título será atualizado via JS -->
+        <h2 id="cart-title">Meu Carrinho (0)</h2>
     </header>
 
-    <div class="cart-items">
-        <div class="cart-item">
-            <img th:src="@{/img/apple-gift-card.png}" alt="Gift Card Apple" class="item-image" />
-            <div class="item-details">
-                <span class="item-title">Apple Gift Card</span>
-                <div class="item-meta">
-                    <span class="item-rating">5.0 ⭐</span>
-                    <span class="item-reviews">15 Avaliações</span>
-                </div>
-                <div class="item-info">
-                    <span class="item-size">Tipo: Digital</span>
-                    <span class="item-color">Valor: R$ 30</span>
-                </div>
-                <span class="free-shipping">Frete Grátis</span>
-                <span class="discount-badge">10% OFF</span>
-            </div>
-            <div class="item-actions">
-                <div class="item-prices">
-                    <span class="old-price">R$29,99</span>
-                    <span class="current-price">R$27,99</span>
-                </div>
-                <div class="item-controls">
-                    <div class="quantity-control">
-                        <button>-</button>
-                        <span>1</span>
-                        <button>+</button>
-                    </div>
-                    <button class="remove-item-btn">
-                        Remover
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="cart-item">
-            <img th:src="@{/img/playstation-gift-card.png}" alt="Gift Card PlayStation" class="item-image" />
-            <div class="item-details">
-                <span class="item-title">PlayStation Gift Card</span>
-                <div class="item-meta">
-                    <span class="item-rating">4.8 ⭐</span>
-                    <span class="item-reviews">12 Avaliações</span>
-                </div>
-                <div class="item-info">
-                    <span class="item-size">Tipo: Digital</span>
-                    <span class="item-color">Valor: R$ 100</span>
-                </div>
-                <span class="free-shipping">Frete Grátis</span>
-                <span class="discount-badge">10% OFF</span>
-            </div>
-            <div class="item-actions">
-                <div class="item-prices">
-                    <span class="old-price">R$99,99</span>
-                    <span class="current-price">R$90,99$</span>
-                </div>
-                <div class="item-controls">
-                    <div class="quantity-control">
-                        <button>-</button>
-                        <span>2</span>
-                        <button>+</button>
-                    </div>
-                    <button class="remove-item-btn">
-                        Remover
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="cart-item">
-            <img th:src="@{img/steam-gift-card.png}" alt="Gift Card Steam" class="item-image" />
-            <div class="item-details">
-                <span class="item-title">Steam Gift Card</span>
-                <div class="item-meta">
-                    <span class="item-rating">4.9 ⭐</span>
-                    <span class="item-reviews">18 Avaliações</span>
-                </div>
-                <div class="item-info">
-                    <span class="item-size">Tipo: Digital</span>
-                    <span class="item-color">Valor: R$ 50</span>
-                </div>
-                <span class="free-shipping">Frete Grátis</span>
-            </div>
-            <div class="item-actions">
-                <div class="item-prices">
-                    <span class="current-price">R$49,99</span>
-                </div>
-                <div class="item-controls">
-                    <div class="quantity-control">
-                        <button>-</button>
-                        <span>1</span>
-                        <button>+</button>
-                    </div>
-                    <button class="remove-item-btn">
-                        Remover
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!-- Vamos deixar essa div vazia pra preencher via JS -->
+    <div class="cart-items" id="cart-items">
+        <!-- Itens do carrinho virão do JS -->
     </div>
 
     <footer class="cart-footer">
-        <a th:href="@{/payment}"><button class="cta-button">Comprar</button></a>
+        <div class="cart-summary">
+            <span id="cart-total-label">Total: R$ 0,00</span>
+        </div>
+        <a th:href="@{/payment}">
+            <button class="cta-button" id="checkout-button" disabled>Comprar</button>
+        </a>
     </footer>
 </aside>
 
@@ -139,5 +51,9 @@
         }
     });
 </script>
+
+<!-- 👇 novo JS do carrinho -->
+<script th:src="@{/js/cart.js}"></script>
+
 </body>
 </html>

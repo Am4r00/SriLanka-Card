@@ -49,6 +49,9 @@ public class SecurityConfig {
                         // 🌟 LIBERANDO ARQUIVOS ESTÁTICOS
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
 
+                        // 🌟 ROTAS DO CARRINHO – precisam estar autenticadas
+                        .requestMatchers("/api/carrinho/**").authenticated()
+
                         // 🌟 ROTAS PROTEGIDAS POR ROLE
                         .requestMatchers("/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**")
                         .hasRole("ADMIN")
