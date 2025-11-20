@@ -130,5 +130,9 @@ public class WebController {
     @GetMapping("/usuariodetalhe")
     public String usuarioDetalhe() {
         return "usuariodetalhe";
+
+    @GetMapping("/confirmacaoPagamento")
+    public String showConfirmacaoPage() {
+        return "confirmacaoPagamento";
     }
 }

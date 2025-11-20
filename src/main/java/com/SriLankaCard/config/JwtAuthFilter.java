@@ -49,6 +49,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/test", "/static-test",
             "/produtoDetalhe"
             // /home_admin foi removido - precisa autenticação ADMIN
+            "/home_admin", "/test", "/static-test","/confirmacaoPagamento"
     );
 
     public JwtAuthFilter(JwtService jwtService, CustomUserDetailsService userDetailsService) {

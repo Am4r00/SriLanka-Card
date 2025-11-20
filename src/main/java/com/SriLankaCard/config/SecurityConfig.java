@@ -54,6 +54,15 @@ public class SecurityConfig {
                         
                         // 🌟 API DE CARDS - Listar é público, criar/atualizar/deletar precisa de ADMIN
                         .requestMatchers("/cards/listar", "/cards/{id}").permitAll()
+                        .requestMatchers("/admin/**").permitAll()
+
+                        // 🌟 LIBERANDO ARQUIVOS ESTÁTICOS
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
+
+                        // 🌟 ROTAS DO CARRINHO – precisam estar autenticadas
+                        .requestMatchers("/api/carrinho/**").authenticated()
+
+                        // 🌟 ROTAS PROTEGIDAS POR ROLE
                         .requestMatchers("/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**")
                         .hasRole("ADMIN")
 

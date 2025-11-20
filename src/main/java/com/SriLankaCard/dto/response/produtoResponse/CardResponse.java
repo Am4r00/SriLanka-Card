@@ -14,18 +14,8 @@ public class CardResponse {
     
     @NotBlank
     private String nome;
-
-    @NotBlank
     private String observacoes;
-
-    @NotBlank
-    @Min(0)
     private Integer quantidade;
-
-    @NotNull
-    @DecimalMin("0.0")
     private Double valor;
-
-    @NotBlank
     private boolean promocao;
 }
