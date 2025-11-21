@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class CardResponse {
     private Long id;
-    
-    @NotBlank
     private String nome;
     private String observacoes;
     private Integer quantidade;

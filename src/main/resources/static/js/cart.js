@@ -76,7 +76,7 @@ function renderizarCarrinho(carrinho) {
     }
 
     // 👉 É AQUI QUE ENTRA O div.innerHTML
-     carrinho.itens.forEach(item => {
+    carrinho.itens.forEach(item => {
         const div = document.createElement('div');
         div.className = 'cart-item';
 
@@ -242,7 +242,3 @@ async function removerItem(produtoId) {
         console.error('Erro de rede ao remover item:', err);
     }
 }
-
-
-
-

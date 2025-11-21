@@ -129,7 +129,7 @@ public class WebController {
     
     @GetMapping("/usuariodetalhe")
     public String usuarioDetalhe() {
-        return "usuariodetalhe";
+        return "usuariodetalhe";}
 
     @GetMapping("/confirmacaoPagamento")
     public String showConfirmacaoPage() {
