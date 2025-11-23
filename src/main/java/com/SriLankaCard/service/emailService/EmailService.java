@@ -15,10 +15,21 @@ public class EmailService {
     }
 
     public void enviarEmail(String para, String assunto, String corpo){
+        // LOG SIMPLES PRA CONFERIR
+        System.out.println(">>> Enviando e-mail para: [" + para + "]");
+
+        if (para == null || !para.contains("@")) {
+            throw new IllegalArgumentException("Destinatário inválido: " + para);
+        }
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        msg.setTo(para);
+        // remetente explícito = o mesmo do spring.mail.username
+        msg.setFrom("joao.amarodev@gmail.com");
+
+        // destinatário limpo
+        msg.setTo(para.trim());
+
         msg.setSubject(assunto);
         msg.setText(corpo);
 
