@@ -15,10 +15,6 @@ public class CardRequest {
     private String observacoes;
 
     @NotNull
-    @Min(0)
-    private Integer quantidade;
-
-    @NotNull
     @DecimalMin("0.0")
     private Double valor;
 

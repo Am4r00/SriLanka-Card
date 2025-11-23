@@ -5,10 +5,13 @@ import com.SriLankaCard.dto.request.carrinho.AddItemCarrinhoRequest;
 import com.SriLankaCard.dto.response.itemCarrinho.CarrinhoResponse;
 import com.SriLankaCard.dto.response.itemCarrinho.ItemCarrinhoResponse;
 import com.SriLankaCard.entity.carrinhoEntity.Carrinho;
+import com.SriLankaCard.entity.carrinhoEntity.ItemCarrinho;
 import com.SriLankaCard.entity.produtoEntity.Card;
+import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.carrinhoRepository.CarrinhoRepository;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
+import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -20,10 +23,12 @@ public class CarrinhoService {
 
     private CardRepository cardRepository;
     private CarrinhoRepository carrinhoRepository;
+    private GiftCodeRepository giftCodeRepository;
 
-    public CarrinhoService(CardRepository repository, CarrinhoRepository carrinhoRepository) {
-        this.cardRepository = repository;
+    public CarrinhoService(CardRepository cardRepository, CarrinhoRepository carrinhoRepository, GiftCodeRepository giftCodeRepository) {
+        this.cardRepository = cardRepository;
         this.carrinhoRepository = carrinhoRepository;
+        this.giftCodeRepository = giftCodeRepository;
     }
 
     private Carrinho getOrCreateCarrinho(Long usuarioId){
@@ -33,23 +38,56 @@ public class CarrinhoService {
     }
 
     @Transactional
-    public void adicionarItem(Long id, AddItemCarrinhoRequest request){
-        if(request == null){
+    public void adicionarItem(Long usuarioId, AddItemCarrinhoRequest request){
+        if (request == null) {
             throw new InvalidArgumentsException("Cartão passado está vazio");
         }
 
-        if(request.getId() == null){
+        if (request.getId() == null) {
             throw new InvalidArgumentsException("Produto não informado");
         }
-        if(request.getQuantidade() == null ||request.getQuantidade() <= 0){
+
+        if (request.getQuantidade() == null || request.getQuantidade() <= 0) {
             throw new InvalidArgumentsException("Quantidade deve ser maior que zero");
         }
-        Carrinho carrinho = getOrCreateCarrinho(id);
+
+
+        Carrinho carrinho = getOrCreateCarrinho(usuarioId);
+
 
         Card card = cardRepository.findById(request.getId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new InvalidArgumentsException("Produto não encontrado"));
 
-        carrinho.adicionarItem(card, request.getQuantidade());
+
+        Long disponiveisLong = giftCodeRepository
+                .countByCardAndStatus(card, GiftCodeStatus.DISPONIVEL);
+        int estoqueDisponivel = disponiveisLong == null ? 0 : disponiveisLong.intValue();
+
+
+        int qtdJaNoCarrinho = carrinho.getItens().stream()
+                .filter(item -> item.getCard().getId().equals(card.getId()))
+                .mapToInt(ItemCarrinho::getQuantidade)
+                .sum();
+
+
+        int qtdSolicitada = request.getQuantidade();
+        int qtdTotalDesejada = qtdJaNoCarrinho + qtdSolicitada;
+
+
+        if (estoqueDisponivel <= 0) {
+            throw new InvalidArgumentsException("Não há GiftCodes disponíveis para este produto.");
+        }
+
+        if (qtdTotalDesejada > estoqueDisponivel) {
+            throw new InvalidArgumentsException(
+                    "Quantidade indisponível para este Gift Card. " +
+                            "Estoque disponível: " + estoqueDisponivel +
+                            ", já no carrinho: " + qtdJaNoCarrinho +
+                            ", tentativa de adicionar: " + qtdSolicitada
+            );
+        }
+
+        carrinho.adicionarItem(card, qtdSolicitada);
 
         carrinhoRepository.save(carrinho);
     }

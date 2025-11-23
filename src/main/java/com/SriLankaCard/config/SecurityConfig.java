@@ -42,7 +42,7 @@ public class SecurityConfig {
 
 
                         // 🌟 ROTAS PRIVADAS — NECESSITAM LOGIN
-                        .requestMatchers("/produto", "/funcionarios", "/cart")
+                        .requestMatchers("/produto", "/funcionarios", "/cart","/api/**")
                         .authenticated()
                         
                         // 🌟 ROTAS ADMIN — NECESSITAM ROLE ADMIN

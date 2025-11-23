@@ -11,31 +11,20 @@ public class CardMapper {
         Card card = new Card();
         card.setNome(request.getNome());
         card.setObservacoes(request.getObservacoes());
-        card.setQuantidade(request.getQuantidade());
         card.setValor(request.getValor());
         card.setPromocao(request.isPromocao());
 
         return card;
     }
 
-    public static CardResponse toCardResponseByCard(Card card){
+    public static CardResponse toCardResponseByCard(Card card,int quantidadeDisponivel){
         CardResponse response = new CardResponse();
         response.setId(card.getId());
         response.setNome(card.getNome());
         response.setObservacoes(card.getObservacoes());
-        response.setQuantidade(card.getQuantidade());
+        response.setQuantidade(quantidadeDisponivel);
         response.setValor(card.getValor());
         response.setPromocao(card.isPromocao());
-
         return response;
-    }
-
-    public static ItemCarrinho toItemCarrinhoByCard(Card card){
-        ItemCarrinho itemCarrinho = new ItemCarrinho();
-
-        itemCarrinho.setId(card.getId());
-        itemCarrinho.setPrecoUnitario(card.getValor());
-
-        return itemCarrinho;
     }
 }
