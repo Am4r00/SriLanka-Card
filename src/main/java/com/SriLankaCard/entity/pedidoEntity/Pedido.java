@@ -32,7 +32,7 @@ public class Pedido {
     @Column(nullable = false)
     private LocalDateTime criadoEm = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "Pedido",
+    @OneToMany(mappedBy = "pedido",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
