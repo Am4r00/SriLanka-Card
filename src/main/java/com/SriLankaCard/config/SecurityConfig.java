@@ -37,12 +37,12 @@ public class SecurityConfig {
                                 "/contato", "/faq", "/sobre", "/giftcard",
                                 "/jogos", "/produto", "/funcionarios", "/cart",
                                 "/forgot", "/payment", "/verify", "/addEmploye",
-                                "/home_admin", "/test", "/static-test"
+                                "/home_admin", "/test", "/static-test","/confirmacaoPagamento"
                         ).permitAll()
 
 
                         // 🌟 ROTAS PRIVADAS — NECESSITAM LOGIN
-                        .requestMatchers("/produto", "/funcionarios", "/cart","/api/**")
+                        .requestMatchers("/produto", "/funcionarios", "/cart","/api/**","/confirmacaoPagamento")
                         .authenticated()
                         
                         // 🌟 ROTAS ADMIN — NECESSITAM ROLE ADMIN
