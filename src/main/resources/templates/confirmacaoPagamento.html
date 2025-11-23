@@ -1,52 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sucesso - SriLankaCard</title>
-    <link rel="stylesheet" th:href="@{/css/payment.css}">
-    <link rel="stylesheet" th:href="@{/css/confirmacaoPagamento.css}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedido Confirmado - SriLankaCard</title>
 
+    <!-- ✅ RESET pra matar a borda branca -->
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <!-- ✅ CSS do header/fragment (se existir) -->
+    <link rel="stylesheet" href="/css/header.css" th:href="@{/css/header.css}">
+
+    <!-- ✅ CSS da confirmação -->
+    <link rel="stylesheet" href="/css/confirmacaoPagamento.css" th:href="@{/css/confirmacaoPagamento.css}">
+
+    <!-- ✅ IMPORTA o CSS do payment só pra herdar a navbar igual às outras telas -->
+    <link rel="stylesheet" href="/css/payment.css" th:href="@{/css/payment.css}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet" />
+</head>
 <body>
 
-<header class="navbar">
-    <div class="navbar-container">
-        <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+<!-- Header padrão -->
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
-        <nav class="nav-links">
-            <ul>
-                <li><a href="giftcard.html">GiftCards</a></li>
-                <li><a href="#">Jogos</a></li>
-                <li><a href="#">Contato</a></li>
-                <li><a href="#">Sobre</a></li>
-            </ul>
-        </nav>
+<main class="confirm-main">
+    <section class="confirm-wrapper">
+        <div class="confirm-card">
+            <div class="confirm-icon-wrapper">
+                <div class="confirm-icon-circle">
+                    <span class="confirm-icon-check">✓</span>
+                </div>
+            </div>
 
-        <div class="nav-actions">
-            <a href="login.html" class="login-link">Login</a>
-            <!-- corrigido: de signup.html -> signup.html -->
-            <a href="signup.html"><button class="cta-button">Cadastrar</button></a>
+            <h1 class="confirm-title">Pedido confirmado!</h1>
+
+            <p class="confirm-text">
+                Recebemos o seu pedido e enviamos os detalhes para o seu e-mail.
+            </p>
+
+            <p class="confirm-subtext">
+                Assim que o pagamento for processado, seus Gift Cards serão liberados na sua conta.
+            </p>
+
+            <div class="confirm-actions">
+                <a th:href="@{/}" class="confirm-btn confirm-btn-primary">
+                    Voltar para a Home
+                </a>
+                <a th:href="@{/giftcard}" class="confirm-btn confirm-btn-secondary">
+                    Ver mais Gift Cards
+                </a>
+            </div>
         </div>
-    </div>
-</header>
-
-<main class="main-content">
-    <div class="content-wrapper">
-        <section class="success-message">
-            <i class="fas fa-check-circle success-icon"></i>
-            <h1>Pagamento Realizado com Sucesso!</h1>
-            <p>Obrigado por sua compra. Seu pedido foi concluído e os códigos serão enviados para seu e-mail.</p>
-            <a th:href="@{/home}"  class="back-home-button">Voltar para a página inicial</a>
-        </section>
-    </div>
+    </section>
 </main>
 
-</body>
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/confirmacaoPagamento.js}"></script>
 
+</body>
 </html>

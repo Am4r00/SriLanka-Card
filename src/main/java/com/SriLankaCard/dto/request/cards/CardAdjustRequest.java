@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CardAdjustRequest {
-    @NotBlank
+
     private String nome;
 
-    @NotBlank
     private  String observacoes;
 
-    @NotNull
     @DecimalMin("0.0")
     private Double valor;
 }

@@ -20,15 +20,6 @@ public class Card {
     @NotBlank
     private String observacoes;
 
-    @Column(name = "card_quantidade", nullable = false)
-    @NotNull
-    @Min(0)
-    private Integer quantidade;
-
-    @Column(name = "card_serial",nullable = false,unique = true)
-    @NotBlank
-    private String serial;
-
     @Column(name = "card_valor",nullable = false)
     @NotNull
     @DecimalMin("0.0")
