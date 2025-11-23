@@ -35,4 +35,16 @@ public class EmailService {
 
         mailSender.send(msg);
     }
+
+    public void enviarBoasVindas(String para, String nome){
+        String assunto = "🎉 Bem-vindo(a) à SriLankaCard!";
+        String corpo =
+                "Olá, " + (nome != null ? nome : "usuário") + "!\n\n" +
+                        "Seja muito bem-vindo(a) à SriLankaCard. 🚀\n" +
+                        "Agora você já pode comprar Gift Cards e jogos com segurança e praticidade.\n\n" +
+                        "Qualquer dúvida, estamos por aqui.\n\n" +
+                        "Equipe SriLankaCard";
+
+        enviarEmail(para, assunto, corpo);
+    }
 }
