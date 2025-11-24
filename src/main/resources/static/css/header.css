@@ -48,13 +48,21 @@
     gap: 1.5rem;
 }
 
+#auth-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
 .login-link,
 .logout-link {
     text-decoration: none;
     color: #fff;
     font-weight: 500;
     transition: color 0.3s ease;
+    white-space: nowrap;
 }
+
 .login-link:hover,
 .logout-link:hover {
     color: #A379D5;
@@ -70,6 +78,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     box-shadow: 0 0 15px rgba(108, 66, 161, 0.5);
+    white-space: nowrap;
 }
 
 .cta-button:hover {
@@ -87,7 +96,14 @@
     filter: brightness(1) saturate(10) hue-rotate(240deg);
 }
 
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .user-name {
     font-weight: 500;
-    color: #ddd;
+    color: #fff;
+    white-space: nowrap;
 }

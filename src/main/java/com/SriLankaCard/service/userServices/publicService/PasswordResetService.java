@@ -1,4 +1,4 @@
-package com.SriLankaCard.service.jwtServices;
+package com.SriLankaCard.service.userServices.publicService;
 
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;

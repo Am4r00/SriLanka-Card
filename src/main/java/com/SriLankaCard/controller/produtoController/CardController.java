@@ -6,6 +6,7 @@ import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
 import com.SriLankaCard.service.produtoService.CardServiceImplements;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +21,13 @@ public class CardController {
         this.cardServiceImplements = cardServiceImplements;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("criar-Card")
-    public CardResponse criarCard(@RequestBody CardRequest request){
+    public CardResponse criarCard(@Valid @RequestBody CardRequest request){
         return cardServiceImplements.criarCard(request);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("atualizar/{id}")
     public CardResponse atualizarCard(@PathVariable Long id, @Valid @RequestBody CardAdjustRequest adjust){
         return cardServiceImplements.atualiarCard(id, adjust);
@@ -40,6 +43,7 @@ public class CardController {
         return cardServiceImplements.buscarPorId(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deletar/{id}")
     public void deletarCard(@PathVariable Long id){
         cardServiceImplements.deletarCard(id);

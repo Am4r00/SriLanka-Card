@@ -105,9 +105,12 @@ function switchTab(tabName) {
 // Carregar lista de usuários
 async function loadUsers() {
     try {
+        console.log('Carregando lista de usuários...');
         const users = await apiRequest('/users/list');
+        console.log('Usuários carregados:', users);
         allUsers = users;
         renderUsers(users);
+        console.log('Lista de usuários renderizada');
     } catch (error) {
         console.error('Erro ao carregar usuários:', error);
         document.getElementById('userTableBody').innerHTML = `
@@ -142,6 +145,10 @@ function renderUsers(users) {
             return `<span class="funcoes-badge">${funcao}</span>`;
         }).join('');
         
+        const status = user.status || 'ATIVO';
+        const statusClass = status === 'ATIVO' ? 'status-ativo' : 'status-inativo';
+        const statusText = status === 'ATIVO' ? 'Ativo' : 'Inativo';
+        
         return `
             <tr>
                 <td>${user.id || '-'}</td>
@@ -149,7 +156,7 @@ function renderUsers(users) {
                 <td>${user.email || '-'}</td>
                 <td>${funcoesHtml || '-'}</td>
                 <td>
-                    <span class="status-badge status-ativo">Ativo</span>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
                 </td>
                 <td class="actions-cell">
                     <button class="btn-edit" onclick="openEditUserModal(${user.id})" title="Editar">
@@ -207,6 +214,11 @@ async function openEditUserModal(userId) {
             document.getElementById('userRole').value = funcao;
         }
         
+        // Definir status se disponível
+        if (user.status) {
+            document.getElementById('userStatus').value = user.status;
+        }
+        
         document.getElementById('userModal').style.display = 'block';
     } catch (error) {
         console.error('Erro ao carregar usuário:', error);
@@ -229,19 +241,38 @@ async function saveUser(event) {
         let endpoint, payload;
         
         if (userId) {
-            // Editar usuário - atualizar status se necessário
-            // Nota: O backend atual só permite atualizar status via PATCH /admin/update-user/{id}/{status}
-            // Para editar outros campos, seria necessário criar um endpoint específico
-            if (status) {
-                await apiRequest(`/admin/update-user/${userId}/${status}`, {
-                    method: 'PATCH'
-                });
-                alert('Status do usuário atualizado com sucesso!');
-            } else {
-                alert('Edição completa de usuário ainda não implementada no backend. Apenas status pode ser atualizado.');
+            // Editar usuário - atualizar nome, email e status
+            const updatePayload = {};
+            
+            if (name && name.trim() !== '') {
+                updatePayload.name = name.trim();
             }
+            
+            if (email && email.trim() !== '') {
+                updatePayload.email = email.trim();
+            }
+            
+            if (status) {
+                updatePayload.status = status;
+            }
+            
+            if (Object.keys(updatePayload).length === 0) {
+                alert('Nenhum campo foi alterado.');
+                return;
+            }
+            
+            console.log('Atualizando usuário:', userId, 'com payload:', updatePayload);
+            
+            await apiRequest(`/admin/update-user/${userId}`, {
+                method: 'PUT',
+                body: JSON.stringify(updatePayload)
+            });
+            
+            alert('Usuário atualizado com sucesso!');
             closeUserModal();
-            loadUsers();
+            // Limpar cache e recarregar lista
+            allUsers = [];
+            await loadUsers();
             return;
         } else {
             // Criar novo usuário
@@ -264,7 +295,9 @@ async function saveUser(event) {
         
         alert('Usuário salvo com sucesso!');
         closeUserModal();
-        loadUsers();
+        // Limpar cache e recarregar lista
+        allUsers = [];
+        await loadUsers();
     } catch (error) {
         console.error('Erro ao salvar usuário:', error);
         alert(`Erro ao salvar usuário: ${error.message}`);
@@ -278,11 +311,13 @@ async function deleteUser(userId) {
     }
     
     try {
-        const response = await apiRequest(`/admin/delete-user/${userId}`, {
+        const response =         await apiRequest(`/admin/delete-user/${userId}`, {
             method: 'DELETE'
         });
         alert('Usuário deletado com sucesso!');
-        loadUsers();
+        // Limpar cache e recarregar lista
+        allUsers = [];
+        await loadUsers();
     } catch (error) {
         console.error('Erro ao deletar usuário:', error);
         alert(`Erro ao deletar usuário: ${error.message}`);
@@ -300,9 +335,12 @@ function closeUserModal() {
 // Carregar lista de produtos
 async function loadProducts() {
     try {
+        console.log('Carregando lista de produtos...');
         const products = await apiRequest('/cards/listar');
+        console.log('Produtos carregados:', products);
         allProducts = products;
         renderProducts(products);
+        console.log('Lista de produtos renderizada');
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
         document.getElementById('productTableBody').innerHTML = `
@@ -409,27 +447,64 @@ async function saveProduct(event) {
         if (productId) {
             // Editar produto
             const payload = { nome, observacoes, valor };
-            await apiRequest(`/cards/atualizar/${productId}`, {
+            const updatedProduct = await apiRequest(`/cards/atualizar/${productId}`, {
                 method: 'PATCH',
                 body: JSON.stringify(payload)
             });
+            console.log('Produto atualizado:', updatedProduct);
             
-            // Atualizar promoção separadamente (endpoint tem /cards duplicado no controller)
+            // Atualizar promoção separadamente
             await apiRequest(`/cards/cards/${productId}/promocao/${promocao}`, {
                 method: 'PATCH'
             });
+            
+            console.log('Promoção atualizada');
         } else {
             // Criar produto
-            const payload = { nome, observacoes, valor, quantidade, promocao };
-            await apiRequest('/cards/criar-Card', {
+            // Validar quantidade - se for NaN ou undefined, usar 0
+            const quantidadeValida = (quantidade && !isNaN(quantidade) && quantidade > 0) ? quantidade : 0;
+            
+            const payload = { 
+                nome, 
+                observacoes, 
+                valor, 
+                quantidade: quantidadeValida, 
+                promocao 
+            };
+            
+            console.log('Payload enviado:', payload);
+            console.log('Token atual:', getToken() ? 'Token presente' : 'Token ausente');
+            
+            // Verificar token antes de enviar
+            const token = getToken();
+            if (!token) {
+                alert('Você precisa estar logado para criar produtos. Redirecionando para login...');
+                window.location.href = '/login';
+                return;
+            }
+            
+            // Decodificar token para verificar role
+            try {
+                const decoded = decodeToken(token);
+                console.log('Token decodificado:', decoded);
+                console.log('Role no token:', decoded.role);
+            } catch (e) {
+                console.error('Erro ao decodificar token:', e);
+            }
+            
+            const response = await apiRequest('/cards/criar-Card', {
                 method: 'POST',
                 body: JSON.stringify(payload)
             });
+            
+            console.log('Resposta do servidor:', response);
         }
         
         alert('Produto salvo com sucesso!');
         closeProductModal();
-        loadProducts();
+        // Limpar cache e recarregar lista
+        allProducts = [];
+        await loadProducts();
     } catch (error) {
         console.error('Erro ao salvar produto:', error);
         alert(`Erro ao salvar produto: ${error.message}`);
@@ -447,7 +522,9 @@ async function deleteProduct(productId) {
             method: 'DELETE'
         });
         alert('Produto deletado com sucesso!');
-        loadProducts();
+        // Limpar cache e recarregar lista
+        allProducts = [];
+        await loadProducts();
     } catch (error) {
         console.error('Erro ao deletar produto:', error);
         alert(`Erro ao deletar produto: ${error.message}`);

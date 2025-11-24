@@ -27,7 +27,10 @@ async function apiRequest(url, options = {}) {
     };
     
     try {
+        console.log('Requisição:', url, 'Headers:', config.headers);
         const response = await fetch(API_BASE_URL + url, config);
+        
+        console.log('Status da resposta:', response.status, response.statusText);
         
         if (response.status === 401) {
             // Token inválido ou expirado
@@ -40,8 +43,21 @@ async function apiRequest(url, options = {}) {
         }
         
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
-            throw new Error(errorData.message || `Erro ${response.status}`);
+            let errorMessage = `Erro ${response.status}`;
+            try {
+                const errorText = await response.text();
+                if (errorText) {
+                    try {
+                        const errorData = JSON.parse(errorText);
+                        errorMessage = errorData.message || errorData.error || errorText;
+                    } catch {
+                        errorMessage = errorText || `Erro ${response.status}: ${response.statusText}`;
+                    }
+                }
+            } catch (e) {
+                errorMessage = `Erro ${response.status}: ${response.statusText}`;
+            }
+            throw new Error(errorMessage);
         }
         
         // Tentar fazer parse JSON

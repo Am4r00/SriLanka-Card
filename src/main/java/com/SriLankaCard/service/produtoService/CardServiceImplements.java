@@ -2,6 +2,7 @@ package com.SriLankaCard.service.produtoService;
 
 import com.SriLankaCard.dto.request.cards.CardAdjustRequest;
 import com.SriLankaCard.dto.request.cards.CardRequest;
+import com.SriLankaCard.dto.request.giftCard.GerarCodesRequest;
 import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
 import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
@@ -10,6 +11,7 @@ import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
+import com.SriLankaCard.service.produtoService.GiftCodeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +23,14 @@ public class CardServiceImplements implements CardService {
 
     private final CardRepository cardRepository;
     private final GiftCodeRepository giftCodeRepository;
+    private final GiftCodeService giftCodeService;
 
     public CardServiceImplements(CardRepository cardRepository,
-                                 GiftCodeRepository giftCodeRepository) {
+                                 GiftCodeRepository giftCodeRepository,
+                                 GiftCodeService giftCodeService) {
         this.cardRepository = cardRepository;
         this.giftCodeRepository = giftCodeRepository;
+        this.giftCodeService = giftCodeService;
     }
 
     @Override
@@ -40,10 +45,31 @@ public class CardServiceImplements implements CardService {
         // avaliação inicial
         card.setAvaliacao(0);
 
-        cardRepository.save(card);
+        Card cardSalvo = cardRepository.save(card);
 
-        // card recém-criado ainda não tem GiftCodes => quantidade = 0
-        return CardMapper.toCardResponseByCard(card, 0);
+        // Se quantidade foi informada e é maior que zero, gerar os gift codes automaticamente
+        int quantidadeGerada = 0;
+        if (request.getQuantidade() != null && request.getQuantidade() > 0) {
+            try {
+                GerarCodesRequest gerarCodesRequest = new GerarCodesRequest();
+                gerarCodesRequest.setCardId(cardSalvo.getId());
+                gerarCodesRequest.setQuantidade(request.getQuantidade());
+                
+                giftCodeService.gerarCodigos(gerarCodesRequest);
+                quantidadeGerada = request.getQuantidade();
+                
+                // Atualizar a quantidade do card após gerar os códigos
+                cardSalvo.setQuantidade(quantidadeGerada);
+                cardSalvo = cardRepository.save(cardSalvo);
+            } catch (Exception e) {
+                // Se houver erro ao gerar códigos, logar mas não falhar a criação do card
+                System.err.println("Erro ao gerar gift codes: " + e.getMessage());
+                e.printStackTrace();
+                // Continua sem os gift codes, quantidade permanece 0
+            }
+        }
+
+        return CardMapper.toCardResponseByCard(cardSalvo, quantidadeGerada);
     }
 
     @Override

@@ -18,6 +18,9 @@ public class CardRequest {
     @DecimalMin("0.0")
     private Double valor;
 
+    @Min(0)
+    private Integer quantidade;
+
     private boolean promocao;
 
 }

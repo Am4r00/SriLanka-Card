@@ -1,6 +1,7 @@
 package com.SriLankaCard.service.userServices.adminService;
 
 import com.SriLankaCard.dto.request.user.admin.AdminCreateRequest;
+import com.SriLankaCard.dto.request.user.admin.AdminUpdateRequest;
 import com.SriLankaCard.dto.response.user.UserDetailResponse;
 import com.SriLankaCard.dto.response.user.UserResponse;
 import com.SriLankaCard.entity.userEntity.User;
@@ -116,6 +117,38 @@ public class AdminUserImple implements AdminUserService{
         System.out.println("=== DEPOIS DE SALVAR ===");
         System.out.println("Funções salvas: " + atualizado.getFuncao());
         
+        return UserMapper.toUserDetailByUser(atualizado);
+    }
+
+    @Override
+    @Transactional
+    public UserDetailResponse updateUser(Long id, AdminUpdateRequest request) {
+        if (id == null || id <= 0) {
+            throw new InvalidArgumentsException("O id deve ser um número positivo.");
+        }
+        
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+        
+        // Atualizar apenas os campos que foram fornecidos
+        if (request.getName() != null && !request.getName().trim().isEmpty()) {
+            user.setName(request.getName().trim());
+        }
+        
+        if (request.getEmail() != null && !request.getEmail().trim().isEmpty()) {
+            // Verificar se o email já está em uso por outro usuário
+            if (userRepository.existsByEmailIgnoreCase(request.getEmail()) && 
+                !user.getEmail().equalsIgnoreCase(request.getEmail())) {
+                throw new EmailAlreadyUsedException("O email " + request.getEmail() + " já está sendo usado.");
+            }
+            user.setEmail(request.getEmail().trim());
+        }
+        
+        if (request.getStatus() != null) {
+            user.setStatus(request.getStatus());
+        }
+        
+        User atualizado = userRepository.save(user);
         return UserMapper.toUserDetailByUser(atualizado);
     }
 }

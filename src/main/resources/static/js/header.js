@@ -51,7 +51,7 @@ function updateHeader() {
         const nameSpan = document.createElement('span');
         nameSpan.className = 'user-name';
         nameSpan.textContent = userEmail;
-        nameSpan.style.cssText = 'color: #333; font-weight: 500;';
+        nameSpan.style.cssText = 'color: #fff; font-weight: 500;';
         userDiv.appendChild(nameSpan);
         
         const logout = document.createElement('a');
@@ -125,9 +125,89 @@ function updateCartCount() {
     }
 }
 
+// Função para verificar se o usuário é admin
+async function isAdmin() {
+    const token = getToken();
+    if (!token) return false;
+    
+    try {
+        const decoded = decodeToken(token);
+        // Verificar se o token contém a role ADMIN
+        if (decoded && decoded.role) {
+            const role = decoded.role;
+            if (Array.isArray(role)) {
+                return role.some(r => {
+                    const roleValue = typeof r === 'string' ? r : (r.name || r.toString() || r);
+                    return roleValue === 'ADMIN' || roleValue === 'ROLE_ADMIN' || roleValue.includes('ADMIN');
+                });
+            }
+            return role === 'ADMIN' || role === 'ROLE_ADMIN' || role.includes('ADMIN');
+        }
+        // Verificar se tem funcoes no token
+        if (decoded && decoded.funcoes) {
+            if (Array.isArray(decoded.funcoes)) {
+                return decoded.funcoes.some(f => {
+                    const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
+                    return funcaoValue === 'ADMIN' || funcaoValue === 'ROLE_ADMIN' || funcaoValue.includes('ADMIN');
+                });
+            }
+            return decoded.funcoes.includes('ADMIN') || decoded.funcoes.includes('ROLE_ADMIN');
+        }
+        
+        // Se não encontrou no token, tentar buscar da API
+        if (window.api && typeof window.api.getCurrentUser === 'function') {
+            try {
+                const user = await window.api.getCurrentUser();
+                if (user && user.funcoes) {
+                    if (Array.isArray(user.funcoes)) {
+                        return user.funcoes.some(f => {
+                            const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
+                            return funcaoValue === 'ADMIN' || funcaoValue === 'ROLE_ADMIN' || funcaoValue.includes('ADMIN');
+                        });
+                    }
+                    return user.funcoes.includes('ADMIN') || user.funcoes.includes('ROLE_ADMIN');
+                }
+            } catch (apiError) {
+                console.error('Erro ao buscar usuário da API:', apiError);
+            }
+        }
+    } catch (e) {
+        console.error('Erro ao verificar admin:', e);
+    }
+    return false;
+}
+
+// Função para configurar o redirecionamento do logo
+function setupLogoRedirect() {
+    const logoLink = document.getElementById('logo-link');
+    if (!logoLink) return;
+    
+    logoLink.addEventListener('click', async function(e) {
+        e.preventDefault();
+        
+        const token = getToken();
+        
+        if (!token) {
+            // Não logado - vai para home normal
+            window.location.href = '/';
+            return;
+        }
+        
+        // Verificar se é admin
+        const admin = await isAdmin();
+        if (admin) {
+            window.location.href = '/home_admin';
+        } else {
+            // Usuário normal - vai para home
+            window.location.href = '/home';
+        }
+    });
+}
+
 // Inicializar header quando a página carregar
 document.addEventListener('DOMContentLoaded', () => {
     updateHeader();
+    setupLogoRedirect();
     
     // Atualizar quando o carrinho mudar
     const originalAddToCart = window.addToCart;

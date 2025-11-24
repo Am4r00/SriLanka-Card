@@ -72,27 +72,32 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // 🔥 VERIFICAÇÃO DE TOKEN
         String authHeader = request.getHeader("Authorization");
+        System.out.println("=== JWT FILTER: Authorization header ===");
+        System.out.println("Header presente: " + (authHeader != null));
+        System.out.println("Header valor: " + (authHeader != null ? (authHeader.startsWith("Bearer ") ? "Bearer [token]" : authHeader) : "null"));
 
         // Se não houver token, permitir passar para que o Spring Security decida
         // Isso é necessário para que páginas HTML possam ser carregadas
         // O Spring Security vai verificar se a rota precisa de autenticação/role
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("=== JWT FILTER: Sem token, deixando Spring Security decidir ===");
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = authHeader.substring(7);
+        System.out.println("=== JWT FILTER: Processando token ===");
 
         try {
             String username = jwtService.extractUsername(token);
+            System.out.println("Username extraído: " + username);
 
-            // Verificar se já existe uma autenticação (útil para testes com @WithMockUser)
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
+            if (username != null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                System.out.println("UserDetails carregado. Authorities: " + userDetails.getAuthorities());
 
                 if (jwtService.isTokenValid(token, userDetails)) {
-                    System.out.println("=== JWT AUTH FILTER: Autenticando usuário ===");
+                    System.out.println("=== JWT AUTH FILTER: Token válido, autenticando usuário ===");
                     System.out.println("Username: " + username);
                     System.out.println("Authorities: " + userDetails.getAuthorities());
 
@@ -106,10 +111,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     System.out.println("SecurityContext Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
                 } else {
                     System.out.println("=== JWT AUTH FILTER: Token inválido ===");
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
                 }
-            } else if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                // Se já existe uma autenticação (ex: @WithMockUser em testes), não sobrescrever
-                System.out.println("=== JWT AUTH FILTER: Autenticação já existe, mantendo ===");
+            } else {
+                System.out.println("=== JWT AUTH FILTER: Username é null ===");
             }
         } catch (Exception ex) {
             System.out.println("=== JWT AUTH FILTER: Erro ao processar token ===");
