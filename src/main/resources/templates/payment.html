@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento - SriLankaCard</title>
-    <link rel="stylesheet" href="/css/payment.css">
+    <link rel="stylesheet" th:href="@{/css/payment.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,149 +13,100 @@
 
 <body>
 
-    <header class="navbar">
-        <div class="navbar-container">
-            <a href="home.html" class="logo">SriLanka<span>Card</span></a>
+<header class="navbar">
+    <div class="navbar-container">
+        <a th:href="@{/home}" class="logo">SriLanka<span>Card</span></a>
 
-            <nav class="nav-links">
-                <ul>
-                    <li><a href="giftcard.html">GiftCards</a></li>
-                    <li><a href="#">Jogos</a></li>
-                    <li><a href="#">Contato</a></li>
-                    <li><a href="#">Sobre</a></li>
-                </ul>
-            </nav>
+        <nav class="nav-links">
+            <ul>
+                <li><a th:href="@{/giftcard}">GiftCards</a></li>
+                <li><a th:href="@{/jogos}">Jogos</a></li>
+                <li><a th:href="@{/contato}">Contato</a></li>
+                <li><a th:href="@{/sobre}">Sobre</a></li>
+            </ul>
+        </nav>
 
-            <div class="nav-actions">
-                <a href="login.html" class="login-link">Login</a>
-                <!-- corrigido: de signup.html -> signup.html -->
-                <a href="signup.html"><button class="cta-button">Cadastrar</button></a>
+        <div class="nav-actions">
+            <a th:href="@{/login}" class="login-link">Login</a>
+            <a th:href="@{/signup}">
+                <button class="cta-button">Cadastrar</button>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="content-wrapper">
+
+        <!-- ✅ ITENS DINÂMICOS -->
+        <section class="shopping-cart">
+            <h2>Itens</h2>
+
+            <!-- Atualiza via JS -->
+            <span class="item-count" id="payment-item-count">0 itens</span>
+
+            <!-- Container dinâmico -->
+            <div id="payment-items">
+                <!-- Itens serão inseridos aqui via payment.js -->
             </div>
-        </div>
-    </header>
 
-    <main class="main-content">
-        <div class="content-wrapper">
+            <!-- Total -->
+            <div class="cart-total" id="payment-total-label">Total: R$ 0,00</div>
+        </section>
 
-            <section class="shopping-cart">
-                <h2>Itens</h2>
-                <span class="item-count">3 itens</span>
+        <section class="payment-section">
+            <div class="payment-card">
+                <h3>Método de pagamento</h3>
 
-                <div class="cart-item">
-                    <div class="item-image-name">
-                        <img src="/img/apple-gift-card.png" alt="Apple Gift Card" class="item-image">
-                        <div class="item-details">
-                            <span class="item-name">R$30 Apple Gift Card</span>
+                <div class="payment-option active">
+                    <input type="radio" name="payment-method" id="credit-card" checked>
+                    <label for="credit-card">Cartão de Crédito</label>
+                    <div class="payment-form">
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input type="text" id="name" placeholder="Nome">
                         </div>
-                    </div>
-                    <div class="item-actions">
-                        <span class="original-price">R$29,99</span>
-                        <span class="discount-price">R$27,99</span>
-                        <span class="discount-badge">10%</span>
-                        <a href="#" class="action-link">Remover</a>
-                        <div class="quantity-control">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
+                        <div class="form-group">
+                            <label for="card-number">Número do Cartão</label>
+                            <input type="text" id="card-number" placeholder="Número do cartão">
                         </div>
-                    </div>
-                </div>
-
-                <div class="cart-item">
-                    <div class="item-image-name">
-                        <img src="/img/playstation-gift-card.png" alt="PlayStation Gift Card" class="item-image">
-                        <div class="item-details">
-                            <span class="item-name">R$100 PlayStation Gift Card</span>
-                            
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <span class="original-price">R$99,99</span>
-                        <span class="discount-price">R$90,99$</span>
-                        <span class="discount-badge">10%</span>
-                        <a href="#" class="action-link">Remover</a>
-                        <div class="quantity-control">
-                            <button>-</button>
-                            <span>2</span>
-                            <button>+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="cart-item">
-                    <div class="item-image-name">
-                        <img src="/img/steam-gift-card.png" alt="Steam Gift Card" class="item-image">
-                        <div class="item-details">
-                            <span class="item-name">R$50 Steam Gift Card</span>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <span class="discount-price">R$49,99</span>
-                        <a href="#" class="action-link">Remover</a>
-                        <div class="quantity-control">
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="payment-section">
-                <div class="payment-card">
-                    <h3>Método de pagamento</h3>
-
-                    <div class="payment-option active">
-                        <input type="radio" name="payment-method" id="credit-card" checked>
-                        <label for="credit-card">Cartão de Crédito</label>
-                        <div class="payment-form">
+                        <div class="form-row">
                             <div class="form-group">
-                                <label for="name">Nome</label>
-                                <input type="text" id="name" placeholder="Nome">
+                                <label for="expiry-date">Data de validade</label>
+                                <input type="text" id="expiry-date" placeholder="MM/AA">
                             </div>
                             <div class="form-group">
-                                <label for="card-number">Número do Cartão</label>
-                                <input type="text" id="card-number" placeholder="Número do cartão">
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="expiry-date">Data de validade</label>
-                                    <input type="text" id="expiry-date" placeholder="MM/AA">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cvv">CVV</label>
-                                    <input type="text" id="cvv" placeholder="CVV">
-                                </div>
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" placeholder="CVV">
                             </div>
                         </div>
                     </div>
-
-                    <div class="payment-option">
-                        <input type="radio" name="payment-method" id="pix">
-                        <label for="pix">Pix</label>
-                    </div>
                 </div>
 
-                <div class="discount-card">
-                    <h3>Código de desconto</h3>
-                    <div class="discount-input">
-                        <input type="text" value="MX57G3T5K9">
-                        <button class="remove-coupon">×</button>
-                    </div>
-                    <div class="points-message">
-                        Você ganhará <span>50 pontos</span> com esta compra!
-                    </div>
+                <div class="payment-option">
+                    <input type="radio" name="payment-method" id="pix">
+                    <label for="pix">Pix</label>
                 </div>
+            </div>
 
-                <div class="payment-summary">
-
-                    <a th:href="@{/confirmacaoPagamento}" class="cta-button">Concluir pagamento</a>
+            <!-- ✅ CUPOM SIMPLES (sem validação) -->
+            <div class="discount-card">
+                <h3>Código de desconto</h3>
+                <div class="discount-input">
+                    <input type="text" id="coupon-code" placeholder="Digite seu cupom">
                 </div>
-            </section>
+            </div>
 
-        </div>
-    </main>
+            <div class="payment-summary">
+                <button id="btn-finalizar-pagamento" class="cta-button">
+                    Concluir pagamento
+                </button>
+            </div>
+        </section>
 
+    </div>
+</main>
+
+<script th:src="@{/js/payment.js}"></script>
 </body>
-
 </html>

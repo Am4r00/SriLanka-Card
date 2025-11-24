@@ -35,7 +35,7 @@
             <span id="cart-total-label">Total: R$ 0,00</span>
         </div>
         <a th:href="@{/payment}">
-            <button class="cta-button" id="checkout-button" disabled>Comprar</button>
+            <button class="cta-button" id="checkout-button">Finalizar Compra</button>
         </a>
     </footer>
 </aside>
@@ -54,9 +54,6 @@
         }
     });
 </script>
-
-<!-- 👇 novo JS do carrinho -->
-<script th:src="@{/js/cart.js}"></script>
 
 </body>
 </html>

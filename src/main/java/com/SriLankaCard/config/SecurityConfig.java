@@ -38,12 +38,14 @@ public class SecurityConfig {
                                 "/contato", "/faq", "/sobre", "/giftcard",
                                 "/jogos", "/produto", "/funcionarios", "/cart",
                                 "/forgot", "/payment", "/verify", "/addEmploye",
-                                "/home_admin", "/usuariodetalhe", "/test", "/static-test"
+
+                                "/home_admin", "/test", "/static-test","/confirmacaoPagamento","/verify.html", "/usuariodetalhe"
+
                         ).permitAll()
 
 
                         // 🌟 ROTAS PRIVADAS — NECESSITAM LOGIN
-                        .requestMatchers("/produto", "/funcionarios", "/cart")
+                        .requestMatchers("/produto", "/funcionarios", "/cart","/api/**","/confirmacaoPagamento")
                         .authenticated()
 
                         // 🌟 LIBERANDO AS ROTAS DE API NECESSÁRIAS

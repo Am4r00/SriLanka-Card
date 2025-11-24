@@ -11,6 +11,7 @@ import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.mapper.UserMapper;
 import com.SriLankaCard.repository.userRepository.UserRepository;
+import com.SriLankaCard.service.emailService.EmailService;
 import com.SriLankaCard.utils.RegisterValidation;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,13 @@ public class AdminUserImple implements AdminUserService{
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private EmailService emailService;
 
-    public AdminUserImple (UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AdminUserImple(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
-
 
     @Override
     @Transactional
@@ -49,6 +51,11 @@ public class AdminUserImple implements AdminUserService{
         System.out.println("Status: " + novo.getStatus());
 
         try {
+            try {
+                emailService.enviarBoasVindas(user.getEmail(), user.getName());
+            } catch (Exception e) {
+                System.out.println("⚠️ Falha ao enviar boas-vindas: " + e.getMessage());
+            }
             User salvo = userRepository.save(novo);
             System.out.println("=== DEPOIS DE SALVAR ===");
             System.out.println("Funções salvas: " + salvo.getFuncao());

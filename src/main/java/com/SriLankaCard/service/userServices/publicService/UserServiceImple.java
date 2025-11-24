@@ -10,6 +10,7 @@ import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
 import com.SriLankaCard.mapper.UserMapper;
 import com.SriLankaCard.repository.userRepository.UserRepository;
+import com.SriLankaCard.service.emailService.EmailService;
 import com.SriLankaCard.utils.RegisterValidation;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,14 @@ public class UserServiceImple implements UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private EmailService emailService;
 
-    public UserServiceImple(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImple(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
+
     @Transactional
     public UserResponse findByEmail(String email) {
         var user = userRepository.findByEmailIgnoreCase(email)
@@ -50,6 +54,12 @@ public class UserServiceImple implements UserService {
         novo.setFuncao(new HashSet<Funcao>(List.of(Funcao.USUARIO)));
         novo.setStatus(UserStatus.ATIVO);
         novo.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        try {
+            emailService.enviarBoasVindas(user.getEmail(), user.getName());
+        } catch (Exception e) {
+            System.out.println("⚠️ Falha ao enviar boas-vindas: " + e.getMessage());
+        }
 
         User salvo = userRepository.save(novo);
         return UserMapper.toUserResponse(salvo);

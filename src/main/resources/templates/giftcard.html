@@ -2,15 +2,15 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GiftCards - SriLankaCard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftCards - SriLankaCard</title>
 
-  <link rel="stylesheet" th:href="@{/css/header.css}">
-  <link rel="stylesheet" th:href="@{/css/giftcard.css}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/giftcard.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -19,71 +19,98 @@
 
 <main class="giftcards-main">
 
-  <section class="promo-banner">
-    <div class="banner-content">
-      <h2>20% OFF EM TODOS OS GIFT CARDS</h2>
-      <a th:href="@{/comprar}" class="buy-now-button">Comprar Agora ></a>
-    </div>
-  </section>
-
-  <div class="page-container">
-
-    <aside class="sidebar">
-      <h3>Categorias</h3>
-      <ul class="category-list">
-        <li><a th:href="@{/giftcards/geral}">Geral</a></li>
-        <li><a th:href="@{/giftcards/musica}">Música</a></li>
-        <li><a th:href="@{/giftcards/entretenimento}">Entretenimento</a></li>
-        <li><a th:href="@{/giftcards/eletronicos}">Eletrônicos</a></li>
-        <li><a th:href="@{/giftcards/alimentacao}">Alimentação</a></li>
-        <li><a th:href="@{/giftcards/outros}">Outros produtos</a></li>
-      </ul>
-    </aside>
-
-    <div class="main-content">
-
-      <div class="sort-bar">
-        <div class="search-input">
-          <input type="text" placeholder="Pesquisar por um produto...">
-          <button><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+    <section class="promo-banner">
+        <div class="banner-content">
+            <h2>20% OFF EM TODOS OS GIFT CARDS</h2>
+            <a th:href="@{/comprar}" class="buy-now-button">Comprar Agora ></a>
         </div>
-        <div class="sort-by">
-          <span>Ordenar por:</span>
-          <select>
-            <option>Preço: Baixo a Alto</option>
-            <option>Preço: Alto a Baixo</option>
-            <option>Mais vendidos</option>
-          </select>
+    </section>
+
+    <div class="page-container">
+
+        <aside class="sidebar">
+            <h3>Categorias</h3>
+            <ul class="category-list">
+                <li><a th:href="@{/giftcards/geral}">Geral</a></li>
+                <li><a th:href="@{/giftcards/musica}">Música</a></li>
+                <li><a th:href="@{/giftcards/entretenimento}">Entretenimento</a></li>
+                <li><a th:href="@{/giftcards/eletronicos}">Eletrônicos</a></li>
+                <li><a th:href="@{/giftcards/alimentacao}">Alimentação</a></li>
+                <li><a th:href="@{/giftcards/outros}">Outros produtos</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+
+            <div class="sort-bar">
+                <div class="search-input">
+                    <input type="text" placeholder="Pesquisar por um produto..." id="search-input">
+                    <button id="search-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-search">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="sort-by">
+                    <span>Ordenar por:</span>
+                    <select id="sort-select">
+                        <option value="preco-asc">Preço: Baixo a Alto</option>
+                        <option value="preco-desc">Preço: Alto a Baixo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="product-grid" id="product-grid">
+                <!-- Produtos via JS -->
+            </div>
         </div>
-      </div>
 
-      <div class="product-grid" id="product-grid">
-        <!-- Produtos serão carregados dinamicamente via JavaScript -->
-      </div>
     </div>
-
-  </div>
 
 </main>
 
-<script th:src="@{/js/api.js}"></script>
-<script th:src="@{/js/produtos.js}"></script>
-<script th:src="@{/js/header.js}"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Filtrar apenas gift cards (excluir jogos)
-    loadProducts('.product-grid', (card) => {
-      const nome = card.nome.toLowerCase();
-      // Excluir jogos conhecidos
-      const isJogo = nome.includes('gta') || nome.includes('cyberpunk') || 
-                     nome.includes('witcher') || nome.includes('eafc') || 
-                     nome.includes('red dead') || nome.includes('forza') ||
-                     nome.includes('god of war') || nome.includes('last of us') ||
-                     nome.includes('ghost');
-      return !isJogo; // Retornar todos que não são jogos
-    });
-  });
-</script>
+<!-- MODAL DE DETALHES DO GIFT CARD -->
+<div id="gift-modal" class="gift-modal hidden">
+    <div class="gift-modal__backdrop"></div>
 
+    <div class="gift-modal__content">
+        <button id="gift-modal-close" class="gift-modal__close" aria-label="Fechar">&times;</button>
+
+        <div class="gift-modal__image-wrapper">
+            <img id="gift-modal-img" src="/img/gift-default.png" alt="Gift Card">
+        </div>
+
+        <div class="gift-modal__body">
+            <h3 id="gift-modal-nome" class="gift-modal__title">Nome do Card</h3>
+            <p id="gift-modal-descricao" class="gift-modal__descricao">
+                Descrição do gift card...
+            </p>
+
+            <p class="gift-modal__preco">
+                <span>Preço:</span>
+                <strong id="gift-modal-preco">R$ 0,00</strong>
+            </p>
+
+            <div class="gift-modal__qtd-row">
+                <label for="gift-modal-quantidade">Quantidade</label>
+                <input id="gift-modal-quantidade" type="number" min="1" value="1">
+            </div>
+
+            <button id="gift-modal-add" class="gift-modal__add-btn">
+                Adicionar ao carrinho
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/giftcards.js}"></script>
 </body>
 </html>

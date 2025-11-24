@@ -11,6 +11,11 @@
     --accent-color: #0d9488;
 }
 
+.input-error {
+    border: 2px solid #ff4d4f !important;
+    outline: none;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
