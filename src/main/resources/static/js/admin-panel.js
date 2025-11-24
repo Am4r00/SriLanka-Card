@@ -4,6 +4,84 @@
 let allUsers = [];
 let allProducts = [];
 
+// Função para verificar se o usuário é ADMIN
+function checkAdminAccess() {
+    const token = getToken();
+    if (!token) {
+        alert('Você precisa estar logado para acessar esta página.');
+        window.location.href = '/login';
+        return false;
+    }
+    
+    try {
+        const decoded = decodeToken(token);
+        console.log('Token decodificado:', decoded);
+        
+        if (!decoded) {
+            throw new Error('Token inválido');
+        }
+        
+        // O campo role pode vir como array (Set<Funcao> serializado) ou string
+        const role = decoded.role || decoded.funcao;
+        console.log('Role encontrado no token:', role, 'Tipo:', typeof role);
+        
+        let isAdmin = false;
+        
+        if (Array.isArray(role)) {
+            // Se for array, verificar se contém ADMIN
+            isAdmin = role.some(r => {
+                const roleValue = typeof r === 'string' ? r : (r.name || r.toString() || r);
+                return roleValue === 'ADMIN' || roleValue === 'ROLE_ADMIN' || roleValue.includes('ADMIN');
+            });
+            console.log('Verificação array - isAdmin:', isAdmin);
+        } else if (typeof role === 'string') {
+            // Se for string, verificar diretamente
+            isAdmin = role === 'ADMIN' || role === 'ROLE_ADMIN' || role.includes('ADMIN');
+            console.log('Verificação string - isAdmin:', isAdmin);
+        } else if (role && typeof role === 'object') {
+            // Se for objeto, verificar valores
+            const roleValues = Object.values(role);
+            isAdmin = roleValues.some(r => {
+                const roleValue = typeof r === 'string' ? r : (r.name || r.toString() || r);
+                return roleValue === 'ADMIN' || roleValue === 'ROLE_ADMIN' || roleValue.includes('ADMIN');
+            });
+            console.log('Verificação objeto - isAdmin:', isAdmin);
+        }
+        
+        if (!isAdmin) {
+            console.log('Acesso negado - usuário não é ADMIN');
+            alert('Acesso negado. Esta página é apenas para administradores.');
+            window.location.href = '/home';
+            return false;
+        }
+        
+        console.log('Acesso permitido - usuário é ADMIN');
+        return true;
+    } catch (error) {
+        console.error('Erro ao verificar token:', error);
+        console.error('Stack trace:', error.stack);
+        alert('Erro ao verificar autenticação. Por favor, faça login novamente.');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+        window.location.href = '/login';
+        return false;
+    }
+}
+
+// Função para decodificar token JWT (básico, sem validação)
+function decodeToken(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        return null;
+    }
+}
+
 // Função para alternar entre abas
 function switchTab(tabName) {
     // Remover active de todas as abas
@@ -396,6 +474,9 @@ window.onclick = function(event) {
 
 // Carregar dados ao inicializar
 document.addEventListener('DOMContentLoaded', () => {
-    loadUsers();
+    // Verificar se o usuário é ADMIN antes de carregar dados
+    if (checkAdminAccess()) {
+        loadUsers();
+    }
 });
 

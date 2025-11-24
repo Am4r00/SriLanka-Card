@@ -5,8 +5,12 @@ import com.SriLankaCard.dto.request.user.userPublic.ForgotPasswordRequest;
 import com.SriLankaCard.dto.request.user.userPublic.ResetPasswordRequest;
 import com.SriLankaCard.dto.response.login.LoginResponse;
 import com.SriLankaCard.service.jwtServices.AuthService;
+
+import jakarta.validation.Valid;
+
 import com.SriLankaCard.service.jwtServices.PasswordResetService;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public LoginResponse login(@RequestBody @Valid LoginRequest request) {
         return authService.login(request);
     }
 

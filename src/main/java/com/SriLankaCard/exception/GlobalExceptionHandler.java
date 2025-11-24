@@ -7,8 +7,10 @@ import com.SriLankaCard.exception.negocio.InvalidCardException;
 import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.exception.negocio.CarrinhoNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
+import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -32,6 +34,26 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
     }
 
+
+    @ExceptionHandler(InvalidArgumentsException.class)
+    public ResponseEntity<ResponseError> treatInvalidArguments(InvalidArgumentsException exception) {
+        return buildErrorResponse(exception, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseError> treatMethodArgumentNotValid(MethodArgumentNotValidException exception) {
+        String message = exception.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .reduce((msg1, msg2) -> msg1 + ", " + msg2)
+                .orElse("Dados inválidos");
+        
+        ResponseError error = new ResponseError(
+                HttpStatus.BAD_REQUEST.value(),
+                message,
+                LocalDateTime.now());
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+
     @ExceptionHandler(CarrinhoNotFoundException.class)
     public ResponseEntity<ResponseError> treatCartNotFound(CarrinhoNotFoundException exception){
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
@@ -45,6 +67,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CardNotFoundException.class)
     public ResponseEntity<ResponseError> treatCardNotFound(CardNotFoundException exception){
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
+
     }
 
     private ResponseEntity<ResponseError> buildErrorResponse(RuntimeException exception, HttpStatus httpStatus) {

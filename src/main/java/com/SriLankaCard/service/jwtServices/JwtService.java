@@ -9,8 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -19,10 +22,17 @@ public class JwtService {
     private final long EXPIRATION = 1000 * 60 * 60 * 10; // 10h
 
     public String generateToken(User user) {
+        // Converter Set<Funcao> para List<String> para serialização correta no JWT
+        List<String> roles = user.getFuncao() != null 
+            ? user.getFuncao().stream()
+                .map(Enum::name)
+                .collect(Collectors.toList())
+            : Collections.emptyList();
+        
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("name", user.getName())
-                .claim("role", user.getFuncao())
+                .claim("role", roles) // Agora é uma List<String>
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)

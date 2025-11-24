@@ -15,65 +15,69 @@ async function carregarCarrinho() {
         window.location.href = '/login';
         return;
     }
-
-    try {
-        const response = await fetch('/api/carrinho', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Accept': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            console.error('Erro ao buscar carrinho:', response.status);
-            return;
+    
+    const cart = api.getCart();
+    
+    if (!cart || cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="empty-cart">Seu carrinho está vazio.</div>';
+        if (cartHeader) {
+            cartHeader.textContent = 'Meu Carrinho (0)';
         }
-
-        const carrinho = await response.json();
-        renderizarCarrinho(carrinho);
-
-    } catch (err) {
-        console.error('Erro de rede ao buscar carrinho:', err);
+        return;
     }
+    
+    if (cartHeader) {
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartHeader.textContent = `Meu Carrinho (${totalItems})`;
+    }
+    
+    cartItemsContainer.innerHTML = '';
+    
+    cart.forEach(item => {
+        const cartItem = createCartItemElement(item);
+        cartItemsContainer.appendChild(cartItem);
+    });
+    
+    updateCartTotal();
 }
 
-function renderizarCarrinho(carrinho) {
-    const itemsContainer = document.getElementById('cart-items');
-    const titleEl = document.getElementById('cart-title');
-    const totalLabel = document.getElementById('cart-total-label');
-    const checkoutButton = document.getElementById('checkout-button');
-
-    if (!itemsContainer) return;
-
-    // limpa tudo antes de renderizar
-    itemsContainer.innerHTML = '';
-
-    const quantidadeTotal = Number(carrinho.quantidade) || 0;
-    const valorTotal = Number(carrinho.valorTotal) || 0;
-
-    // título: Meu Carrinho (X)
-    if (titleEl) {
-        titleEl.textContent = `Meu Carrinho (${quantidadeTotal})`;
-    }
-
-    // total
-    if (totalLabel) {
-        totalLabel.textContent = `Total: R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
-    }
-
-    // habilita/desabilita botão comprar
-    if (checkoutButton) {
-        checkoutButton.disabled = quantidadeTotal === 0;
-    }
-
-    // se não tiver itens:
-    if (!carrinho.itens || carrinho.itens.length === 0) {
-        const emptyMsg = document.createElement('p');
-        emptyMsg.textContent = 'Seu carrinho está vazio.';
-        emptyMsg.classList.add('empty-cart-message');
-        itemsContainer.appendChild(emptyMsg);
-        return;
+// Função para criar elemento de item do carrinho
+function createCartItemElement(item) {
+    const cartItem = document.createElement('div');
+    cartItem.className = 'cart-item';
+    cartItem.dataset.productId = item.id;
+    
+    // Determinar imagem
+    const imageMap = {
+        'spotify': '/img/spotify.png',
+        'shopee': '/img/shopee.jpg',
+        'steam': '/img/steam-gift-card.png',
+        'ifood': '/img/ifood.png',
+        'apple': '/img/apple-gift-card.png',
+        'uber': '/img/uber.png',
+        'netflix': '/img/netflix.jpg',
+        'playstation': '/img/playstation-gift-card.png',
+        'paramount': '/img/paramount.jpg',
+        'xbox': '/img/xbox.png',
+        'airbnb': '/img/airbnb.png',
+        'gta': '/img/GTA_V1.jpg',
+        'cyberpunk': '/img/cyberpunk.png',
+        'witcher': '/img/the_witcher_3.png',
+        'eafc': '/img/fc26.jpg',
+        'red dead': '/img/red_dead_2.png',
+        'forza': '/img/forza-horizon-5.webp',
+        'god of war': '/img/god_of_war.jpg',
+        'last of us': '/img/the_last_of_us.jpg',
+        'ghost': '/img/Ghost_of_Tsushima_capa.png'
+    };
+    
+    let imageUrl = '/img/steam-gift-card.png';
+    const itemNameLower = item.nome.toLowerCase();
+    for (const [key, url] of Object.entries(imageMap)) {
+        if (itemNameLower.includes(key)) {
+            imageUrl = url;
+            break;
+        }
     }
 
     carrinho.itens.forEach(item => {
@@ -98,18 +102,26 @@ function renderizarCarrinho(carrinho) {
                     <span class="item-color">Valor unitário: R$ ${precoUnitFmt}</span>
                 </div>
             </div>
-            <div class="item-actions">
-                <div class="item-prices">
-                    <span class="current-price">Subtotal: R$ ${subtotalFmt}</span>
+            <div class="item-info">
+                <span class="item-size">Tipo: Digital</span>
+                <span class="item-color">Valor: ${formatPrice(price)}</span>
+            </div>
+            <span class="free-shipping">Frete Grátis</span>
+            ${promoBadge}
+        </div>
+        <div class="item-actions">
+            <div class="item-prices">
+                <span class="current-price">${formatPrice(totalPrice)}</span>
+            </div>
+            <div class="item-controls">
+                <div class="quantity-control">
+                    <button onclick="updateQuantity(${item.id}, ${quantity - 1})">-</button>
+                    <span>${quantity}</span>
+                    <button onclick="updateQuantity(${item.id}, ${quantity + 1})">+</button>
                 </div>
-                <div class="item-controls">
-                    <div class="quantity-control">
-                        <span>Qtd: ${item.quantidade}</span>
-                    </div>
-                    <button class="remove-item-btn" data-produto-id="${item.produtoId}">
-                        Remover
-                    </button>
-                </div>
+                <button class="remove-item-btn" onclick="removeFromCart(${item.id})">
+                    Remover
+                </button>
             </div>
         `;
 
@@ -224,13 +236,6 @@ async function removerItem(produtoId) {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) return;
 
-    try {
-        const response = await fetch(`/api/carrinho/itens/${produtoId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
 
         if (!response.ok) {
             console.error('Erro ao remover item:', response.status);
