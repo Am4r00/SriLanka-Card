@@ -37,7 +37,7 @@ public class SecurityConfig {
                                 "/contato", "/faq", "/sobre", "/giftcard",
                                 "/jogos", "/produto", "/funcionarios", "/cart",
                                 "/forgot", "/payment", "/verify", "/addEmploye",
-                                "/home_admin", "/test", "/static-test","/confirmacaoPagamento"
+                                "/home_admin", "/test", "/static-test","/confirmacaoPagamento","/verify.html"
                         ).permitAll()
 
 
