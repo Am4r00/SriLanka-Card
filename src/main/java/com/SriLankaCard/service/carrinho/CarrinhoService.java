@@ -8,6 +8,7 @@ import com.SriLankaCard.entity.carrinhoEntity.Carrinho;
 import com.SriLankaCard.entity.carrinhoEntity.ItemCarrinho;
 import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
+import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.carrinhoRepository.CarrinhoRepository;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
@@ -56,7 +57,7 @@ public class CarrinhoService {
 
 
         Card card = cardRepository.findById(request.getId())
-                .orElseThrow(() -> new InvalidArgumentsException("Produto não encontrado"));
+                .orElseThrow(() -> new CardNotFoundException("Produto não encontrado"));
 
 
         Long disponiveisLong = giftCodeRepository

@@ -9,6 +9,7 @@ import com.SriLankaCard.entity.produtoEntity.GiftCode;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
+import com.SriLankaCard.exception.negocio.CarrinhoNotFoundException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.carrinhoRepository.CarrinhoRepository;
 import com.SriLankaCard.repository.pedidoRepository.PedidoRepository;
@@ -46,7 +47,7 @@ public class PedidoService {
     @Transactional
     public void finalizarPedido(Long usuarioId) {
         Carrinho carrinho = carrinhoRepository.findByUsuarioId(usuarioId)
-                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!"));
+                .orElseThrow(() -> new CarrinhoNotFoundException("Carrinho não encontrado!"));
 
         if (carrinho.getItens().isEmpty()) {
             throw new InvalidArgumentsException("Carrinho não possui itens");

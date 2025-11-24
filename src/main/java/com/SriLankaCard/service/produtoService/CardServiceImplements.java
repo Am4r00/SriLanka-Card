@@ -5,6 +5,8 @@ import com.SriLankaCard.dto.request.cards.CardRequest;
 import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
 import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
+import com.SriLankaCard.exception.negocio.InvalidCardException;
+import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
@@ -30,7 +32,7 @@ public class CardServiceImplements implements CardService {
     @Transactional
     public CardResponse criarCard(CardRequest request) {
         if (request == null) {
-            throw new RuntimeException("ERRO PERSONALIZADO !!");
+            throw new InvalidCardException("Card vazio!");
         }
 
         Card card = CardMapper.toCardByCardRequest(request);
@@ -48,11 +50,11 @@ public class CardServiceImplements implements CardService {
     @Transactional
     public CardResponse atualiarCard(Long id, CardAdjustRequest adjust) {
         if (id == null || id < 0 || adjust == null) {
-            throw new RuntimeException("ERRO PERSONALIZADO !!");
+            throw new InvalidCardException("Parâmetro inválido para card. Verique se os parâmetros estão corretos");
         }
 
         Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!!"));
+                .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
 
         if (adjust.getNome() != null) {
             card.setNome(adjust.getNome());
@@ -92,11 +94,11 @@ public class CardServiceImplements implements CardService {
     @Transactional
     public CardResponse buscarPorId(Long id) {
         if (id == null || id < 0) {
-            throw new RuntimeException("ID inválido");
+            throw new InvalidCardException("ID inválido");
         }
 
         Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Card não encontrado"));
+                .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
 
         Long count = giftCodeRepository
                 .countByCardAndStatus(card, GiftCodeStatus.DISPONIVEL);
@@ -109,11 +111,11 @@ public class CardServiceImplements implements CardService {
     @Transactional
     public void deletarCard(Long id) {
         if (id == null || id < 0) {
-            throw new RuntimeException("ERRO PESONALIZADO !!!!");
+            throw new InvalidCardException("ID do card é inválido!");
         }
 
         cardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!"));
+                .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
 
         cardRepository.deleteById(id);
     }
@@ -122,11 +124,11 @@ public class CardServiceImplements implements CardService {
     @Transactional
     public CardResponse atualizarPromocao(Boolean promo, Long id) {
         if (promo == null || id == null || id < 0) {
-            throw new RuntimeException("ERRO PERSONALIZADO !!!");
+            throw new InvalidCardException("Parâmetro inválido!");
         }
 
         Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!!"));
+                .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
 
         card.setPromocao(promo);
         cardRepository.save(card);
