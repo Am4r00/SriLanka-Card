@@ -21,8 +21,6 @@ body {
     line-height: 1.6;
 }
 
-/* --- Navbar (REMOVIDO) --- */
-
 /* --- Conteúdo Principal (Ajustado) --- */
 .jogos-main {
     max-width: 1200px;
@@ -67,43 +65,15 @@ body {
 /* --- Layout de Grid Principal --- */
 .page-container {
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 1fr;
     gap: 2rem;
 }
 
-/* --- Sidebar (Filtros) --- */
-.sidebar {
-    background-color: var(--light-bg);
-    padding: 1.5rem;
-    border-radius: 1rem;
+.hidden {
+    display: none !important;
 }
 
-.sidebar h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-top: 0;
-    color: var(--text-color);
-}
-
-.category-list {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0 0;
-}
-
-.category-list li a {
-    display: block;
-    padding: 0.5rem 0.75rem;
-    text-decoration: none;
-    color: var(--subtle-text);
-    border-radius: 0.5rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.category-list li a:hover {
-    background-color: var(--border-color);
-    color: var(--white);
-}
+/* Removido o estilo do modal aqui, já que agora ele está no giftcard.css */
 
 /* --- Conteúdo e Ordenação --- */
 .main-content {
@@ -168,6 +138,7 @@ body {
     gap: 1.5rem;
 }
 
+/* CARD DO PRODUTO (Ajustado para o giftcards.js) */
 .product-card {
     background-color: var(--light-bg);
     padding: 1.5rem 1rem;
@@ -186,12 +157,25 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-.product-logo {
-    width: 120px;
-    height: 60px;
-    object-fit: contain;
+/* NOVA SEÇÃO: Estilos injetados pelo giftcards.js */
+.product-card__image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     margin-bottom: 1rem;
 }
+
+.product-card__image img {
+    /* Corrigir o bug da imagem gigante */
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+/* FIM NOVA SEÇÃO */
+
+
+/* Removido o .product-logo, pois o giftcards.js não o usa */
 
 .product-details h3 {
     font-size: 1.2rem;

@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/jogos.css}">
+  <link rel="stylesheet" th:href="@{/css/giftcard.css}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,20 +29,6 @@
   </section>
 
   <div class="page-container">
-
-    <aside class="sidebar">
-      <h3>Categorias</h3>
-      <ul class="category-list">
-        <li><a th:href="@{/jogos/pc}">PC</a></li>
-        <li><a th:href="@{/jogos/playstation}">PlayStation</a></li>
-        <li><a th:href="@{/jogos/xbox}">Xbox</a></li>
-        <li><a th:href="@{/jogos/acao}">Ação</a></li>
-        <li><a th:href="@{/jogos/aventura}">Aventura</a></li>
-        <li><a th:href="@{/jogos/rpg}">RPG</a></li>
-        <li><a th:href="@{/jogos/estrategia}">Estratégia</a></li>
-        <li><a th:href="@{/jogos/esportes}">Esportes</a></li>
-      </ul>
-    </aside>
 
     <div class="main-content">
 
@@ -67,24 +54,81 @@
   </div>
 </main>
 
+
 <script th:src="@{/js/api.js}"></script>
-<script th:src="@{/js/produtos.js}"></script>
+
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/giftcards.js}"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Filtrar apenas jogos (pode ajustar a lógica de filtro conforme necessário)
-    loadProducts('.product-grid', (card) => {
-      const nome = card.nome.toLowerCase();
-      // Filtrar produtos que são jogos (ajuste conforme seus dados)
-      return nome.includes('gta') || nome.includes('cyberpunk') || 
-             nome.includes('witcher') || nome.includes('eafc') || 
-             nome.includes('red dead') || nome.includes('forza') ||
-             nome.includes('god of war') || nome.includes('last of us') ||
-             nome.includes('ghost') || nome.includes('jogo') ||
-             nome.includes('game') || nome.includes('steam') ||
-             nome.includes('playstation') || nome.includes('xbox');
-    });
+    // 1. Chamar a função principal do giftcards.js
+    carregarGiftCards();
+
+    // 2. Sobrescrever a função aplicarFiltros para incluir a lógica de "jogos"
+    // Isso deve ser feito APENAS se você quiser garantir que apenas cards de jogos
+    // sejam exibidos, assumindo que carregarGiftCards() buscou todos os cards.
+
+    const originalAplicarFiltros = aplicarFiltros;
+
+    window.aplicarFiltros = function() {
+      let cardsFiltrados = [...listaCards];
+
+      // 1. Aplica filtros e ordenação padrão (do giftcards.js)
+      // Isso assume que o giftcards.js tem a lógica de pesquisa e ordenação.
+      cardsFiltrados = originalAplicarFiltros(cardsFiltrados);
+
+      // 2. Aplica o filtro de JOGOS
+      cardsFiltrados = cardsFiltrados.filter(card => {
+        const nome = (card.nome || '').toLowerCase();
+        return nome.includes('gta') || nome.includes('cyberpunk') ||
+                nome.includes('witcher') || nome.includes('eafc') ||
+                nome.includes('red dead') || nome.includes('forza') ||
+                nome.includes('god of war') || nome.includes('last of us') ||
+                nome.includes('ghost') || nome.includes('jogo') ||
+                nome.includes('game') || nome.includes('steam') ||
+                nome.includes('playstation') || nome.includes('xbox');
+      });
+
+      // 3. Renderiza os cards filtrados
+      renderizarCards(cardsFiltrados);
+    };
+
+    // A função carregarGiftCards (dentro do giftcards.js) chama aplicarFiltros()
+    // após buscar os dados.
   });
 </script>
+<div id="gift-modal" class="gift-modal hidden">
+  <div class="gift-modal__backdrop"></div>
+
+  <div class="gift-modal__content">
+    <button id="gift-modal-close" class="gift-modal__close" aria-label="Fechar">&times;</button>
+
+    <div class="gift-modal__image-wrapper">
+      <img id="gift-modal-img" src="/img/gift-default.png" alt="Gift Card">
+    </div>
+
+    <div class="gift-modal__body">
+      <h3 id="gift-modal-nome" class="gift-modal__title">Nome do Card</h3>
+      <p id="gift-modal-descricao" class="gift-modal__descricao">
+        Descrição do gift card...
+      </p>
+
+      <p class="gift-modal__preco">
+        <span>Preço:</span>
+        <strong id="gift-modal-preco">R$ 0,00</strong>
+      </p>
+
+      <div class="gift-modal__qtd-row">
+        <label for="gift-modal-quantidade">Quantidade</label>
+        <input id="gift-modal-quantidade" type="number" min="1" value="1">
+      </div>
+
+      <button id="gift-modal-add" class="gift-modal__add-btn">
+        Adicionar ao carrinho
+      </button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

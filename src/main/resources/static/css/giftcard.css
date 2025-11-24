@@ -61,45 +61,11 @@ body {
     background-color: #ffe066;
 }
 
-/* --- Layout de Grid Principal --- */
+/* --- Layout Principal sem sidebar --- */
 .page-container {
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 1fr;
     gap: 2rem;
-}
-
-/* --- Sidebar (Filtros) --- */
-.sidebar {
-    background-color: var(--light-bg);
-    padding: 1.5rem;
-    border-radius: 1rem;
-}
-
-.sidebar h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-top: 0;
-    color: var(--text-color);
-}
-
-.category-list {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0 0;
-}
-
-.category-list li a {
-    display: block;
-    padding: 0.5rem 0.75rem;
-    text-decoration: none;
-    color: var(--subtle-text);
-    border-radius: 0.5rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.category-list li a:hover {
-    background-color: var(--border-color);
-    color: var(--white);
 }
 
 /* --- Conteúdo e Ordenação --- */
@@ -230,7 +196,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* CARD ESGOTADO (não clicável) */
+/* CARD ESGOTADO */
 .product-card--disabled {
     opacity: 0.5;
     cursor: default;
@@ -247,24 +213,17 @@ body {
 
 /* --- Responsividade --- */
 @media (max-width: 900px) {
-    .page-container {
-        grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-        display: none;
-    }
-
     .sort-bar {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
 
+
     .search-input {
-        width: 100%;
-        margin-right: 0;
-    }
+    width: 100%;
+    margin-right: 0;
+}
 
     .sort-by {
         width: 100%;
@@ -272,6 +231,8 @@ body {
         justify-content: flex-start;
         align-items: center;
     }
+
+
 }
 
 @media (max-width: 600px) {
@@ -281,10 +242,13 @@ body {
         padding: 1.5rem;
     }
 
+
     .banner-content h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+
 }
 
 /* =========== MODAL GIFT CARD =========== */
