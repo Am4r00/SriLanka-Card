@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
+@org.springframework.context.annotation.Profile("!test")
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -37,27 +38,26 @@ public class SecurityConfig {
                                 "/contato", "/faq", "/sobre", "/giftcard",
                                 "/jogos", "/produto", "/funcionarios", "/cart",
                                 "/forgot", "/payment", "/verify", "/addEmploye",
-                                "/home_admin", "/test", "/static-test"
+                                "/home_admin", "/usuariodetalhe", "/test", "/static-test"
                         ).permitAll()
 
 
                         // 🌟 ROTAS PRIVADAS — NECESSITAM LOGIN
                         .requestMatchers("/produto", "/funcionarios", "/cart")
                         .authenticated()
-                        
-                        // 🌟 ROTAS ADMIN — NECESSITAM ROLE ADMIN
-                        .requestMatchers("/home_admin", "/usuariodetalhe")
-                        .hasRole("ADMIN")
 
                         // 🌟 LIBERANDO AS ROTAS DE API NECESSÁRIAS
                         .requestMatchers("/users/create-user").permitAll()
+                        .requestMatchers("/users/list", "/users/me").authenticated()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin/create-user", "/admin/create-user-common", "/admin/test-create-admin", "/admin/update-user-to-admin").permitAll()
-                        .requestMatchers("/admin/**").authenticated()
                         
                         // 🌟 API DE CARDS - Listar é público, criar/atualizar/deletar precisa de ADMIN
                         .requestMatchers("/cards/listar", "/cards/{id}").permitAll()
-                        .requestMatchers("/admin/**").permitAll()
+                        
+                        // 🌟 ROTAS ADMIN - precisam estar autenticadas com role ADMIN
+                        // As rotas específicas com @PreAuthorize vão verificar a role
+                        .requestMatchers("/admin/**").authenticated()
 
                         // 🌟 LIBERANDO ARQUIVOS ESTÁTICOS
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
