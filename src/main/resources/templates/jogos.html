@@ -34,15 +34,25 @@
 
       <div class="sort-bar">
         <div class="search-input">
-          <input type="text" placeholder="Pesquisar por um jogo...">
-          <button><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+          <input type="text"
+                 placeholder="Pesquisar por um jogo..."
+                 id="search-input">
+          <button id="search-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="feather feather-search">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
         </div>
         <div class="sort-by">
           <span>Ordenar por:</span>
-          <select>
-            <option>Preço: Baixo a Alto</option>
-            <option>Preço: Alto a Baixo</option>
-            <option>Mais vendidos</option>
+          <select id="sort-select">
+            <option value="preco-asc">Preço: Baixo a Alto</option>
+            <option value="preco-desc">Preço: Alto a Baixo</option>
+            <option value="mais-vendidos">Mais vendidos</option>
           </select>
         </div>
       </div>
