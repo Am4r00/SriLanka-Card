@@ -39,10 +39,14 @@
             <div class="payment-card">
                 <h3>Método de pagamento</h3>
 
-                <div class="payment-option active">
+
+                <!-- Cartão de Crédito -->
+                <div class="payment-option active" id="option-credit">
                     <input type="radio" name="payment-method" id="credit-card" checked>
                     <label for="credit-card">Cartão de Crédito</label>
-                    <div class="payment-form">
+
+
+                    <div class="payment-form" id="credit-form">
                         <div class="form-group">
                             <label for="name">Nome</label>
                             <input type="text" id="name" placeholder="Nome">
@@ -64,13 +68,27 @@
                     </div>
                 </div>
 
-                <div class="payment-option">
+
+                <!-- PIX -->
+                <div class="payment-option" id="option-pix">
                     <input type="radio" name="payment-method" id="pix">
                     <label for="pix">Pix</label>
                 </div>
+
+
+                <!-- QR CODE PIX oculto por padrão -->
+                <div id="pix-container" class="pix-box" style="display: none;">
+                    <h3 class="pix-title">Escaneie o QR Code abaixo para pagar</h3>
+
+
+                    <div class="pix-qrcode-box">
+                        <img src="../static/img/qrCode.png" class="pix-qrcode-img" alt="QR Code Pix">
+                    </div>
+                </div>
             </div>
 
-            <!-- ✅ CUPOM SIMPLES (sem validação) -->
+
+            <!-- Cupom -->
             <div class="discount-card">
                 <h3>Código de desconto</h3>
                 <div class="discount-input">
@@ -78,12 +96,75 @@
                 </div>
             </div>
 
+
             <div class="payment-summary">
-                <button id="btn-finalizar-pagamento" class="cta-button">
-                    Concluir pagamento
-                </button>
+                <button id="btn-finalizar-pagamento" class="cta-button">Concluir pagamento</button>
             </div>
         </section>
+
+
+        <script>
+            // Alternância entre Cartão e Pix
+            const radioCredit = document.getElementById("credit-card");
+            const radioPix = document.getElementById("pix");
+
+
+            const creditForm = document.getElementById("credit-form");
+            const pixBox = document.getElementById("pix-container");
+
+
+            radioPix.addEventListener("change", () => {
+                creditForm.style.display = "none";
+                pixBox.style.display = "block";
+            });
+
+
+            radioCredit.addEventListener("change", () => {
+                pixBox.style.display = "none";
+                creditForm.style.display = "block";
+            });
+            // Timer de 10 minutos
+            let timerDuration = 10 * 60; // 10 minutos em segundos
+            const timerDisplay = document.createElement('div');
+            timerDisplay.id = 'pix-timer';
+            timerDisplay.style.color = '#fff';
+            timerDisplay.style.fontSize = '1.2rem';
+            timerDisplay.style.marginTop = '15px';
+            document.getElementById('pix-container').appendChild(timerDisplay);
+
+
+            function startPixTimer() {
+                function updateTimer() {
+                    const minutes = Math.floor(timerDuration / 60);
+                    const seconds = timerDuration % 60;
+                    timerDisplay.textContent = `Tempo restante: ${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+
+                    if (timerDuration <= 0) {
+                        clearInterval(countdown);
+                        timerDisplay.textContent = "Tempo expirado. Gere outro QR Code.";
+                        return;
+                    }
+
+                    timerDuration--;
+                }
+
+
+                updateTimer();
+                const countdown = setInterval(updateTimer, 1000);
+            }
+
+            radioPix.addEventListener("change", () => {
+                creditForm.style.display = "none";
+                pixBox.style.display = "block";
+                timerDuration = 10 * 60; // reinicia o timer
+                startPixTimer();
+            });
+
+            radioCredit.addEventListener("change", () => {
+                pixBox.style.display = "none";
+                creditForm.style.display = "block";
+            });
+        </script>
 
     </div>
 </main>
