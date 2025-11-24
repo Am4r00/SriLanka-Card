@@ -5,10 +5,10 @@ import com.SriLankaCard.dto.request.user.userPublic.ForgotPasswordRequest;
 import com.SriLankaCard.dto.request.user.userPublic.ResetPasswordRequest;
 import com.SriLankaCard.dto.response.login.LoginResponse;
 import com.SriLankaCard.service.jwtServices.AuthService;
+import com.SriLankaCard.service.userServices.publicService.PasswordResetService;
 
 import jakarta.validation.Valid;
 
-import com.SriLankaCard.service.jwtServices.PasswordResetService;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;

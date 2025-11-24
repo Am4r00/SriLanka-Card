@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento - SriLankaCard</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/payment.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,27 +14,7 @@
 
 <body>
 
-<header class="navbar">
-    <div class="navbar-container">
-        <a th:href="@{/home}" class="logo">SriLanka<span>Card</span></a>
-
-        <nav class="nav-links">
-            <ul>
-                <li><a th:href="@{/giftcard}">GiftCards</a></li>
-                <li><a th:href="@{/jogos}">Jogos</a></li>
-                <li><a th:href="@{/contato}">Contato</a></li>
-                <li><a th:href="@{/sobre}">Sobre</a></li>
-            </ul>
-        </nav>
-
-        <div class="nav-actions">
-            <a th:href="@{/login}" class="login-link">Login</a>
-            <a th:href="@{/signup}">
-                <button class="cta-button">Cadastrar</button>
-            </a>
-        </div>
-    </div>
-</header>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
 
 <main class="main-content">
     <div class="content-wrapper">
@@ -107,6 +88,8 @@
     </div>
 </main>
 
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/payment.js}"></script>
 </body>
 </html>

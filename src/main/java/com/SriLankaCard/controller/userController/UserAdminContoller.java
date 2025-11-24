@@ -1,6 +1,7 @@
 package com.SriLankaCard.controller.userController;
 
 import com.SriLankaCard.dto.request.user.admin.AdminCreateRequest;
+import com.SriLankaCard.dto.request.user.admin.AdminUpdateRequest;
 import com.SriLankaCard.dto.response.user.UserDetailResponse;
 import com.SriLankaCard.entity.userEntity.enums.Funcao;
 import com.SriLankaCard.entity.userEntity.enums.UserStatus;
@@ -88,8 +89,15 @@ public class UserAdminContoller {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update-user/{id}/{status}")
-    public UserDetailResponse updateUser(@PathVariable Long id, @PathVariable("status") UserStatus status){
+    public UserDetailResponse updateUserStatus(@PathVariable Long id, @PathVariable("status") UserStatus status){
         return adminUserImple.adjustStatus(id,status);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update-user/{id}")
+    public ResponseEntity<UserDetailResponse> updateUser(@PathVariable Long id, @Valid @RequestBody AdminUpdateRequest request){
+        UserDetailResponse updated = adminUserImple.updateUser(id, request);
+        return ResponseEntity.ok(updated);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

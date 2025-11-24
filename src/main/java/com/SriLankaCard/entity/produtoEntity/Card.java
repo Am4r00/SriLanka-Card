@@ -33,4 +33,13 @@ public class Card {
     @Min(0) @Max(5)
     private Integer avaliacao;
 
+    @Column(name = "card_quantidade", nullable = false)
+    @NotNull
+    @Min(0)
+    private Integer quantidade = 0;
+
+    @Column(name = "card_serial", nullable = false, unique = true)
+    @NotBlank
+    private String serial;
+
 }

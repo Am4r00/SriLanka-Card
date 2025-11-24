@@ -53,21 +53,21 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(CarrinhoNotFoundException.class)
-    public ResponseEntity<ResponseError> treatCartNotFound(CarrinhoNotFoundException exception){
+    public ResponseEntity<ResponseError> treatCartNotFound(CarrinhoNotFoundException exception) {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidCardException.class)
-    public ResponseEntity<ResponseError> treatCardIsNull(InvalidCardException exception){
+    public ResponseEntity<ResponseError> treatCardIsNull(InvalidCardException exception) {
         return buildErrorResponse(exception, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CardNotFoundException.class)
-    public ResponseEntity<ResponseError> treatCardNotFound(CardNotFoundException exception){
+    public ResponseEntity<ResponseError> treatCardNotFound(CardNotFoundException exception) {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND);
-
     }
 
     private ResponseEntity<ResponseError> buildErrorResponse(RuntimeException exception, HttpStatus httpStatus) {

@@ -67,9 +67,12 @@ public class SecurityConfig {
                         // 🌟 ROTAS DO CARRINHO – precisam estar autenticadas
                         .requestMatchers("/api/carrinho/**").authenticated()
 
-                        // 🌟 ROTAS PROTEGIDAS POR ROLE
+                        // 🌟 ROTAS PROTEGIDAS POR ROLE - Cards
                         .requestMatchers("/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**")
                         .hasRole("ADMIN")
+                        
+                        // 🌟 Endpoint de erro do Spring (para não bloquear mensagens de erro)
+                        .requestMatchers("/error").permitAll()
 
                         // 🌟 ARQUIVOS ESTÁTICOS
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
