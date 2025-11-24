@@ -5,6 +5,7 @@ import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCode;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
+import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
@@ -29,7 +30,7 @@ public class GiftCodeService {
     public List<GiftCode> gerarCodigos(GerarCodesRequest request){
 
         Card card = cardRepository.findById(request.getCardId())
-                .orElseThrow(() -> new RuntimeException("ERRO PERSONALIZADO !!!"));
+                .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
 
         if(request.getQuantidade() == null || request.getQuantidade() <= 0){
             throw new InvalidArgumentsException("Quantidade deve ser maior que zero");
