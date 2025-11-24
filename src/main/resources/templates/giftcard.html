@@ -22,7 +22,6 @@
     <section class="promo-banner">
         <div class="banner-content">
             <h2>20% OFF EM TODOS OS GIFT CARDS</h2>
-            <a th:href="@{/comprar}" class="buy-now-button">Comprar Agora ></a>
         </div>
     </section>
 
@@ -31,12 +30,11 @@
         <aside class="sidebar">
             <h3>Categorias</h3>
             <ul class="category-list">
-                <li><a th:href="@{/giftcards/geral}">Geral</a></li>
-                <li><a th:href="@{/giftcards/musica}">Música</a></li>
-                <li><a th:href="@{/giftcards/entretenimento}">Entretenimento</a></li>
-                <li><a th:href="@{/giftcards/eletronicos}">Eletrônicos</a></li>
-                <li><a th:href="@{/giftcards/alimentacao}">Alimentação</a></li>
-                <li><a th:href="@{/giftcards/outros}">Outros produtos</a></li>
+                <li><a href="#" data-categoria="todos" class="category-link active">Todos</a></li>
+                <li><a href="#" data-categoria="jogos" class="category-link">Jogos</a></li>
+                <li><a href="#" data-categoria="comida" class="category-link">Comida</a></li>
+                <li><a href="#" data-categoria="musica" class="category-link">Música</a></li>
+                <li><a href="#" data-categoria="servicos" class="category-link">Serviços</a></li>
             </ul>
         </aside>
 

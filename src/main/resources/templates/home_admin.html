@@ -22,26 +22,10 @@
     <div class="hero-content">
         <h1>PAINEL ADMINISTRATIVO</h1>
         <p>Gerencie usuários, cards e configurações do sistema.</p>
-        
-        <!-- Botões de teste da API Administrativa -->
-        <div class="api-test-buttons" style="margin: 30px 0; padding: 20px; background: rgba(255,255,255,0.9); border-radius: 12px; border-left: 4px solid #dc3545;">
-            <h4 style="margin: 0 0 20px 0; color: #dc3545;">👑 Teste de APIs - Administração</h4>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
-                <button onclick="obterPerfilUsuario()" class="btn btn-info" style="padding: 10px 20px; border: none; border-radius: 6px; background: #17a2b8; color: white; cursor: pointer;">
-                    👤 Meu Perfil
-                </button>
-                <a th:href="@{/usuariodetalhe}" class="btn btn-primary" style="padding: 10px 20px; border: none; border-radius: 6px; background: #007bff; color: white; cursor: pointer; text-decoration: none;">
-                📋 Gerenciar Usuários e Produtos
-                     </a>
-            </div>
-            <p style="margin: 0; font-size: 12px; color: #6c757d;">
-                💡 Faça login como admin primeiro para testar as APIs administrativas.
-            </p>
+        <div class="hero-buttons">
+            <a th:href="@{/usuariodetalhe}" class="btn primary">Gerenciar Usuários e Produtos</a>
         </div>
 
-        <!-- Containers para exibir dados -->
-        <div id="profile-container"></div>
-        <div id="users-container"></div>
     </div>
 </main>
 

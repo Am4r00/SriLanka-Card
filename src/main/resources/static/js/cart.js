@@ -1,10 +1,27 @@
 // Ajuste aqui se seu token estiver salvo com outro nome:
 const TOKEN_KEY = 'token';
 
+// Elementos do DOM
+const cartItemsContainer = document.getElementById('cart-items');
+const cartHeader = document.getElementById('cart-title');
+const cartTotalLabel = document.getElementById('cart-total-label');
+
 document.addEventListener('DOMContentLoaded', () => {
     carregarCarrinho();
-    // ❌ NÃO adicionamos mais listener de finalizarCompra aqui.
-    // A tela de pagamento (/payment) é que vai finalizar o pedido.
+    
+    // Adicionar evento ao botão de fechar do carrinho
+    const closeBtn = document.getElementById('cart-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            // Voltar para a página anterior
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // Se não houver histórico, redirecionar para home
+                window.location.href = '/';
+            }
+        });
+    }
 });
 
 async function carregarCarrinho() {
@@ -16,130 +33,98 @@ async function carregarCarrinho() {
         return;
     }
     
-    const cart = api.getCart();
-    
-    if (!cart || cart.length === 0) {
-        cartItemsContainer.innerHTML = '<div class="empty-cart">Seu carrinho está vazio.</div>';
-        if (cartHeader) {
-            cartHeader.textContent = 'Meu Carrinho (0)';
+    try {
+        const carrinho = await api.getCart();
+        
+        if (!carrinho || !carrinho.itens || carrinho.itens.length === 0) {
+            if (cartItemsContainer) {
+                cartItemsContainer.innerHTML = '<div class="empty-cart">Seu carrinho está vazio.</div>';
+            }
+            if (cartHeader) {
+                cartHeader.textContent = 'Meu Carrinho (0)';
+            }
+            if (cartTotalLabel) {
+                cartTotalLabel.textContent = 'Total: R$ 0,00';
+            }
+            return;
         }
-        return;
+        
+        // Atualizar título com quantidade total
+        if (cartHeader) {
+            const totalItems = carrinho.quantidade || carrinho.itens.reduce((sum, item) => sum + (item.quantidade || 1), 0);
+            cartHeader.textContent = `Meu Carrinho (${totalItems})`;
+        }
+        
+        // Limpar container e renderizar itens
+        if (cartItemsContainer) {
+            cartItemsContainer.innerHTML = '';
+            
+            carrinho.itens.forEach(item => {
+                const cartItem = createCartItemElement(item);
+                cartItemsContainer.appendChild(cartItem);
+            });
+        }
+        
+        // Atualizar total
+        updateCartTotal(carrinho.valorTotal || 0);
+    } catch (error) {
+        console.error('Erro ao carregar carrinho:', error);
+        if (cartItemsContainer) {
+            cartItemsContainer.innerHTML = '<div class="empty-cart">Erro ao carregar carrinho. Tente novamente.</div>';
+        }
     }
-    
-    if (cartHeader) {
-        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        cartHeader.textContent = `Meu Carrinho (${totalItems})`;
-    }
-    
-    cartItemsContainer.innerHTML = '';
-    
-    cart.forEach(item => {
-        const cartItem = createCartItemElement(item);
-        cartItemsContainer.appendChild(cartItem);
-    });
-    
-    updateCartTotal();
 }
 
 // Função para criar elemento de item do carrinho
 function createCartItemElement(item) {
     const cartItem = document.createElement('div');
     cartItem.className = 'cart-item';
-    cartItem.dataset.productId = item.id;
+    cartItem.dataset.productId = item.produtoId;
     
-    // Determinar imagem
-    const imageMap = {
-        'spotify': '/img/spotify.png',
-        'shopee': '/img/shopee.jpg',
-        'steam': '/img/steam-gift-card.png',
-        'ifood': '/img/ifood.png',
-        'apple': '/img/apple-gift-card.png',
-        'uber': '/img/uber.png',
-        'netflix': '/img/netflix.jpg',
-        'playstation': '/img/playstation-gift-card.png',
-        'paramount': '/img/paramount.jpg',
-        'xbox': '/img/xbox.png',
-        'airbnb': '/img/airbnb.png',
-        'gta': '/img/GTA_V1.jpg',
-        'cyberpunk': '/img/cyberpunk.png',
-        'witcher': '/img/the_witcher_3.png',
-        'eafc': '/img/fc26.jpg',
-        'red dead': '/img/red_dead_2.png',
-        'forza': '/img/forza-horizon-5.webp',
-        'god of war': '/img/god_of_war.jpg',
-        'last of us': '/img/the_last_of_us.jpg',
-        'ghost': '/img/Ghost_of_Tsushima_capa.png'
-    };
+    const nome = item.nome || 'Produto sem nome';
+    const imgSrc = resolverImagem(item);
+    const precoUnit = Number(item.precoUnitario) || 0;
+    const quantidade = item.quantidade || 1;
+    const subtotal = Number(item.total) || (precoUnit * quantidade);
     
-    let imageUrl = '/img/steam-gift-card.png';
-    const itemNameLower = item.nome.toLowerCase();
-    for (const [key, url] of Object.entries(imageMap)) {
-        if (itemNameLower.includes(key)) {
-            imageUrl = url;
-            break;
-        }
-    }
-
-    carrinho.itens.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-
-        const nome = (item.nome || `${item.nome}`).toLowerCase();
-        const imgSrc = resolverImagem(item);
-
-        const precoUnit = Number(item.precoUnitario) || 0;
-        const subtotal = Number(item.total ?? (precoUnit * (item.quantidade || 0)));
-
-        const precoUnitFmt = precoUnit.toFixed(2).replace('.', ',');
-        const subtotalFmt = subtotal.toFixed(2).replace('.', ',');
-
-        div.innerHTML = `
-            <img src="${imgSrc}" alt="${nome}" class="item-image" />
-            <div class="item-details">
-                <span class="item-title">${nome}</span>
-                <div class="item-info">
-                    <span class="item-size">Tipo: Digital</span>
-                    <span class="item-color">Valor unitário: R$ ${precoUnitFmt}</span>
-                </div>
+    const precoUnitFmt = precoUnit.toFixed(2).replace('.', ',');
+    const subtotalFmt = subtotal.toFixed(2).replace('.', ',');
+    
+    cartItem.innerHTML = `
+        <img src="${imgSrc}" alt="${nome}" class="item-image" />
+        <div class="item-details">
+            <span class="item-title">${nome}</span>
+            <div class="item-meta">
+                <span class="item-info">Tipo: Digital</span>
+                <span class="item-info">Preço unitário: R$ ${precoUnitFmt}</span>
+                <span class="item-info">Quantidade: ${quantidade}</span>
             </div>
-            <div class="item-info">
-                <span class="item-size">Tipo: Digital</span>
-                <span class="item-color">Valor: ${formatPrice(price)}</span>
-            </div>
-            <span class="free-shipping">Frete Grátis</span>
-            ${promoBadge}
         </div>
         <div class="item-actions">
             <div class="item-prices">
-                <span class="current-price">${formatPrice(totalPrice)}</span>
+                <span class="current-price">R$ ${subtotalFmt}</span>
             </div>
-            <div class="item-controls">
-                <div class="quantity-control">
-                    <button onclick="updateQuantity(${item.id}, ${quantity - 1})">-</button>
-                    <span>${quantity}</span>
-                    <button onclick="updateQuantity(${item.id}, ${quantity + 1})">+</button>
-                </div>
-                <button class="remove-item-btn" onclick="removeFromCart(${item.id})">
-                    Remover
-                </button>
-            </div>
-        `;
-
-        itemsContainer.appendChild(div);
-    });
-
-    // ligar eventos dos botões "Remover"
-    itemsContainer.querySelectorAll('.remove-item-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
+            <button class="remove-item-btn" data-produto-id="${item.produtoId}">
+                Remover
+            </button>
+        </div>
+    `;
+    
+    // Adicionar evento de remover
+    const removeBtn = cartItem.querySelector('.remove-item-btn');
+    if (removeBtn) {
+        removeBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
             const produtoId = e.currentTarget.getAttribute('data-produto-id');
             await removerItem(produtoId);
-            await carregarCarrinho(); // recarrega carrinho depois de remover
         });
-    });
+    }
+    
+    return cartItem;
 }
 
 function resolverImagem(item) {
-    const nome = (item.nome || `${item.nome}`).toLowerCase();
+    const nome = (item.nome || '').toLowerCase();
 
     // 👉 Gift cards / serviços
     if (nome.includes('apple')) {
@@ -196,7 +181,7 @@ function resolverImagem(item) {
     }
 
     if (nome.includes('forza')) {
-        return '/img/forza-horizon-5-64md.1200.webp';
+        return '/img/forza-horizon-5.webp';
     }
 
     if (nome.includes('ghost of tsushima') || nome.includes('tsushima')) {
@@ -204,43 +189,58 @@ function resolverImagem(item) {
     }
 
     if (nome.includes('god of war')) {
-        return '/img/god-of-war.jpg';
+        return '/img/god_of_war.jpg';
     }
 
     if (nome.includes('gta')) {
-        return '/img/gta.jpg';
+        return '/img/GTA_V1.jpg';
     }
 
     if (nome.includes('red dead')) {
-        return '/img/red-dead-2.png';
+        return '/img/red_dead_2.png';
     }
 
     if (nome.includes('the last of us')) {
-        return '/img/the-last-of-us.jpg';
+        return '/img/the_last_of_us.jpg';
     }
 
     if (nome.includes('witcher')) {
-        return '/img/the-witcer-3'; // confere o nome/ extensão desse arquivo aí na pasta img
+        return '/img/the_witcher_3.png';
     }
 
     // 👉 fallback genérico pra qualquer outro gift card / produto
     if (nome.includes('gift') || nome.includes('card')) {
-        return '/img/default-card.jpg';
+        return '/img/steam-gift-card.png';
     }
 
     // 👉 fallback final pra qualquer coisa que não bateu em nada
-    return '/img/default-card.jpg';
+    return '/img/steam-gift-card.png';
 }
 
 async function removerItem(produtoId) {
     const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) return;
+    if (!token) {
+        alert('Você precisa estar logado para remover itens.');
+        return;
+    }
 
-
-        if (!response.ok) {
-            console.error('Erro ao remover item:', response.status);
-        }
+    try {
+        await api.removeFromCart(produtoId);
+        // Recarregar carrinho após remover
+        await carregarCarrinho();
     } catch (err) {
         console.error('Erro de rede ao remover item:', err);
+        alert('Erro ao remover item do carrinho. Tente novamente.');
     }
 }
+
+function updateCartTotal(valorTotal) {
+    if (cartTotalLabel) {
+        const valorFormatado = valorTotal.toFixed(2).replace('.', ',');
+        cartTotalLabel.textContent = `Total: R$ ${valorFormatado}`;
+    }
+}
+
+// Exportar funções para uso global
+window.carregarCarrinho = carregarCarrinho;
+window.removerItem = removerItem;

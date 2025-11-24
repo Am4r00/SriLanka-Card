@@ -2,6 +2,71 @@
 // VERIFY.JS - integrado ao backend
 // ================================
 
+// Função para mostrar toast (notificação)
+function showToast(message, isError = false) {
+    // Remover toast anterior se existir
+    const existingToast = document.getElementById('toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Criar elemento de toast
+    const toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${isError ? '#ef4444' : '#10b981'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-weight: 500;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease;
+    `;
+
+    // Adicionar animação CSS se não existir
+    if (!document.getElementById('toast-styles')) {
+        const style = document.createElement('style');
+        style.id = 'toast-styles';
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(toast);
+
+    // Remover após 3 segundos
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 // pega email da querystring (?email=...)
 const params = new URLSearchParams(window.location.search);
 const email = (params.get('email') || '').trim();
@@ -22,53 +87,20 @@ if (form) {
         // valida 6 dígitos
         if (!code || !/^\d{6}$/.test(code)) {
             codeEl?.reportValidity?.();
-            alert('Digite um código válido de 6 dígitos.');
+            showToast('Digite um código válido de 6 dígitos.', true);
             return;
         }
 
         if (!email) {
-            alert('Email não encontrado. Volte e solicite o código novamente.');
-            window.location.href = '/forgot';
+            showToast('Email não encontrado. Volte e solicite o código novamente.', true);
+            setTimeout(() => {
+                window.location.href = '/forgot';
+            }, 1500);
             return;
         }
 
-        // ✅ pede nova senha sem precisar mudar o HTML
-        const newPassword = prompt('Digite sua nova senha (mínimo 6 caracteres):');
-        if (!newPassword || newPassword.trim().length < 6) {
-            alert('Senha inválida. Ela precisa ter no mínimo 6 caracteres.');
-            return;
-        }
-
-        const confirmPassword = prompt('Confirme sua nova senha:');
-        if (confirmPassword !== newPassword) {
-            alert('As senhas não coincidem.');
-            return;
-        }
-
-        try {
-            const resp = await fetch('/auth/reset-password', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email,
-                    code,
-                    newPassword
-                })
-            });
-
-            if (!resp.ok) {
-                const msg = await resp.text();
-                alert(msg || 'Código inválido ou expirado. Solicite outro.');
-                return;
-            }
-
-            alert('Senha alterada com sucesso! Faça login novamente.');
-            window.location.href = '/login';
-
-        } catch (err) {
-            console.error('Erro ao resetar senha:', err);
-            alert('Erro de rede ao resetar senha. Tente novamente.');
-        }
+        // Redirecionar para a tela de criar nova senha
+        window.location.href = `/reset-password?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`;
     });
 }
 
@@ -105,8 +137,10 @@ resendLink?.addEventListener('click', async (e) => {
     if (!canResend) return;
 
     if (!email) {
-        alert('Email não encontrado. Volte e solicite novamente.');
-        window.location.href = '/forgot';
+        showToast('Email não encontrado. Volte e solicite novamente.', true);
+        setTimeout(() => {
+            window.location.href = '/forgot';
+        }, 1500);
         return;
     }
 
@@ -119,16 +153,16 @@ resendLink?.addEventListener('click', async (e) => {
 
         if (!resp.ok) {
             const msg = await resp.text();
-            alert(msg || 'Erro ao reenviar código.');
+            showToast(msg || 'Erro ao reenviar código.', true);
             return;
         }
 
-        alert(`Reenviamos o código para ${email}.`);
+        showToast(`Código reenviado para ${email}.`);
         startTimer(30);
 
     } catch (err) {
         console.error('Erro ao reenviar código:', err);
-        alert('Erro de rede ao reenviar código.');
+        showToast('Erro de rede ao reenviar código.', true);
     }
 });
 

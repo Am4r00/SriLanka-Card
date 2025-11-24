@@ -36,8 +36,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/home", "/login", "/signup",
                                 "/contato", "/faq", "/sobre", "/giftcard",
-                                "/jogos", "/produto", "/funcionarios", "/cart",
-                                "/forgot", "/payment", "/verify", "/addEmploye",
+                                "/produto", "/funcionarios", "/cart",
+                                "/forgot", "/payment", "/verify", "/reset-password", "/addEmploye",
 
                                 "/home_admin", "/test", "/static-test","/confirmacaoPagamento","/verify.html", "/usuariodetalhe"
 

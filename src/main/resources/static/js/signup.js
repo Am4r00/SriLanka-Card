@@ -3,6 +3,71 @@ const form = document.getElementById('signup');
 const pwd = document.getElementById('password');
 const confirm = document.getElementById('confirm');
 
+// Função para mostrar toast (notificação)
+function showToast(message, isError = false) {
+    // Remover toast anterior se existir
+    const existingToast = document.getElementById('toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Criar elemento de toast
+    const toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${isError ? '#ef4444' : '#10b981'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-weight: 500;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease;
+    `;
+
+    // Adicionar animação CSS se não existir
+    if (!document.getElementById('toast-styles')) {
+        const style = document.createElement('style');
+        style.id = 'toast-styles';
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(toast);
+
+    // Remover após 3 segundos
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 // Função para verificar se as senhas coincidem
 function checkMatch() {
   const passwordValue = pwd ? pwd.value : '';
@@ -53,17 +118,17 @@ if (form) {
 
     // Validações
     if (!name || !email || !password) {
-      alert('Preencha todos os campos obrigatórios.');
+      showToast('Preencha todos os campos obrigatórios.', true);
       return;
     }
 
     if (!checkMatch()) {
-      alert('As senhas não coincidem.');
+      showToast('As senhas não coincidem.', true);
       return;
     }
 
     if (!terms) {
-      alert('Você precisa aceitar os termos e condições.');
+      showToast('Você precisa aceitar os termos e condições.', true);
       return;
     }
 
@@ -121,12 +186,15 @@ if (form) {
         console.log('Funções do usuário criado:', data.funcoes);
 
         if (password === "admin12345678") {
-          alert(`✅ Administrador criado com sucesso!\n\nEmail: ${email}\nSenha: admin12345678\n\nFunções: ${JSON.stringify(data.funcoes)}\n\nAgora você pode fazer login e será redirecionado para /home_admin`);
+          showToast('Administrador criado com sucesso!');
         } else {
-          alert(`✅ Usuário criado com sucesso!\n\nEmail: ${email}\n\nFunções: ${JSON.stringify(data.funcoes)}`);
+          showToast('Usuário criado com sucesso!');
         }
 
-        window.location.href = '/login';
+        // Aguardar um pouco para o usuário ver o toast antes de redirecionar
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1500);
 
       } else {
         // Se o erro for que o email já existe E a senha é admin12345678, tentar atualizar para ADMIN
@@ -151,8 +219,10 @@ if (form) {
               if (updateResponse.ok) {
                 const updatedData = await updateResponse.json();
                 console.log('✅ Usuário atualizado para ADMIN:', updatedData);
-                alert(`✅ Usuário existente atualizado para ADMIN!\n\nEmail: ${email}\nSenha: admin12345678\n\nFunções: ${JSON.stringify(updatedData.funcoes)}\n\nAgora você pode fazer login e será redirecionado para /home_admin`);
-                window.location.href = '/login';
+                showToast('Usuário atualizado para ADMIN com sucesso!');
+                setTimeout(() => {
+                  window.location.href = '/login';
+                }, 1500);
                 return;
               } else {
                 console.error('❌ Erro ao atualizar para ADMIN:', updateResponse);
@@ -172,12 +242,12 @@ if (form) {
           errorMessage = `Erro ${response.status}: ${response.statusText}`;
           console.error('❌ Erro na resposta:', response);
         }
-        alert(`❌ Erro ao criar usuário: ${errorMessage}`);
+        showToast(`Erro ao criar usuário: ${errorMessage}`, true);
       }
 
     } catch (error) {
       console.error('❌ Erro na requisição:', error);
-      alert(`❌ Erro ao conectar com o servidor: ${error.message || 'Verifique sua conexão.'}`);
+      showToast(`Erro ao conectar com o servidor: ${error.message || 'Verifique sua conexão.'}`, true);
     }
   });
 } else {

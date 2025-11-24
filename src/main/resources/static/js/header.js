@@ -21,7 +21,7 @@ function decodeToken(token) {
 }
 
 // Função para atualizar o header
-function updateHeader() {
+async function updateHeader() {
     const token = getToken();
     const userEmail = localStorage.getItem('userEmail');
     
@@ -85,43 +85,51 @@ function updateHeader() {
     }
     
     // Atualizar contador do carrinho
-    updateCartCount();
+    await updateCartCount();
 }
 
 // Função para atualizar contador do carrinho no header
-function updateCartCount() {
-    const count = api.getCartItemCount();
-    const cartLink = document.querySelector('.cart-link');
+async function updateCartCount() {
+    if (!window.api || typeof window.api.getCartItemCount !== 'function') {
+        return;
+    }
     
-    if (cartLink) {
-        // Remover contador existente
-        const existingCount = cartLink.querySelector('.cart-count');
-        if (existingCount) {
-            existingCount.remove();
-        }
+    try {
+        const count = await api.getCartItemCount();
+        const cartLink = document.querySelector('.cart-link');
         
-        if (count > 0) {
-            const countBadge = document.createElement('span');
-            countBadge.className = 'cart-count';
-            countBadge.textContent = count;
-            countBadge.style.cssText = `
-                position: absolute;
-                top: -8px;
-                right: -8px;
-                background: #ef4444;
-                color: white;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-                font-weight: bold;
-            `;
-            cartLink.style.position = 'relative';
-            cartLink.appendChild(countBadge);
+        if (cartLink) {
+            // Remover contador existente
+            const existingCount = cartLink.querySelector('.cart-count');
+            if (existingCount) {
+                existingCount.remove();
+            }
+            
+            if (count > 0) {
+                const countBadge = document.createElement('span');
+                countBadge.className = 'cart-count';
+                countBadge.textContent = count;
+                countBadge.style.cssText = `
+                    position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    background: #ef4444;
+                    color: white;
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: bold;
+                `;
+                cartLink.style.position = 'relative';
+                cartLink.appendChild(countBadge);
+            }
         }
+    } catch (error) {
+        console.error('Erro ao atualizar contador do carrinho:', error);
     }
 }
 
@@ -205,16 +213,16 @@ function setupLogoRedirect() {
 }
 
 // Inicializar header quando a página carregar
-document.addEventListener('DOMContentLoaded', () => {
-    updateHeader();
+document.addEventListener('DOMContentLoaded', async () => {
+    await updateHeader();
     setupLogoRedirect();
     
     // Atualizar quando o carrinho mudar
     const originalAddToCart = window.addToCart;
     if (originalAddToCart) {
-        window.addToCart = function(product) {
-            originalAddToCart(product);
-            updateCartCount();
+        window.addToCart = async function(product) {
+            await originalAddToCart(product);
+            await updateCartCount();
         };
     }
 });
@@ -222,4 +230,5 @@ document.addEventListener('DOMContentLoaded', () => {
 // Exportar funções
 window.updateHeader = updateHeader;
 window.isAuthenticated = isAuthenticated;
+window.updateCartCount = updateCartCount;
 

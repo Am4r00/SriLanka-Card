@@ -1,3 +1,68 @@
+// Função para mostrar toast (notificação)
+function showToast(message, isError = false) {
+    // Remover toast anterior se existir
+    const existingToast = document.getElementById('toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Criar elemento de toast
+    const toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${isError ? '#ef4444' : '#10b981'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-weight: 500;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease;
+    `;
+
+    // Adicionar animação CSS se não existir
+    if (!document.getElementById('toast-styles')) {
+        const style = document.createElement('style');
+        style.id = 'toast-styles';
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(toast);
+
+    // Remover após 3 segundos
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 // Mostrar/ocultar senha
 const toggle = document.querySelector('.toggle');
 const pwd = document.getElementById('password');
@@ -23,7 +88,7 @@ if (form) {
     const pass  = document.getElementById('password').value.trim();
     
     if (!email || !pass) {
-      alert('Preencha email e senha.');
+      showToast('Preencha email e senha.', true);
       return;
     }
 
@@ -108,20 +173,24 @@ if (form) {
         // Redirecionar baseado no tipo de usuário
         if (isAdmin) {
           console.log('Redirecionando para /home_admin');
-          alert('Login realizado com sucesso! Redirecionando para área administrativa...');
-          window.location.href = '/home_admin';
+          showToast('Login realizado com sucesso! Redirecionando...');
+          setTimeout(() => {
+            window.location.href = '/home_admin';
+          }, 1000);
         } else {
           console.log('Redirecionando para /home');
-          alert('Login realizado com sucesso!');
-          window.location.href = '/home';
+          showToast('Login realizado com sucesso!');
+          setTimeout(() => {
+            window.location.href = '/home';
+          }, 1000);
         }
       } else {
         const errorData = await response.json();
-        alert(`Erro no login: ${errorData.message || 'Credenciais inválidas'}`);
+        showToast(`Erro no login: ${errorData.message || 'Credenciais inválidas'}`, true);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
-      alert('Erro ao conectar com o servidor. Verifique sua conexão.');
+      showToast('Erro ao conectar com o servidor. Verifique sua conexão.', true);
     }
   });
 }

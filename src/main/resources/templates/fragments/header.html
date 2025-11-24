@@ -5,7 +5,6 @@
         <nav class="nav-links">
             <ul>
                 <li><a th:href="@{/giftcard}">GiftCards</a></li>
-                <li><a th:href="@{/jogos}">Jogos</a></li>
 
                 <!-- Apenas administradores -->
                 <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">

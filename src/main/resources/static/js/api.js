@@ -121,63 +121,54 @@ const api = {
         return await apiRequest('/users/list');
     },
     
-    // Carrinho (usando localStorage por enquanto)
-    getCart: () => {
-        const cart = localStorage.getItem('cart');
-        return cart ? JSON.parse(cart) : [];
-    },
-    
-    addToCart: (product) => {
-        const cart = api.getCart();
-        const existingItem = cart.find(item => item.id === product.id);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({ ...product, quantity: 1 });
+    // Carrinho - busca do backend
+    getCart: async () => {
+        try {
+            const cart = await apiRequest('/api/carrinho');
+            return cart || { itens: [], valorTotal: 0, quantidade: 0 };
+        } catch (error) {
+            console.error('Erro ao buscar carrinho:', error);
+            return { itens: [], valorTotal: 0, quantidade: 0 };
         }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        return cart;
     },
     
-    removeFromCart: (productId) => {
-        const cart = api.getCart().filter(item => item.id !== productId);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        return cart;
+    addToCart: async (productId, quantidade = 1) => {
+        return await apiRequest('/api/carrinho', {
+            method: 'POST',
+            body: JSON.stringify({ id: productId, quantidade: quantidade })
+        });
     },
     
-    updateCartQuantity: (productId, quantity) => {
-        const cart = api.getCart();
-        const item = cart.find(item => item.id === productId);
-        
-        if (item) {
-            if (quantity <= 0) {
-                return api.removeFromCart(productId);
-            }
-            item.quantity = quantity;
+    removeFromCart: async (produtoId) => {
+        return await apiRequest(`/api/carrinho/itens/${produtoId}`, {
+            method: 'DELETE'
+        });
+    },
+    
+    clearCart: async () => {
+        return await apiRequest('/api/carrinho', {
+            method: 'DELETE'
+        });
+    },
+    
+    getCartTotal: async () => {
+        try {
+            const totals = await apiRequest('/api/carrinho/total');
+            return totals || { valorTotal: 0, quantidadeTotal: 0 };
+        } catch (error) {
+            console.error('Erro ao buscar totais do carrinho:', error);
+            return { valorTotal: 0, quantidadeTotal: 0 };
         }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        return cart;
     },
     
-    clearCart: () => {
-        localStorage.removeItem('cart');
-    },
-    
-    getCartTotal: () => {
-        const cart = api.getCart();
-        return cart.reduce((total, item) => {
-            const price = item.valor || item.preco || 0;
-            const quantity = item.quantity || 1;
-            return total + (price * quantity);
-        }, 0);
-    },
-    
-    getCartItemCount: () => {
-        const cart = api.getCart();
-        return cart.reduce((total, item) => total + (item.quantity || 1), 0);
+    // Função auxiliar para compatibilidade (retorna contagem do backend)
+    getCartItemCount: async () => {
+        try {
+            const totals = await api.getCartTotal();
+            return totals.quantidadeTotal || 0;
+        } catch (error) {
+            return 0;
+        }
     }
 };
 

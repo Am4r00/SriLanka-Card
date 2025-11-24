@@ -4,6 +4,7 @@ const TOKEN_KEY = 'token';
 
 let cardSelecionado = null;
 let listaCards = []; // vamos guardar os cards aqui para poder filtrar/ordenar
+let categoriaAtiva = 'todos'; // categoria selecionada
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarGiftCards();
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backdrop.addEventListener('click', fecharModal);
     addBtn.addEventListener('click', adicionarSelecionadoAoCarrinho);
 
-    // hooks para pesquisa / ordenação (se quiser usar depois)
+    // hooks para pesquisa / ordenação
     const searchInput = document.getElementById('search-input');
     const searchBtn = document.getElementById('search-btn');
     const sortSelect = document.getElementById('sort-select');
@@ -33,6 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sortSelect) {
         sortSelect.addEventListener('change', () => aplicarFiltros());
     }
+
+    // Event listeners para filtros de categoria
+    const categoryLinks = document.querySelectorAll('.category-link');
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const categoria = link.getAttribute('data-categoria');
+            selecionarCategoria(categoria);
+        });
+    });
 });
 
 /* ================================
@@ -61,8 +72,73 @@ async function carregarGiftCards() {
     }
 }
 
+/* ================================
+ * Função para determinar categoria do produto
+ * ================================ */
+function getCategoria(card) {
+    const nome = (card.nome || '').toLowerCase();
+
+    // 👉 Jogos
+    if (nome.includes('cyberpunk') || 
+        nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc') ||
+        nome.includes('forza') ||
+        nome.includes('ghost of tsushima') || nome.includes('tsushima') ||
+        nome.includes('god of war') ||
+        nome.includes('gta') ||
+        nome.includes('red dead') ||
+        nome.includes('the last of us') ||
+        nome.includes('witcher')) {
+        return 'jogos';
+    }
+
+    // 👉 Comida (verificar antes de serviços para evitar conflito com "uber")
+    if (nome.includes('ifood') || 
+        nome.includes('uber eats') || 
+        nome.includes('rappi') ||
+        nome.includes("99-food")) {
+        return 'comida';
+    }
+
+    // 👉 Música
+    if (nome.includes('spotify') || 
+        nome.includes('apple') ||
+        nome.includes('Deezer') ||
+        nome.includes('youtube')) {
+        return 'musica';
+    }
+
+    // 👉 Serviços (tudo que não é jogo, comida ou música)
+    // Inclui: steam, netflix, xbox, playstation, airbnb, paramount, uber, shopee, apple gift card, etc.
+    return 'servicos';
+}
+
+/* ================================
+ * Selecionar categoria
+ * ================================ */
+function selecionarCategoria(categoria) {
+    categoriaAtiva = categoria;
+
+    // Atualizar visual dos links
+    const categoryLinks = document.querySelectorAll('.category-link');
+    categoryLinks.forEach(link => {
+        if (link.getAttribute('data-categoria') === categoria) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
+    // Aplicar filtros
+    aplicarFiltros();
+}
+
 function aplicarFiltros() {
     let cards = [...listaCards];
+
+    // Filtro por categoria
+    if (categoriaAtiva !== 'todos') {
+        cards = cards.filter(c => getCategoria(c) === categoriaAtiva);
+    }
 
     const searchInput = document.getElementById('search-input');
     const sortSelect = document.getElementById('sort-select');
@@ -92,12 +168,44 @@ function aplicarFiltros() {
 function getImagemCard(card) {
     const nome = (card.nome || '').toLowerCase();
 
-    // Ajusta os caminhos abaixo para os arquivos reais que você tem em /img
-    if (nome.includes('psn' || 'playstation'))   return '/img/playstation-gift-card.png';
-    if (nome.includes('xbox'))  return '/img/xbox.png';
+    // 👉 Gift Cards / Serviços
+    if (nome.includes('apple')) return '/img/apple-gift-card.png';
+    if (nome.includes('steam')) return '/img/steam-gift-card.png';
+    if (nome.includes('playstation') || nome.includes('psn') || nome.includes('ps4') || nome.includes('ps5')) {
+        return '/img/playstation-gift-card.png';
+    }
+    if (nome.includes('xbox')) return '/img/xbox.png';
+    if (nome.includes('airbnb')) return '/img/airbnb.png';
     if (nome.includes('ifood')) return '/img/ifood.png';
+    if (nome.includes('netflix')) return '/img/netflix.jpg';
+    if (nome.includes('paramount')) return '/img/paramount.jpg';
+    if (nome.includes('spotify')) return '/img/spotify.png';
+    if (nome.includes('uber')) return '/img/uber.png';
+    if (nome.includes('shopee')) return '/img/shopee.jpg';
+    if (nome.includes('rappi')) return '/img/rappi.png';
+    if (nome.includes('youtube')) return '/img/youtube.png';
+    if (nome.includes('hbomax')) return '/img/hbomax.webp';
+    if (nome.includes('gloogleplay')) return '/img/gloogleplay.webp';
+    if (nome.includes('disney')) return '/img/disney.jpeg';
+    if (nome.includes('Deezer')) return '/img/Deezer.jpg';
+    if (nome.includes('99-food')) return '/img/99-food.png';
 
-    return '/img/gift-default.png';
+    // 👉 Jogos
+    if (nome.includes('cyberpunk')) return '/img/cyberpunk.png';
+    if (nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc')) return '/img/fc26.jpg';
+    if (nome.includes('forza')) return '/img/forza-horizon-5.webp';
+    if (nome.includes('ghost of tsushima') || nome.includes('tsushima')) return '/img/Ghost_of_Tsushima_capa.png';
+    if (nome.includes('god of war')) return '/img/god_of_war.jpg';
+    if (nome.includes('gta')) return '/img/GTA_V1.jpg';
+    if (nome.includes('red dead')) return '/img/red_dead_2.png';
+    if (nome.includes('the last of us')) return '/img/the_last_of_us.jpg';
+    if (nome.includes('witcher')) return '/img/the_witcher_3.png';
+
+    // 👉 Fallback genérico
+    if (nome.includes('gift') || nome.includes('card')) return '/img/steam-gift-card.png';
+    
+    // 👉 Fallback final
+    return '/img/steam-gift-card.png';
 }
 
 function renderizarCards(cards) {
@@ -221,6 +329,11 @@ async function adicionarSelecionadoAoCarrinho() {
 
         showToast('Item adicionado ao carrinho!', false);
         fecharModal();
+        
+        // Atualizar contador do carrinho no header
+        if (window.updateCartCount && typeof window.updateCartCount === 'function') {
+            await window.updateCartCount();
+        }
     } catch (err) {
         console.error('Erro de rede ao adicionar ao carrinho:', err);
         showToast('Erro de comunicação com o servidor.', true);

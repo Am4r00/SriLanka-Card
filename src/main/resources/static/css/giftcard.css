@@ -95,11 +95,22 @@ body {
     color: var(--subtle-text);
     border-radius: 0.5rem;
     transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
 }
 
 .category-list li a:hover {
     background-color: var(--border-color);
     color: var(--white);
+}
+
+.category-list li a.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.category-list li a.active:hover {
+    background-color: var(--secondary-color);
 }
 
 /* --- Conteúdo e Ordenação --- */

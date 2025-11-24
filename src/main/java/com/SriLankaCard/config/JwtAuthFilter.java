@@ -38,8 +38,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             // OUTRAS PÁGINAS HTML
             "/contato", "/faq", "/sobre", "/giftcard",
-            "/jogos", "/produto", "/funcionarios", "/cart",
-            "/forgot", "/payment", "/verify", "/addEmploye",
+            "/produto", "/funcionarios", "/cart",
+            "/forgot", "/payment", "/verify", "/reset-password", "/addEmploye",
             "/produtoDetalhe", "/test", "/static-test"
     );
 

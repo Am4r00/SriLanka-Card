@@ -33,11 +33,6 @@ public class WebController {
         return "giftcard";
     }
 
-    @GetMapping("/jogos")
-    public String jogos() {
-        return "jogos";
-    }
-
     @GetMapping("/employe")
     public String employe() {
         return "employe";
@@ -95,6 +90,11 @@ public class WebController {
     @GetMapping("/verify")
     public String verify() {
         return "verify";
+    }
+
+    @GetMapping("/reset-password")
+    public String resetPassword() {
+        return "reset-password";
     }
 
     @GetMapping("/addEmploye")
