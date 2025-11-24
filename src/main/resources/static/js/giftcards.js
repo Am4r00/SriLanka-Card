@@ -89,15 +89,76 @@ function aplicarFiltros() {
  * 2) Renderizar cards na tela
  * ================================ */
 
+// js/giftcards.js
+
 function getImagemCard(card) {
     const nome = (card.nome || '').toLowerCase();
 
-    // Ajusta os caminhos abaixo para os arquivos reais que você tem em /img
-    if (nome.includes('psn' || 'playstation'))   return '/img/playstation-gift-card.png';
-    if (nome.includes('xbox'))  return '/img/xbox.png';
-    if (nome.includes('ifood')) return '/img/ifood.png';
+    // Gift Cards e Serviços
+    if (nome.includes('psn') || nome.includes('playstation')) {
+        return '/img/playstation-gift-card.png';
+    }
+    if (nome.includes('xbox')) {
+        return '/img/xbox.png';
+    }
+    if (nome.includes('ifood')) {
+        return '/img/ifood.png';
+    }
+    if (nome.includes('steam')) {
+        return '/img/steam-gift-card.png';
+    }
+    if (nome.includes('apple') || nome.includes('itunes')) {
+        return '/img/apple-gift-card.png';
+    }
+    if (nome.includes('netflix')) {
+        return '/img/netflix.jpg';
+    }
+    if (nome.includes('spotify')) {
+        return '/img/spotify.png';
+    }
+    if (nome.includes('airbnb')) {
+        return '/img/airbnb.png';
+    }
+    if (nome.includes('uber')) {
+        return '/img/uber.png';
+    }
+    if (nome.includes('shopee')) {
+        return '/img/shopee.jpg';
+    }
+    if (nome.includes('paramount')) {
+        return '/img/paramount.jpg';
+    }
+    // Jogos
+    if (nome.includes('gta')) {
+        return '/img/GTA_V1.jpg';
+    }
+    if (nome.includes('cyberpunk')) {
+        return '/img/cyberpunk.png';
+    }
+    if (nome.includes('forza')) {
+        return '/img/forza-horizon-5.webp';
+    }
+    if (nome.includes('god') || nome.includes('gow')) {
+        return '/img/god_of_war.jpg';
+    }
+    if (nome.includes('the last of us') || nome.includes('tlou')) {
+        return '/img/the_last_of_us.png';
+    }
+    if (nome.includes('witcher')) {
+        return '/img/the_witcher_3.png';
+    }
+    if (nome.includes('red dead') || nome.includes('rdr')) {
+        return '/img/red_dead_2.png';
+    }
+    if (nome.includes('ghost of tsushima') || nome.includes('ghost') || nome.includes('tsushima')) {
+        return '/img/Ghost_of_Tsushima_capa.png';
+    }
+    if (nome.includes('fc') || nome.includes('fifa') || nome.includes('26')) {
+        return '/img/fc26.jpg';
+    }
 
-    return '/img/gift-default.png';
+    // Se não encontrar nenhuma correspondência
+    return '/img/fallback.png'; // Garanta que essa imagem exista
 }
 
 function renderizarCards(cards) {
