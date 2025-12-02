@@ -1,5 +1,6 @@
 package com.SriLankaCard.dto.response.produtoResponse;
 
+import com.SriLankaCard.entity.produtoEntity.CardCategory;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -15,5 +16,6 @@ public class CardResponse {
     private String observacoes;
     private Integer quantidade;
     private Double valor;
+    private CardCategory category;
     private boolean promocao;
 }

@@ -24,8 +24,23 @@ function decodeToken(token) {
 async function updateHeader() {
     const token = getToken();
     const userEmail = localStorage.getItem('userEmail');
+
+    let displayName = userEmail;
+
+    if(token){
+        const decoded = decodeToken(token);
+        console.log('token decodificado header: ' + decoded);
+        if(decoded){
+            displayName =
+                decoded.nome ||
+                decoded.name ||
+                decoded.username ||
+                decoded.sub ||
+                userEmail;
+        }
+    }
     
-    // Encontrar elementos do header
+    // Elementos do header
     const loginLink = document.querySelector('.login-link');
     const signupButton = document.querySelector('.cta-button');
     const userName = document.querySelector('.user-name');
@@ -50,7 +65,7 @@ async function updateHeader() {
         
         const nameSpan = document.createElement('span');
         nameSpan.className = 'user-name';
-        nameSpan.textContent = userEmail;
+        nameSpan.textContent =`Bem-vindo, ${displayName}`;
         nameSpan.style.cssText = 'color: #fff; font-weight: 500;';
         userDiv.appendChild(nameSpan);
         

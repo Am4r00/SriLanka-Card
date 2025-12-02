@@ -4,11 +4,11 @@ import com.SriLankaCard.dto.request.giftCard.GerarCodesRequest;
 import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCode;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
-import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,18 +17,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class GiftCodeService {
-    private GiftCodeRepository giftCodeRepository;
-    private CardRepository cardRepository;
-
-    public GiftCodeService(GiftCodeRepository giftCodeRepository, CardRepository cardRepository) {
-        this.giftCodeRepository = giftCodeRepository;
-        this.cardRepository = cardRepository;
-    }
+    private final GiftCodeRepository giftCodeRepository;
+    private final CardRepository cardRepository;
 
     @Transactional
     public List<GiftCode> gerarCodigos(GerarCodesRequest request){
-
         Card card = cardRepository.findById(request.getCardId())
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
 
@@ -45,7 +40,6 @@ public class GiftCodeService {
             code.setCard(card);
             code.setSerial(serial);
             code.setStatus(GiftCodeStatus.DISPONIVEL);
-
             codes.add(code);
         }
 

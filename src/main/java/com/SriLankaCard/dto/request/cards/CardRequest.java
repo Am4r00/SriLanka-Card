@@ -1,5 +1,6 @@
 package com.SriLankaCard.dto.request.cards;
 
+import com.SriLankaCard.entity.produtoEntity.CardCategory;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +21,9 @@ public class CardRequest {
 
     @Min(0)
     private Integer quantidade;
+
+
+    private CardCategory category;
 
     private boolean promocao;
 

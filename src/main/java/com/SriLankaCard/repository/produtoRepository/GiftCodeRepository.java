@@ -10,4 +10,5 @@ import java.util.List;
 public interface GiftCodeRepository extends JpaRepository<GiftCode, Long> {
     List<GiftCode> findByCardAndStatus(Card card, GiftCodeStatus status);
     Long countByCardAndStatus(Card card, GiftCodeStatus status);
+    Boolean existsGiftCodeByCard(Card card);
 }

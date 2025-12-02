@@ -38,15 +38,13 @@ public class CarrinhoController {
 
         Object principal = auth.getPrincipal();
 
-        // Caso 1: se um dia você passar a usar sua entidade User como principal
         if (principal instanceof User appUser) {
             return appUser.getId();
         }
 
-        // Caso 2: é o User do Spring ou qualquer outra implementação de UserDetails
         String username;
         if (principal instanceof UserDetails springUser) {
-            username = springUser.getUsername(); // no seu caso é o email
+            username = springUser.getUsername();
         } else if (principal instanceof String s) {
             username = s;
         } else {

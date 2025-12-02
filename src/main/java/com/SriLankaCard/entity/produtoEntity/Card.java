@@ -20,26 +20,22 @@ public class Card {
     @NotBlank
     private String observacoes;
 
-    @Column(name = "card_valor",nullable = false)
+    @Column(name = "card_valor", nullable = false)
     @NotNull
     @DecimalMin("0.0")
     private Double valor;
 
-    @Column(name = "card_promocao",nullable = false)
+    @Column(name = "card_promocao", nullable = false)
     private boolean promocao;
 
-    @Column(name = "card_avaliacao",nullable = false)
-    @NotNull
-    @Min(0) @Max(5)
-    private Integer avaliacao;
-
-    @Column(name = "card_quantidade", nullable = false)
+    @Column(name = "card_avaliacao", nullable = false)
     @NotNull
     @Min(0)
-    private Integer quantidade = 0;
+    @Max(5)
+    private Integer avaliacao;
 
-    @Column(name = "card_serial", nullable = false, unique = true)
-    @NotBlank
-    private String serial;
+    @Column(name = "card_categoria",nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CardCategory category;
 
 }

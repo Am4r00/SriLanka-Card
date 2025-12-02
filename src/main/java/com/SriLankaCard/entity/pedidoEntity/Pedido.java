@@ -19,7 +19,6 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // segue o mesmo padrão do Carrinho (usa usuarioId, não o User direto)
     @Column(nullable = false)
     private Long usuarioId;
 

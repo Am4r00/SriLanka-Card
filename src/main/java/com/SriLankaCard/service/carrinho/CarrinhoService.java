@@ -156,6 +156,6 @@ public class CarrinhoService {
     private  Carrinho buscarCarrinhoDoUsuario(Long usuarioId) {
         return carrinhoRepository
                 .findByUsuarioId(usuarioId)
-                .orElseGet(() -> new Carrinho(usuarioId)); // aqui eu não salvo ainda, só retorno vazio
+                .orElseGet(() -> new Carrinho(usuarioId));
     }
 }

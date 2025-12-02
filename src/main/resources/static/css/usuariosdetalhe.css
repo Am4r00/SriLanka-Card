@@ -190,3 +190,47 @@ header {
     resize: vertical;
     min-height: 80px;
 }
+
+ select {
+     padding: 8px 12px;
+     border-radius: 6px;
+     border: 1px solid #ccc;
+     font-size: 14px;
+ }
+
+label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.campo {
+    margin-bottom: 16px;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    border-radius: 6px;
+    background-color: #323232;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity .3s ease, transform .3s ease;
+    z-index: 9999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast--error {
+    background-color: #d32f2f;
+}
+
+.hidden {
+    display: none;
+}

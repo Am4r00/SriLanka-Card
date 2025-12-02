@@ -11,12 +11,8 @@ import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
-import com.SriLankaCard.service.produtoService.GiftCodeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CardServiceImplements implements CardService {
@@ -41,8 +37,6 @@ public class CardServiceImplements implements CardService {
         }
 
         Card card = CardMapper.toCardByCardRequest(request);
-
-        // avaliação inicial
         card.setAvaliacao(0);
 
         Card cardSalvo = cardRepository.save(card);
@@ -54,21 +48,16 @@ public class CardServiceImplements implements CardService {
                 GerarCodesRequest gerarCodesRequest = new GerarCodesRequest();
                 gerarCodesRequest.setCardId(cardSalvo.getId());
                 gerarCodesRequest.setQuantidade(request.getQuantidade());
-                
+
                 giftCodeService.gerarCodigos(gerarCodesRequest);
                 quantidadeGerada = request.getQuantidade();
-                
-                // Atualizar a quantidade do card após gerar os códigos
-                cardSalvo.setQuantidade(quantidadeGerada);
+
                 cardSalvo = cardRepository.save(cardSalvo);
             } catch (Exception e) {
-                // Se houver erro ao gerar códigos, logar mas não falhar a criação do card
                 System.err.println("Erro ao gerar gift codes: " + e.getMessage());
                 e.printStackTrace();
-                // Continua sem os gift codes, quantidade permanece 0
             }
         }
-
         return CardMapper.toCardResponseByCard(cardSalvo, quantidadeGerada);
     }
 
@@ -94,26 +83,10 @@ public class CardServiceImplements implements CardService {
 
         cardRepository.save(card);
 
-        // recalcula a quantidade disponível pelos GiftCodes
         Long count = giftCodeRepository.countByCardAndStatus(card, GiftCodeStatus.DISPONIVEL);
         int qtd = count == null ? 0 : count.intValue();
 
         return CardMapper.toCardResponseByCard(card, qtd);
-    }
-
-    @Override
-    @Transactional
-    public List<CardResponse> listarCards() {
-        List<Card> listaCards = cardRepository.findAll();
-
-        return listaCards.stream()
-                .map(card -> {
-                    Long count = giftCodeRepository
-                            .countByCardAndStatus(card, GiftCodeStatus.DISPONIVEL);
-                    int qtd = count == null ? 0 : count.intValue();
-                    return CardMapper.toCardResponseByCard(card, qtd);
-                })
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -139,10 +112,11 @@ public class CardServiceImplements implements CardService {
         if (id == null || id < 0) {
             throw new InvalidCardException("ID do card é inválido!");
         }
-
-        cardRepository.findById(id)
+        Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
-
+        if(giftCodeRepository.existsGiftCodeByCard(card)){
+            throw new InvalidCardException("Não foi possivel excluir pois existem códigos ativos deste card ");
+        }
         cardRepository.deleteById(id);
     }
 
@@ -159,7 +133,6 @@ public class CardServiceImplements implements CardService {
         card.setPromocao(promo);
         cardRepository.save(card);
 
-        // recalcula a quantidade disponível pelos GiftCodes
         Long count = giftCodeRepository
                 .countByCardAndStatus(card, GiftCodeStatus.DISPONIVEL);
         int qtd = count == null ? 0 : count.intValue();
