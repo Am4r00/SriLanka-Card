@@ -12,21 +12,21 @@ function checkAdminAccess() {
         window.location.href = '/login';
         return false;
     }
-    
+
     try {
         const decoded = decodeToken(token);
         console.log('Token decodificado:', decoded);
-        
+
         if (!decoded) {
             throw new Error('Token inválido');
         }
-        
+
         // O campo role pode vir como array (Set<Funcao> serializado) ou string
         const role = decoded.role || decoded.funcao;
         console.log('Role encontrado no token:', role, 'Tipo:', typeof role);
-        
+
         let isAdmin = false;
-        
+
         if (Array.isArray(role)) {
             // Se for array, verificar se contém ADMIN
             isAdmin = role.some(r => {
@@ -47,14 +47,14 @@ function checkAdminAccess() {
             });
             console.log('Verificação objeto - isAdmin:', isAdmin);
         }
-        
+
         if (!isAdmin) {
             console.log('Acesso negado - usuário não é ADMIN');
             alert('Acesso negado. Esta página é apenas para administradores.');
             window.location.href = '/home';
             return false;
         }
-        
+
         console.log('Acesso permitido - usuário é ADMIN');
         return true;
     } catch (error) {
@@ -87,7 +87,7 @@ function switchTab(tabName) {
     // Remover active de todas as abas
     document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    
+
     // Adicionar active na aba selecionada
     if (tabName === 'users') {
         document.querySelector('.tab:first-child').classList.add('active');
@@ -126,7 +126,7 @@ async function loadUsers() {
 // Renderizar usuários na tabela
 function renderUsers(users) {
     const tbody = document.getElementById('userTableBody');
-    
+
     if (!users || users.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -137,18 +137,18 @@ function renderUsers(users) {
         `;
         return;
     }
-    
+
     tbody.innerHTML = users.map(user => {
         const funcoes = Array.isArray(user.funcoes) ? user.funcoes : (user.funcoes ? [user.funcoes] : []);
         const funcoesHtml = funcoes.map(f => {
             const funcao = typeof f === 'string' ? f : (f.name || f);
             return `<span class="funcoes-badge">${funcao}</span>`;
         }).join('');
-        
+
         const status = user.status || 'ATIVO';
         const statusClass = status === 'ATIVO' ? 'status-ativo' : 'status-inativo';
         const statusText = status === 'ATIVO' ? 'Ativo' : 'Inativo';
-        
+
         return `
             <tr>
                 <td>${user.id || '-'}</td>
@@ -174,7 +174,7 @@ function renderUsers(users) {
 // Filtrar usuários
 function filterUsers() {
     const searchTerm = document.getElementById('searchUserInput').value.toLowerCase();
-    const filtered = allUsers.filter(user => 
+    const filtered = allUsers.filter(user =>
         (user.nome && user.nome.toLowerCase().includes(searchTerm)) ||
         (user.email && user.email.toLowerCase().includes(searchTerm))
     );
@@ -194,31 +194,31 @@ async function openEditUserModal(userId) {
     try {
         const users = await apiRequest('/users/list');
         const user = users.find(u => u.id === userId);
-        
+
         if (!user) {
             alert('Usuário não encontrado');
             return;
         }
-        
+
         document.getElementById('userModalTitle').textContent = 'Editar Usuário';
         document.getElementById('userId').value = user.id;
         document.getElementById('userName').value = user.nome || '';
         document.getElementById('userEmail').value = user.email || '';
         document.getElementById('userPassword').value = ''; // Não preencher senha
         document.getElementById('userPassword').required = false; // Senha opcional na edição
-        
+
         // Definir função (pegar a primeira se for array)
         const funcoes = Array.isArray(user.funcoes) ? user.funcoes : (user.funcoes ? [user.funcoes] : []);
         if (funcoes.length > 0) {
             const funcao = typeof funcoes[0] === 'string' ? funcoes[0] : (funcoes[0].name || funcoes[0]);
             document.getElementById('userRole').value = funcao;
         }
-        
+
         // Definir status se disponível
         if (user.status) {
             document.getElementById('userStatus').value = user.status;
         }
-        
+
         document.getElementById('userModal').style.display = 'block';
     } catch (error) {
         console.error('Erro ao carregar usuário:', error);
@@ -229,45 +229,45 @@ async function openEditUserModal(userId) {
 // Salvar usuário (criar ou editar)
 async function saveUser(event) {
     event.preventDefault();
-    
+
     const userId = document.getElementById('userId').value;
     const name = document.getElementById('userName').value;
     const email = document.getElementById('userEmail').value;
     const password = document.getElementById('userPassword').value;
     const role = document.getElementById('userRole').value;
     const status = document.getElementById('userStatus').value;
-    
+
     try {
         let endpoint, payload;
-        
+
         if (userId) {
             // Editar usuário - atualizar nome, email e status
             const updatePayload = {};
-            
+
             if (name && name.trim() !== '') {
                 updatePayload.name = name.trim();
             }
-            
+
             if (email && email.trim() !== '') {
                 updatePayload.email = email.trim();
             }
-            
+
             if (status) {
                 updatePayload.status = status;
             }
-            
+
             if (Object.keys(updatePayload).length === 0) {
                 alert('Nenhum campo foi alterado.');
                 return;
             }
-            
+
             console.log('Atualizando usuário:', userId, 'com payload:', updatePayload);
-            
+
             await apiRequest(`/admin/update-user/${userId}`, {
                 method: 'PUT',
                 body: JSON.stringify(updatePayload)
             });
-            
+
             alert('Usuário atualizado com sucesso!');
             closeUserModal();
             // Limpar cache e recarregar lista
@@ -287,12 +287,12 @@ async function saveUser(event) {
                 payload = { name, email, password };
             }
         }
-        
+
         await apiRequest(endpoint, {
             method: 'POST',
             body: JSON.stringify(payload)
         });
-        
+
         alert('Usuário salvo com sucesso!');
         closeUserModal();
         // Limpar cache e recarregar lista
@@ -309,7 +309,7 @@ async function deleteUser(userId) {
     if (!confirm('Tem certeza que deseja deletar este usuário?')) {
         return;
     }
-    
+
     try {
         const response =         await apiRequest(`/admin/delete-user/${userId}`, {
             method: 'DELETE'
@@ -336,7 +336,7 @@ function closeUserModal() {
 async function loadProducts() {
     try {
         console.log('Carregando lista de produtos...');
-        const products = await apiRequest('/cards/listar');
+        const products = await apiRequest('/cards');
         console.log('Produtos carregados:', products);
         allProducts = products;
         renderProducts(products);
@@ -356,7 +356,7 @@ async function loadProducts() {
 // Renderizar produtos na tabela
 function renderProducts(products) {
     const tbody = document.getElementById('productTableBody');
-    
+
     if (!products || products.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -367,13 +367,13 @@ function renderProducts(products) {
         `;
         return;
     }
-    
+
     tbody.innerHTML = products.map(product => {
         const valor = product.valor ? `R$ ${product.valor.toFixed(2)}` : '-';
-        const promocao = product.promocao ? 
-            '<span class="status-badge status-ativo">Sim</span>' : 
+        const promocao = product.promocao ?
+            '<span class="status-badge status-ativo">Sim</span>' :
             '<span class="status-badge status-inativo">Não</span>';
-        
+
         return `
             <tr>
                 <td>${product.id || '-'}</td>
@@ -398,7 +398,7 @@ function renderProducts(products) {
 // Filtrar produtos
 function filterProducts() {
     const searchTerm = document.getElementById('searchProductInput').value.toLowerCase();
-    const filtered = allProducts.filter(product => 
+    const filtered = allProducts.filter(product =>
         product.nome && product.nome.toLowerCase().includes(searchTerm)
     );
     renderProducts(filtered);
@@ -416,7 +416,7 @@ function openCreateProductModal() {
 async function openEditProductModal(productId) {
     try {
         const product = await apiRequest(`/cards/${productId}`);
-        
+
         document.getElementById('productModalTitle').textContent = 'Editar Produto';
         document.getElementById('productId').value = product.id;
         document.getElementById('productName').value = product.nome || '';
@@ -424,7 +424,7 @@ async function openEditProductModal(productId) {
         document.getElementById('productValor').value = product.valor || 0;
         document.getElementById('productQuantidade').value = product.quantidade || 0;
         document.getElementById('productPromocao').checked = product.promocao || false;
-        
+
         document.getElementById('productModal').style.display = 'block';
     } catch (error) {
         console.error('Erro ao carregar produto:', error);
@@ -435,14 +435,20 @@ async function openEditProductModal(productId) {
 // Salvar produto (criar ou editar)
 async function saveProduct(event) {
     event.preventDefault();
-    
+
     const productId = document.getElementById('productId').value;
     const nome = document.getElementById('productName').value;
     const observacoes = document.getElementById('productObservacoes').value;
     const valor = parseFloat(document.getElementById('productValor').value);
     const quantidade = parseInt(document.getElementById('productQuantidade').value);
+    const category = document.getElementById('productCategory').value
     const promocao = document.getElementById('productPromocao').checked;
-    
+
+    if (!category) {
+        alert('Selecione uma categoria antes de salvar o produto.');
+        return;
+    }
+
     try {
         if (productId) {
             // Editar produto
@@ -452,29 +458,30 @@ async function saveProduct(event) {
                 body: JSON.stringify(payload)
             });
             console.log('Produto atualizado:', updatedProduct);
-            
+
             // Atualizar promoção separadamente
             await apiRequest(`/cards/cards/${productId}/promocao/${promocao}`, {
                 method: 'PATCH'
             });
-            
+
             console.log('Promoção atualizada');
         } else {
             // Criar produto
             // Validar quantidade - se for NaN ou undefined, usar 0
             const quantidadeValida = (quantidade && !isNaN(quantidade) && quantidade > 0) ? quantidade : 0;
-            
-            const payload = { 
-                nome, 
-                observacoes, 
-                valor, 
-                quantidade: quantidadeValida, 
-                promocao 
+
+            const payload = {
+                nome,
+                observacoes,
+                valor,
+                quantidade: quantidadeValida,
+                category: category,
+                promocao
             };
-            
+
             console.log('Payload enviado:', payload);
             console.log('Token atual:', getToken() ? 'Token presente' : 'Token ausente');
-            
+
             // Verificar token antes de enviar
             const token = getToken();
             if (!token) {
@@ -482,7 +489,7 @@ async function saveProduct(event) {
                 window.location.href = '/login';
                 return;
             }
-            
+
             // Decodificar token para verificar role
             try {
                 const decoded = decodeToken(token);
@@ -491,15 +498,15 @@ async function saveProduct(event) {
             } catch (e) {
                 console.error('Erro ao decodificar token:', e);
             }
-            
+
             const response = await apiRequest('/cards/criar-Card', {
                 method: 'POST',
                 body: JSON.stringify(payload)
             });
-            
+
             console.log('Resposta do servidor:', response);
         }
-        
+
         alert('Produto salvo com sucesso!');
         closeProductModal();
         // Limpar cache e recarregar lista
@@ -516,18 +523,19 @@ async function deleteProduct(productId) {
     if (!confirm('Tem certeza que deseja deletar este produto?')) {
         return;
     }
-    
+
+
     try {
         await apiRequest(`/cards/deletar/${productId}`, {
             method: 'DELETE'
         });
         alert('Produto deletado com sucesso!');
-        // Limpar cache e recarregar lista
         allProducts = [];
         await loadProducts();
     } catch (error) {
         console.error('Erro ao deletar produto:', error);
-        alert(`Erro ao deletar produto: ${error.message}`);
+        showToast(`Erro ao deletar o produto: ${error.message}`, true);
+        //alert(`Erro ao deletar produto: ${error.message}`);
     }
 }
 
@@ -540,7 +548,7 @@ function closeProductModal() {
 window.onclick = function(event) {
     const userModal = document.getElementById('userModal');
     const productModal = document.getElementById('productModal');
-    
+
     if (event.target === userModal) {
         closeUserModal();
     }
@@ -557,3 +565,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function showToast(msg, isError) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+
+    toast.textContent = msg;
+
+    toast.classList.remove('hidden', 'toast--error', 'show');
+    if (isError) {
+        toast.classList.add('toast--error');
+    }
+
+    // reflow
+    void toast.offsetWidth;
+
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2500);
+}

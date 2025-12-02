@@ -250,6 +250,7 @@ function resolverImagem(item) {
     if (nome.includes('spotify')) return '/img/spotify.png';
     if (nome.includes('uber')) return '/img/uber.png';
     if (nome.includes('shopee')) return '/img/shopee.jpg';
+    if (nome.includes('99')) return '/img/99-food.png';
 
     // 👉 Jogos
     if (nome.includes('cyberpunk')) return '/img/cyberpunk.png';
@@ -288,3 +289,16 @@ async function removerItem(produtoId) {
         console.error('Erro de rede ao remover item:', err);
     }
 }
+const cardNumberInput = document.getElementById('card-number');
+
+cardNumberInput.addEventListener('input', function(event){
+   let value = event.target.value;
+
+   value = value.replace(/\D/g, '');
+   value = value.slice(0,16);
+   value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+   event.target.value = value;
+
+
+});
+

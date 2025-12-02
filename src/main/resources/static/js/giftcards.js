@@ -11,12 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modal = document.getElementById('gift-modal');
     const closeBtn = document.getElementById('gift-modal-close');
-    const backdrop = modal.querySelector('.gift-modal__backdrop');
     const addBtn = document.getElementById('gift-modal-add');
+    const backdrop = modal ? modal.querySelector('.gift-modal__backdrop') : null;
 
-    closeBtn.addEventListener('click', fecharModal);
-    backdrop.addEventListener('click', fecharModal);
-    addBtn.addEventListener('click', adicionarSelecionadoAoCarrinho);
+    if (closeBtn) {
+        closeBtn.addEventListener('click', fecharModal);
+    }
+    if (backdrop) {
+        backdrop.addEventListener('click', fecharModal);
+    }
+    if (addBtn) {
+        addBtn.addEventListener('click', adicionarSelecionadoAoCarrinho);
+    }
 
     // hooks para pesquisa / ordenação
     const searchInput = document.getElementById('search-input');
@@ -51,12 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
  * ================================ */
 async function carregarGiftCards() {
     try {
-        const resp = await fetch('/cards/listar', {
+        const resp = await fetch('/cards', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
             }
         });
+
+        console.log('Resposta /cards -> status:', resp.status);
+
+        if (resp.status === 204) {
+            // sem conteúdo (lista vazia)
+            listaCards = [];
+            aplicarFiltros();
+            return;
+        }
 
         if (!resp.ok) {
             console.error('Erro ao buscar cards:', resp.status);
@@ -65,6 +80,7 @@ async function carregarGiftCards() {
         }
 
         listaCards = await resp.json();
+        console.log('Cards recebidos:', listaCards);
         aplicarFiltros(); // primeira renderização
     } catch (err) {
         console.error('Erro de rede ao buscar cards:', err);
@@ -76,40 +92,28 @@ async function carregarGiftCards() {
  * Função para determinar categoria do produto
  * ================================ */
 function getCategoria(card) {
-    const nome = (card.nome || '').toLowerCase();
-
-    // 👉 Jogos
-    if (nome.includes('cyberpunk') || 
-        nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc') ||
-        nome.includes('forza') ||
-        nome.includes('ghost of tsushima') || nome.includes('tsushima') ||
-        nome.includes('god of war') ||
-        nome.includes('gta') ||
-        nome.includes('red dead') ||
-        nome.includes('the last of us') ||
-        nome.includes('witcher')) {
-        return 'jogos';
+    if (!card || card.category == null) {
+        return null;
     }
 
-    // 👉 Comida (verificar antes de serviços para evitar conflito com "uber")
-    if (nome.includes('ifood') || 
-        nome.includes('uber eats') || 
-        nome.includes('rappi') ||
-        nome.includes("99-food")) {
-        return 'comida';
+    const rawLower = String(card.category).toLowerCase();
+
+    // Se o back já envia exatamente 'jogos', 'comida', etc, usa direto:
+    if (['jogos', 'comida', 'musica', 'servicos'].includes(rawLower)) {
+        return rawLower;
     }
 
-    // 👉 Música
-    if (nome.includes('spotify') || 
-        nome.includes('apple') ||
-        nome.includes('Deezer') ||
-        nome.includes('youtube')) {
-        return 'musica';
-    }
+    // Se vier como ENUM em maiúsculo (JOGOS, COMIDA, ...)
+    const rawUpper = rawLower.toUpperCase();
 
-    // 👉 Serviços (tudo que não é jogo, comida ou música)
-    // Inclui: steam, netflix, xbox, playstation, airbnb, paramount, uber, shopee, apple gift card, etc.
-    return 'servicos';
+    const CATEGORY_MAP = {
+        JOGOS: 'jogos',
+        COMIDA: 'comida',
+        MUSICA: 'musica',
+        SERVICOS: 'servicos'
+    };
+
+    return CATEGORY_MAP[rawUpper] || rawLower;
 }
 
 /* ================================
@@ -188,7 +192,7 @@ function getImagemCard(card) {
     if (nome.includes('gloogleplay')) return '/img/gloogleplay.webp';
     if (nome.includes('disney')) return '/img/disney.jpeg';
     if (nome.includes('Deezer')) return '/img/Deezer.jpg';
-    if (nome.includes('99-food')) return '/img/99-food.png';
+    if (nome.includes('99')) return '/img/99-food.png';
 
     // 👉 Jogos
     if (nome.includes('cyberpunk')) return '/img/cyberpunk.png';
