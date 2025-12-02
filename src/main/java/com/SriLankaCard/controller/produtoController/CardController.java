@@ -33,11 +33,6 @@ public class CardController {
         return cardServiceImplements.atualiarCard(id, adjust);
     }
 
-    @GetMapping("/listar")
-    public List<CardResponse> listar(){
-        return cardServiceImplements.listarCards();
-    }
-
     @GetMapping("/{id}")
     public CardResponse buscarPorId(@PathVariable Long id){
         return cardServiceImplements.buscarPorId(id);
@@ -54,8 +49,6 @@ public class CardController {
                                           @PathVariable("promo") boolean promo) {
         return cardServiceImplements.atualizarPromocao(promo, id);
     }
-
-
 }
 
 

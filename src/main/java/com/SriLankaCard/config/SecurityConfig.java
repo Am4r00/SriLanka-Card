@@ -55,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/create-user", "/admin/create-user-common", "/admin/test-create-admin", "/admin/update-user-to-admin").permitAll()
                         
                         // 🌟 API DE CARDS - Listar é público, criar/atualizar/deletar precisa de ADMIN
-                        .requestMatchers("/cards/listar", "/cards/{id}").permitAll()
+                        .requestMatchers("/cards", "/cards/{id}").permitAll()
                         
                         // 🌟 ROTAS ADMIN - precisam estar autenticadas com role ADMIN
                         // As rotas específicas com @PreAuthorize vão verificar a role

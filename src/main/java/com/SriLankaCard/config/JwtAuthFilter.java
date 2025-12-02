@@ -34,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/auth/registrar",
             
             // 🌟 ROTAS DE CARDS (API)
-            "/cards/listar",
+            "/cards",
 
             // OUTRAS PÁGINAS HTML
             "/contato", "/faq", "/sobre", "/giftcard",
