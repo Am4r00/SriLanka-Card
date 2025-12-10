@@ -17,7 +17,6 @@
 
 <th:block th:replace="~{fragments/header :: header}"></th:block>
 
-<!-- Conteúdo principal -->
 <main class="faq-section">
     <div class="faq-container">
         <h1>Suporte & FAQ</h1>
@@ -65,10 +64,10 @@
 
 <th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
+<script th:src="@{/js/core.js}"></script>
 <script th:src="@{/js/api.js}"></script>
 <script th:src="@{/js/header.js}"></script>
 <script>
-    // Script para abrir e fechar perguntas da FAQ
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
             const answer = button.nextElementSibling;

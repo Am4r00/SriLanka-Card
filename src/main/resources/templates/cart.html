@@ -1,60 +1,56 @@
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Carrinho - SriLankaCard</title>
-
-    <!-- AQUI LIGA O CSS DO CARRINHO -->
     <link rel="stylesheet" th:href="@{/css/cart.css}">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
 
 <body class="modal-open">
 
-<iframe id="home-bg-iframe" th:src="@{/}" class="home-bg" aria-hidden="true"></iframe>
+    <iframe id="home-bg-iframe" th:src="@{/}" class="home-bg" aria-hidden="true"></iframe>
 
 
+    <aside class="cart-modal">
+        <header class="cart-header">
+            <!-- Esse título será atualizado via JS -->
+            <h2 id="cart-title">Meu Carrinho (0)</h2>
+            <button class="cart-close-btn" id="cart-close-btn" aria-label="Fechar carrinho">
+                <span>&times;</span>
+            </button>
+        </header>
 
-<aside class="cart-modal">
-    <header class="cart-header">
-        <!-- Esse título será atualizado via JS -->
-        <h2 id="cart-title">Meu Carrinho (0)</h2>
-        <button class="cart-close-btn" id="cart-close-btn" aria-label="Fechar carrinho">
-            <span>&times;</span>
-        </button>
-    </header>
+        <div class="cart-items" id="cart-items">
 
-    <!-- Vamos deixar essa div vazia pra preencher via JS -->
-    <div class="cart-items" id="cart-items">
-        <!-- Itens do carrinho virão do JS -->
-    </div>
-
-    <footer class="cart-footer">
-        <div class="cart-summary">
-            <span id="cart-total-label">Total: R$ 0,00</span>
         </div>
-        <a th:href="@{/payment}">
-            <button class="cta-button" id="checkout-button">Finalizar Compra</button>
-        </a>
-    </footer>
-</aside>
 
-<script th:src="@{/js/api.js}"></script>
-<script th:src="@{/js/produtos.js}"></script>
-<script th:src="@{/js/cart.js}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const iframe = document.getElementById('home-bg-iframe');
-        if (iframe) {
-            const previousPageUrl = document.referrer;
-            if (previousPageUrl) {
-                iframe.src = previousPageUrl;
+        <footer class="cart-footer">
+            <div class="cart-summary">
+                <span id="cart-total-label">Total: R$ 0,00</span>
+            </div>
+            <a th:href="@{/payment}">
+                <button class="cta-button" id="checkout-button">Finalizar Compra</button>
+            </a>
+        </footer>
+    </aside>
+
+    <script th:src="@{/js/core.js}"></script>
+    <script th:src="@{/js/api.js}"></script>
+    <script th:src="@{/js/produtos.js}"></script>
+    <script th:src="@{/js/cart.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const iframe = document.getElementById('home-bg-iframe');
+            if (iframe) {
+                const previousPageUrl = document.referrer;
+                if (previousPageUrl) {
+                    iframe.src = previousPageUrl;
+                }
             }
-        }
-    });
-</script>
+        });
+    </script>
 
 </body>
 </html>

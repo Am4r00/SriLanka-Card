@@ -16,43 +16,44 @@
 
 <body>
 
-<th:block th:replace="~{fragments/header :: header}"></th:block>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
 
-<main class="contact">
-    <div class="contact-container">
-        <h1>Fale Conosco</h1>
-        <p>Tem alguma dúvida, sugestão ou precisa de ajuda? Envie sua mensagem abaixo e nossa equipe entrará em contato o mais breve possível.</p>
+    <main class="contact">
+        <div class="contact-container">
+            <h1>Fale Conosco</h1>
+            <p>Tem alguma dúvida, sugestão ou precisa de ajuda? Envie sua mensagem abaixo e nossa equipe entrará em contato o mais breve possível.</p>
 
-        <form class="contact-form" th:action="@{/contato}" method="post">
-            <div class="form-group">
-                <label for="nome">Nome completo</label>
-                <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
-            </div>
+            <form class="contact-form" th:action="@{/contato}" method="post">
+                <div class="form-group">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                </div>
 
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
-            </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
+                </div>
 
-            <div class="form-group">
-                <label for="assunto">Assunto</label>
-                <input type="text" id="assunto" name="assunto" placeholder="Ex: Problema com compra" required>
-            </div>
+                <div class="form-group">
+                    <label for="assunto">Assunto</label>
+                    <input type="text" id="assunto" name="assunto" placeholder="Ex: Problema com compra" required>
+                </div>
 
-            <div class="form-group">
-                <label for="mensagem">Mensagem</label>
-                <textarea id="mensagem" name="mensagem" rows="5" placeholder="Descreva sua dúvida ou sugestão..." required></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="mensagem">Mensagem</label>
+                    <textarea id="mensagem" name="mensagem" rows="5" placeholder="Descreva sua dúvida ou sugestão..." required></textarea>
+                </div>
 
-            <button type="submit" class="send-button">Enviar Mensagem ✉️</button>
-        </form>
-    </div>
-</main>
+                <button type="submit" class="send-button">Enviar Mensagem ✉️</button>
+            </form>
+        </div>
+    </main>
 
-<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+    <th:block th:replace="~{fragments/footer :: footer}"></th:block>
 
-<script th:src="@{/js/api.js}"></script>
-<script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/core.js}"></script>
+    <script th:src="@{/js/api.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
 
 </body>
 </html>

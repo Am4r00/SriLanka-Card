@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Cadastrar Produto</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -31,23 +31,27 @@
             <form id="cadastro-produto" action="#" method="post" novalidate>
                 <div class="field">
                     <label class="label" for="nome-produto">Nome do Produto</label>
-                    <input class="input" type="text" id="nome-produto" name="nome-produto" placeholder="Nome do Produto" required>
+                    <input class="input" type="text" id="nome-produto" name="nome-produto" placeholder="Nome do Produto"
+                           required>
                 </div>
 
                 <div class="field">
                     <label class="label" for="quantidade">Quantidade</label>
                     <div class="input-group">
-                        <input class="input" type="number" id="quantidade" name="quantidade" placeholder="Qtd." required>
+                        <input class="input" type="number" id="quantidade" name="quantidade" placeholder="Qtd."
+                               required>
                         <div class="input-group-item">
                             <label class="label" for="valor">Valor</label>
-                            <input class="input small-input" type="text" id="valor" name="valor" placeholder="R$ 00,00" required>
+                            <input class="input small-input" type="text" id="valor" name="valor" placeholder="R$ 00,00"
+                                   required>
                         </div>
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label" for="descricao">Descrição</label>
-                    <textarea class="input" id="descricao" name="descricao" rows="4" placeholder="Detalhes do produto..."></textarea>
+                    <textarea class="input" id="descricao" name="descricao" rows="4"
+                              placeholder="Detalhes do produto..."></textarea>
                 </div>
 
                 <div class="field">
@@ -65,7 +69,7 @@
     </main>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const iframe = document.getElementById('home-bg-iframe');
         if (iframe) {
             const previousPageUrl = document.referrer;

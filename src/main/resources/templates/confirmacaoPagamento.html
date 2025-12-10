@@ -1,71 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Pedido Confirmado - SriLankaCard</title>
 
-    <!-- ✅ RESET pra matar a borda branca -->
     <style>
         html, body {
             margin: 0;
             padding: 0;
         }
     </style>
-
-    <!-- ✅ CSS do header/fragment (se existir) -->
     <link rel="stylesheet" href="/css/header.css" th:href="@{/css/header.css}">
-
-    <!-- ✅ CSS da confirmação -->
     <link rel="stylesheet" href="/css/confirmacaoPagamento.css" th:href="@{/css/confirmacaoPagamento.css}">
-
-    <!-- ✅ IMPORTA o CSS do payment só pra herdar a navbar igual às outras telas -->
     <link rel="stylesheet" href="/css/payment.css" th:href="@{/css/payment.css}">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-          rel="stylesheet" />
+          rel="stylesheet"/>
 </head>
 <body>
 
-<!-- Header padrão -->
-<th:block th:replace="~{fragments/header :: header}"></th:block>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
 
-<main class="confirm-main">
-    <section class="confirm-wrapper">
-        <div class="confirm-card">
-            <div class="confirm-icon-wrapper">
-                <div class="confirm-icon-circle">
-                    <span class="confirm-icon-check">✓</span>
+    <main class="confirm-main">
+        <section class="confirm-wrapper">
+            <div class="confirm-card">
+                <div class="confirm-icon-wrapper">
+                    <div class="confirm-icon-circle">
+                        <span class="confirm-icon-check">✓</span>
+                    </div>
+                </div>
+
+                <h1 class="confirm-title">Pedido confirmado!</h1>
+
+                <p class="confirm-text">
+                    Recebemos o seu pedido e enviamos os detalhes para o seu e-mail.
+                </p>
+
+                <p class="confirm-subtext">
+                    Assim que o pagamento for processado, seus Gift Cards serão liberados na sua conta.
+                </p>
+
+                <div class="confirm-actions">
+                    <a th:href="@{/}" class="confirm-btn confirm-btn-primary">
+                        Voltar para a Home
+                    </a>
+                    <a th:href="@{/giftcard}" class="confirm-btn confirm-btn-secondary">
+                        Ver mais Gift Cards
+                    </a>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <h1 class="confirm-title">Pedido confirmado!</h1>
-
-            <p class="confirm-text">
-                Recebemos o seu pedido e enviamos os detalhes para o seu e-mail.
-            </p>
-
-            <p class="confirm-subtext">
-                Assim que o pagamento for processado, seus Gift Cards serão liberados na sua conta.
-            </p>
-
-            <div class="confirm-actions">
-                <a th:href="@{/}" class="confirm-btn confirm-btn-primary">
-                    Voltar para a Home
-                </a>
-                <a th:href="@{/giftcard}" class="confirm-btn confirm-btn-secondary">
-                    Ver mais Gift Cards
-                </a>
-            </div>
-        </div>
-    </section>
-</main>
-
-<script th:src="@{/js/api.js}"></script>
-<script th:src="@{/js/header.js}"></script>
-<script th:src="@{/js/confirmacaoPagamento.js}"></script>
+    <script th:src="@{/js/core.js}"></script>
+    <script th:src="@{/js/api.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/confirmacaoPagamento.js}"></script>
 
 </body>
 </html>
