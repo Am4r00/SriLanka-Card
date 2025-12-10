@@ -1,72 +1,6 @@
-// Variáveis globais
 const form = document.getElementById('signup');
 const pwd = document.getElementById('password');
 const confirm = document.getElementById('confirm');
-
-// Função para mostrar toast (notificação)
-function showToast(message, isError = false) {
-    // Remover toast anterior se existir
-    const existingToast = document.getElementById('toast-notification');
-    if (existingToast) {
-        existingToast.remove();
-    }
-
-    // Criar elemento de toast
-    const toast = document.createElement('div');
-    toast.id = 'toast-notification';
-    toast.textContent = message;
-    toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${isError ? '#ef4444' : '#10b981'};
-        color: white;
-        padding: 16px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        z-index: 10000;
-        font-weight: 500;
-        max-width: 400px;
-        animation: slideInRight 0.3s ease;
-    `;
-
-    // Adicionar animação CSS se não existir
-    if (!document.getElementById('toast-styles')) {
-        const style = document.createElement('style');
-        style.id = 'toast-styles';
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            @keyframes slideOutRight {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
-    document.body.appendChild(toast);
-
-    // Remover após 3 segundos
-    setTimeout(() => {
-        toast.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
 
 // Função para verificar se as senhas coincidem
 function checkMatch() {
@@ -150,7 +84,7 @@ if (form) {
           email: email
           // password, status e funcoes serão definidos pelo backend
         };
-        console.log('✅ Criando ADMIN com senha especial');
+        console.log('Criando ADMIN com senha especial');
         console.log('Endpoint:', endpoint);
         console.log('Payload:', payload);
 
@@ -162,7 +96,7 @@ if (form) {
           email: email,
           password: password
         };
-        console.log('✅ Criando USUÁRIO COMUM');
+        console.log('Criando USUÁRIO COMUM');
         console.log('Endpoint:', endpoint);
         console.log('Payload:', payload);
       }
@@ -218,14 +152,14 @@ if (form) {
               
               if (updateResponse.ok) {
                 const updatedData = await updateResponse.json();
-                console.log('✅ Usuário atualizado para ADMIN:', updatedData);
+                console.log('Usuário atualizado para ADMIN:', updatedData);
                 showToast('Usuário atualizado para ADMIN com sucesso!');
                 setTimeout(() => {
                   window.location.href = '/login';
                 }, 1500);
                 return;
               } else {
-                console.error('❌ Erro ao atualizar para ADMIN:', updateResponse);
+                console.error('Erro ao atualizar para ADMIN:', updateResponse);
               }
             }
           } catch (e) {
@@ -237,16 +171,16 @@ if (form) {
         try {
           const errorData = await response.json();
           errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
-          console.error('❌ Erro do servidor:', errorData);
+          console.error('Erro do servidor:', errorData);
         } catch (e) {
           errorMessage = `Erro ${response.status}: ${response.statusText}`;
-          console.error('❌ Erro na resposta:', response);
+          console.error('Erro na resposta:', response);
         }
         showToast(`Erro ao criar usuário: ${errorMessage}`, true);
       }
 
     } catch (error) {
-      console.error('❌ Erro na requisição:', error);
+      console.error('Erro na requisição:', error);
       showToast(`Erro ao conectar com o servidor: ${error.message || 'Verifique sua conexão.'}`, true);
     }
   });

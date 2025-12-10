@@ -1,6 +1,3 @@
-// Ajuste aqui se seu token estiver salvo com outro nome:
-const TOKEN_KEY = 'token';
-
 // Elementos do DOM
 const cartItemsContainer = document.getElementById('cart-items');
 const cartHeader = document.getElementById('cart-title');
@@ -25,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function carregarCarrinho() {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = getToken();
 
     if (!token) {
         console.warn('Nenhum token encontrado. Usuário pode não estar logado.');
@@ -82,7 +79,7 @@ function createCartItemElement(item) {
     cartItem.dataset.productId = item.produtoId;
     
     const nome = item.nome || 'Produto sem nome';
-    const imgSrc = resolverImagem(item);
+    const imgSrc = resolveProductImage(item);
     const precoUnit = Number(item.precoUnitario) || 0;
     const quantidade = item.quantidade || 1;
     const subtotal = Number(item.total) || (precoUnit * quantidade);
@@ -123,102 +120,8 @@ function createCartItemElement(item) {
     return cartItem;
 }
 
-function resolverImagem(item) {
-    const nome = (item.nome || '').toLowerCase();
-
-    // 👉 Gift cards / serviços
-    if (nome.includes('apple')) {
-        return '/img/apple-gift-card.png';
-    }
-
-    if (nome.includes('steam')) {
-        return '/img/steam-gift-card.png';
-    }
-
-    if (nome.includes('playstation') || nome.includes('psn') || nome.includes('ps4') || nome.includes('ps5')) {
-        return '/img/playstation-gift-card.png';
-    }
-
-    if (nome.includes('xbox') || nome.includes('xbox card')) {
-        return '/img/xbox.png';
-    }
-
-    if (nome.includes('airbnb')) {
-        return '/img/airbnb.png';
-    }
-
-    if (nome.includes('ifood')) {
-        return '/img/ifood.png';
-    }
-
-    if (nome.includes('netflix')) {
-        return '/img/netflix.jpg';
-    }
-
-    if (nome.includes('paramount')) {
-        return '/img/paramount.jpg';
-    }
-
-    if (nome.includes('spotify')) {
-        return '/img/spotify.png';
-    }
-
-    if (nome.includes('uber')) {
-        return '/img/uber.png';
-    }
-
-    if (nome.includes('shopee')) {
-        return '/img/shopee.jpg';
-    }
-
-    // 👉 Jogos específicos
-    if (nome.includes('cyberpunk')) {
-        return '/img/cyberpunk.png';
-    }
-
-    if (nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc')) {
-        return '/img/fc26.jpg';
-    }
-
-    if (nome.includes('forza')) {
-        return '/img/forza-horizon-5.webp';
-    }
-
-    if (nome.includes('ghost of tsushima') || nome.includes('tsushima')) {
-        return '/img/Ghost_of_Tsushima_capa.png';
-    }
-
-    if (nome.includes('god of war')) {
-        return '/img/god_of_war.jpg';
-    }
-
-    if (nome.includes('gta')) {
-        return '/img/GTA_V1.jpg';
-    }
-
-    if (nome.includes('red dead')) {
-        return '/img/red_dead_2.png';
-    }
-
-    if (nome.includes('the last of us')) {
-        return '/img/the_last_of_us.jpg';
-    }
-
-    if (nome.includes('witcher')) {
-        return '/img/the_witcher_3.png';
-    }
-
-    // 👉 fallback genérico pra qualquer outro gift card / produto
-    if (nome.includes('gift') || nome.includes('card')) {
-        return '/img/steam-gift-card.png';
-    }
-
-    // 👉 fallback final pra qualquer coisa que não bateu em nada
-    return '/img/steam-gift-card.png';
-}
-
 async function removerItem(produtoId) {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = getToken();
     if (!token) {
         alert('Você precisa estar logado para remover itens.');
         return;
