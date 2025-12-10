@@ -33,19 +33,9 @@ public class WebController {
         return "giftcard";
     }
 
-    @GetMapping("/employe")
-    public String employe() {
-        return "employe";
-    }
-
     @GetMapping("/cart")
     public String cart() {
         return "cart";
-    }
-    
-    @GetMapping("/funcionarios")
-    public String funcionarios() {
-        return "funcionarios";
     }
 
     @GetMapping("/contato")
@@ -73,15 +63,6 @@ public class WebController {
         return "produto";
     }
 
-    @GetMapping("/produtoDetalhe")
-    public String produtoDetalhe(@RequestParam(required = false) Long id, Model model) {
-        // O produto será carregado via JavaScript se o ID for fornecido
-        if (id != null) {
-            model.addAttribute("productId", id);
-        }
-        return "produtoDetalhe";
-    }
-
     @GetMapping("/sobre")
     public String sobre() {
         return "sobre";
@@ -105,26 +86,6 @@ public class WebController {
     @GetMapping("/home_admin")
     public String homeAdmin() {
         return "home_admin";
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "test";
-    }
-
-    @GetMapping("/static-test")
-    public String staticTest() {
-        return "static-test";
-    }
-    
-    @GetMapping("/test-admin")
-    public String testAdmin() {
-        return "test-admin";
-    }
-    
-    @GetMapping("/update-to-admin")
-    public String updateToAdmin() {
-        return "update-to-admin";
     }
     
     @GetMapping("/usuariodetalhe")
