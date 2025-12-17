@@ -92,4 +92,6 @@ public class Carrinho {
     private void trocarAtualizacao() {
         this.atualizadoEm = LocalDateTime.now();
     }
+
+
 }

@@ -11,7 +11,7 @@
                     <a th:href="@{/produto}">Produto</a>
                 </li>
                 <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                    <a th:href="@{/funcionarios}">Funcionários</a>
+                    <a th:href="@{/usuariodetalhe}">Funcionários</a>
                 </li>
             </ul>
         </nav>

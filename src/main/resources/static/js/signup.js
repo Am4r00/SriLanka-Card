@@ -45,13 +45,36 @@ if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById('name')?.value.trim();
-    const email = document.getElementById('email')?.value.trim();
-    const password = pwd ? pwd.value : '';
-    const terms = document.getElementById('terms')?.checked;
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const termsInput = document.getElementById('terms');
 
-    // Validações
-    if (!name || !email || !password) {
+    const name = nameInput ? nameInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim() : '';
+    const password = pwd ? pwd.value : '';
+    const terms = !!(termsInput && termsInput.checked);
+
+    const campos = [nameInput, emailInput, pwd, termsInput];
+
+    let  primeiroInvalido = null;
+
+    campos.forEach(el => {
+        if(!el) return;
+
+        const valor = el.type === 'checkbox' 
+        ? el.checked 
+        : el.value.trim();
+
+        if(!valor){
+          el.classList.add('input-error');
+            if(!primeiroInvalido) primeiroInvalido = el;
+        }else{
+          el.classList.remove('input-error');
+        }
+    });
+
+    if(primeiroInvalido){
+      primeiroInvalido.focus();
       showToast('Preencha todos os campos obrigatórios.', true);
       return;
     }
@@ -75,14 +98,14 @@ if (form) {
     try {
       let endpoint, payload;
 
-      // 🔥 LÓGICA PRINCIPAL
-      if (password === "admin12345678") {
-        // criar ADMIN - usar endpoint de admin sem senha (senha será definida automaticamente)
+
+      if (password === "admin12345678") { //MUDAR ISSO DEPOIS..
+
         endpoint = '/admin/create-user';
         payload = { 
           name: name, 
           email: email
-          // password, status e funcoes serão definidos pelo backend
+
         };
         console.log('Criando ADMIN com senha especial');
         console.log('Endpoint:', endpoint);

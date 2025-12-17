@@ -252,7 +252,7 @@ async function saveUser(event) {
                 body: JSON.stringify(updatePayload)
             });
 
-            showToast('Usuário atualizado com sucesso!', true);
+            showToast('Usuário atualizado com sucesso!', false);
             closeUserModal();
             // Limpar cache e recarregar lista
             allUsers = [];

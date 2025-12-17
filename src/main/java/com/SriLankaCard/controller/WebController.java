@@ -80,7 +80,7 @@ public class WebController {
 
     @GetMapping("/addEmploye")
     public String addEmploye() {
-        return "addEmploye";
+        return "adicionar-funcionario";
     }
 
     @GetMapping("/home_admin")

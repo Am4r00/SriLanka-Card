@@ -1,5 +1,3 @@
-const PAYMENT_OK_KEY = window.PAYMENT_OK_KEY;
-
 document.addEventListener('DOMContentLoaded', () => {
     carregarCarrinhoPagamento();
 
@@ -71,7 +69,7 @@ function renderizarCarrinhoPagamento(carrinho) {
         div.className = 'cart-item';
 
         const nome = (item.nome || '').toLowerCase();
-        const imgSrc = resolvProductImage(item);
+        const imgSrc = resolveProductImage(item);
 
         const precoUnit = Number(item.precoUnitario) || 0;
         const subtotal = Number(item.total ?? (precoUnit * (item.quantidade || 0)));
@@ -142,7 +140,7 @@ function validarCamposCartao() {
     });
 
     if (primeiroInvalido) {
-        showToast('Preencha todos os campos do cartão: Nome, Número, Validade e CVV.');
+        showToast('Preencha todos os campos do cartão: Nome, Número, Validade e CVV.', true);
         primeiroInvalido.focus();
         return false;
     }

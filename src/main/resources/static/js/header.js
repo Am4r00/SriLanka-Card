@@ -80,6 +80,7 @@ async function updateHeader() {
     
     // Atualizar contador do carrinho
     await updateCartCount();
+    await updateAdminmenu();
 }
 
 // Função para configurar o redirecionamento do logo
@@ -123,6 +124,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 });
+
+async function updateAdminmenu() {
+    const navList = document.querySelector('.nav-links ul');
+    if (!navList) return;
+
+    const existingItem = navList.querySelector('li .admin-panel-link');
+    const admin = await isAdmin();
+
+    if(admin) {
+        if (!existingItem) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '/usuariodetalhe';
+            a.textContent = 'Painel Admin';
+            a.className = 'admin-panel-link';
+            li.appendChild(a);
+            navList.appendChild(li);
+        }
+    } else{
+        if (existingItem && existingItem.parentElement) {
+            existingItem.parentElement.remove();
+        }
+    }
+}
 
 // Exportar funções
 window.updateHeader = updateHeader;

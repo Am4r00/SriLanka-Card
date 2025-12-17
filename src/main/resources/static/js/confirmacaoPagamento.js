@@ -1,5 +1,3 @@
-const PAYMENT_OK_KEY = window.PAYMENT_OK_KEY;
-
 document.addEventListener('DOMContentLoaded', () => {
     finalizarPedidoAoAbrir();
 });
