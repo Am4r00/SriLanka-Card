@@ -1,5 +1,3 @@
-// Script para gerenciar o painel administrativo
-
 // Variáveis globais
 let allUsers = [];
 let allProducts = [];
@@ -8,7 +6,7 @@ let allProducts = [];
 function checkAdminAccess() {
     const token = getToken();
     if (!token) {
-        alert('Você precisa estar logado para acessar esta página.');
+        showToast(`Você precisa estar logado para acessar esta página.`, true);
         window.location.href = '/login';
         return false;
     }
@@ -50,7 +48,7 @@ function checkAdminAccess() {
 
         if (!isAdmin) {
             console.log('Acesso negado - usuário não é ADMIN');
-            alert('Acesso negado. Esta página é apenas para administradores.');
+            showToast('Acesso negado. Esta página é apenas para administradores.', true);
             window.location.href = '/home';
             return false;
         }
@@ -60,25 +58,11 @@ function checkAdminAccess() {
     } catch (error) {
         console.error('Erro ao verificar token:', error);
         console.error('Stack trace:', error.stack);
-        alert('Erro ao verificar autenticação. Por favor, faça login novamente.');
+        showToast('Erro ao verificar autenticação. Por favor, faça login novamente.', true);
         localStorage.removeItem('token');
         localStorage.removeItem('userEmail');
         window.location.href = '/login';
         return false;
-    }
-}
-
-// Função para decodificar token JWT (básico, sem validação)
-function decodeToken(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        return null;
     }
 }
 
@@ -196,7 +180,7 @@ async function openEditUserModal(userId) {
         const user = users.find(u => u.id === userId);
 
         if (!user) {
-            alert('Usuário não encontrado');
+            showToast('Usuário não encontrado ', true);
             return;
         }
 
@@ -222,7 +206,7 @@ async function openEditUserModal(userId) {
         document.getElementById('userModal').style.display = 'block';
     } catch (error) {
         console.error('Erro ao carregar usuário:', error);
-        alert('Erro ao carregar dados do usuário');
+        showToast('Erro ao carregar dados do usuário')
     }
 }
 
@@ -257,7 +241,7 @@ async function saveUser(event) {
             }
 
             if (Object.keys(updatePayload).length === 0) {
-                alert('Nenhum campo foi alterado.');
+                showToast('Nenhum campo foi alterado.', true);
                 return;
             }
 
@@ -268,7 +252,7 @@ async function saveUser(event) {
                 body: JSON.stringify(updatePayload)
             });
 
-            alert('Usuário atualizado com sucesso!');
+            showToast('Usuário atualizado com sucesso!', false);
             closeUserModal();
             // Limpar cache e recarregar lista
             allUsers = [];
@@ -293,14 +277,14 @@ async function saveUser(event) {
             body: JSON.stringify(payload)
         });
 
-        alert('Usuário salvo com sucesso!');
+        showToast('Usuário salvo com sucesso! ', true);
         closeUserModal();
         // Limpar cache e recarregar lista
         allUsers = [];
         await loadUsers();
     } catch (error) {
         console.error('Erro ao salvar usuário:', error);
-        alert(`Erro ao salvar usuário: ${error.message}`);
+        showToast(`Erro ao salvar usuário: ${error.message}`, true);
     }
 }
 
@@ -314,13 +298,13 @@ async function deleteUser(userId) {
         const response =         await apiRequest(`/admin/delete-user/${userId}`, {
             method: 'DELETE'
         });
-        alert('Usuário deletado com sucesso!');
+        showToast('Usuário deletado com sucesso!', false);
         // Limpar cache e recarregar lista
         allUsers = [];
         await loadUsers();
     } catch (error) {
         console.error('Erro ao deletar usuário:', error);
-        alert(`Erro ao deletar usuário: ${error.message}`);
+        showToast(`Erro ao deletar usuário: ${error.message}`, true);
     }
 }
 
@@ -428,7 +412,7 @@ async function openEditProductModal(productId) {
         document.getElementById('productModal').style.display = 'block';
     } catch (error) {
         console.error('Erro ao carregar produto:', error);
-        alert('Erro ao carregar dados do produto');
+        showToast('Erro ao carregar dados do produto', true);
     }
 }
 
@@ -445,7 +429,7 @@ async function saveProduct(event) {
     const promocao = document.getElementById('productPromocao').checked;
 
     if (!category) {
-        alert('Selecione uma categoria antes de salvar o produto.');
+        showToast('Selecione uma categoria antes de salvar o produto.', true);
         return;
     }
 
@@ -485,7 +469,7 @@ async function saveProduct(event) {
             // Verificar token antes de enviar
             const token = getToken();
             if (!token) {
-                alert('Você precisa estar logado para criar produtos. Redirecionando para login...');
+                showToast('Você precisa estar logado para criar produtos. Redirecionando para login...', true);
                 window.location.href = '/login';
                 return;
             }
@@ -507,14 +491,14 @@ async function saveProduct(event) {
             console.log('Resposta do servidor:', response);
         }
 
-        alert('Produto salvo com sucesso!');
+        showToast('Produto salvo com sucesso!', false);
         closeProductModal();
         // Limpar cache e recarregar lista
         allProducts = [];
         await loadProducts();
     } catch (error) {
         console.error('Erro ao salvar produto:', error);
-        alert(`Erro ao salvar produto: ${error.message}`);
+        showToast(`Erro ao salvar produto: ${error.message}`, true);
     }
 }
 
@@ -524,18 +508,17 @@ async function deleteProduct(productId) {
         return;
     }
 
-
     try {
         await apiRequest(`/cards/deletar/${productId}`, {
             method: 'DELETE'
         });
-        alert('Produto deletado com sucesso!');
+        showToast('Produto deletado com sucesso!', false);
         allProducts = [];
         await loadProducts();
     } catch (error) {
         console.error('Erro ao deletar produto:', error);
         showToast(`Erro ao deletar o produto: ${error.message}`, true);
-        //alert(`Erro ao deletar produto: ${error.message}`);
+
     }
 }
 
@@ -564,24 +547,3 @@ document.addEventListener('DOMContentLoaded', () => {
         loadUsers();
     }
 });
-
-function showToast(msg, isError) {
-    const toast = document.getElementById('toast');
-    if (!toast) return;
-
-    toast.textContent = msg;
-
-    toast.classList.remove('hidden', 'toast--error', 'show');
-    if (isError) {
-        toast.classList.add('toast--error');
-    }
-
-    // reflow
-    void toast.offsetWidth;
-
-    toast.classList.add('show');
-
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 2500);
-}

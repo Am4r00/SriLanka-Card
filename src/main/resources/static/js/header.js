@@ -1,25 +1,4 @@
-// Script para gerenciar o header com autenticação JWT
-
-// Função para verificar se o usuário está autenticado
-function isAuthenticated() {
-    const token = getToken();
-    return token !== null && token !== undefined && token !== '';
-}
-
-// Função para decodificar token JWT (básico, sem validação)
-function decodeToken(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        return null;
-    }
-}
-
+isAuthenticated();
 // Função para atualizar o header
 async function updateHeader() {
     const token = getToken();
@@ -101,103 +80,7 @@ async function updateHeader() {
     
     // Atualizar contador do carrinho
     await updateCartCount();
-}
-
-// Função para atualizar contador do carrinho no header
-async function updateCartCount() {
-    if (!window.api || typeof window.api.getCartItemCount !== 'function') {
-        return;
-    }
-    
-    try {
-        const count = await api.getCartItemCount();
-        const cartLink = document.querySelector('.cart-link');
-        
-        if (cartLink) {
-            // Remover contador existente
-            const existingCount = cartLink.querySelector('.cart-count');
-            if (existingCount) {
-                existingCount.remove();
-            }
-            
-            if (count > 0) {
-                const countBadge = document.createElement('span');
-                countBadge.className = 'cart-count';
-                countBadge.textContent = count;
-                countBadge.style.cssText = `
-                    position: absolute;
-                    top: -8px;
-                    right: -8px;
-                    background: #ef4444;
-                    color: white;
-                    border-radius: 50%;
-                    width: 20px;
-                    height: 20px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 12px;
-                    font-weight: bold;
-                `;
-                cartLink.style.position = 'relative';
-                cartLink.appendChild(countBadge);
-            }
-        }
-    } catch (error) {
-        console.error('Erro ao atualizar contador do carrinho:', error);
-    }
-}
-
-// Função para verificar se o usuário é admin
-async function isAdmin() {
-    const token = getToken();
-    if (!token) return false;
-    
-    try {
-        const decoded = decodeToken(token);
-        // Verificar se o token contém a role ADMIN
-        if (decoded && decoded.role) {
-            const role = decoded.role;
-            if (Array.isArray(role)) {
-                return role.some(r => {
-                    const roleValue = typeof r === 'string' ? r : (r.name || r.toString() || r);
-                    return roleValue === 'ADMIN' || roleValue === 'ROLE_ADMIN' || roleValue.includes('ADMIN');
-                });
-            }
-            return role === 'ADMIN' || role === 'ROLE_ADMIN' || role.includes('ADMIN');
-        }
-        // Verificar se tem funcoes no token
-        if (decoded && decoded.funcoes) {
-            if (Array.isArray(decoded.funcoes)) {
-                return decoded.funcoes.some(f => {
-                    const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
-                    return funcaoValue === 'ADMIN' || funcaoValue === 'ROLE_ADMIN' || funcaoValue.includes('ADMIN');
-                });
-            }
-            return decoded.funcoes.includes('ADMIN') || decoded.funcoes.includes('ROLE_ADMIN');
-        }
-        
-        // Se não encontrou no token, tentar buscar da API
-        if (window.api && typeof window.api.getCurrentUser === 'function') {
-            try {
-                const user = await window.api.getCurrentUser();
-                if (user && user.funcoes) {
-                    if (Array.isArray(user.funcoes)) {
-                        return user.funcoes.some(f => {
-                            const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
-                            return funcaoValue === 'ADMIN' || funcaoValue === 'ROLE_ADMIN' || funcaoValue.includes('ADMIN');
-                        });
-                    }
-                    return user.funcoes.includes('ADMIN') || user.funcoes.includes('ROLE_ADMIN');
-                }
-            } catch (apiError) {
-                console.error('Erro ao buscar usuário da API:', apiError);
-            }
-        }
-    } catch (e) {
-        console.error('Erro ao verificar admin:', e);
-    }
-    return false;
+    await updateAdminmenu();
 }
 
 // Função para configurar o redirecionamento do logo
@@ -241,6 +124,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 });
+
+async function updateAdminmenu() {
+    const navList = document.querySelector('.nav-links ul');
+    if (!navList) return;
+
+    const existingItem = navList.querySelector('li .admin-panel-link');
+    const admin = await isAdmin();
+
+    if(admin) {
+        if (!existingItem) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '/usuariodetalhe';
+            a.textContent = 'Painel Admin';
+            a.className = 'admin-panel-link';
+            li.appendChild(a);
+            navList.appendChild(li);
+        }
+    } else{
+        if (existingItem && existingItem.parentElement) {
+            existingItem.parentElement.remove();
+        }
+    }
+}
 
 // Exportar funções
 window.updateHeader = updateHeader;

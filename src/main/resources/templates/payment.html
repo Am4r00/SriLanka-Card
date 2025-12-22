@@ -19,19 +19,15 @@
 <main class="main-content">
     <div class="content-wrapper">
 
-        <!-- ✅ ITENS DINÂMICOS -->
         <section class="shopping-cart">
             <h2>Itens</h2>
 
-            <!-- Atualiza via JS -->
             <span class="item-count" id="payment-item-count">0 itens</span>
 
-            <!-- Container dinâmico -->
             <div id="payment-items">
-                <!-- Itens serão inseridos aqui via payment.js -->
+
             </div>
 
-            <!-- Total -->
             <div class="cart-total" id="payment-total-label">Total: R$ 0,00</div>
         </section>
 
@@ -39,8 +35,6 @@
             <div class="payment-card">
                 <h3>Método de pagamento</h3>
 
-
-                <!-- Cartão de Crédito -->
                 <div class="payment-option active" id="option-credit">
                     <input type="radio" name="payment-method" id="credit-card" checked>
                     <label for="credit-card">Cartão de Crédito</label>
@@ -68,18 +62,13 @@
                     </div>
                 </div>
 
-
-                <!-- PIX -->
                 <div class="payment-option" id="option-pix">
                     <input type="radio" name="payment-method" id="pix">
                     <label for="pix">Pix</label>
                 </div>
 
-
-                <!-- QR CODE PIX oculto por padrão -->
                 <div id="pix-container" class="pix-box" style="display: none;">
                     <h3 class="pix-title">Escaneie o QR Code abaixo para pagar</h3>
-
 
                     <div class="pix-qrcode-box">
                         <img src="../static/img/qrCode.png" class="pix-qrcode-img" alt="QR Code Pix">
@@ -87,8 +76,6 @@
                 </div>
             </div>
 
-
-            <!-- Cupom -->
             <div class="discount-card">
                 <h3>Código de desconto</h3>
                 <div class="discount-input">
@@ -104,7 +91,6 @@
 
 
         <script>
-            // Alternância entre Cartão e Pix
             const radioCredit = document.getElementById("credit-card");
             const radioPix = document.getElementById("pix");
 
@@ -123,7 +109,6 @@
                 pixBox.style.display = "none";
                 creditForm.style.display = "block";
             });
-            // Timer de 10 minutos
             let timerDuration = 10 * 60; // 10 minutos em segundos
             const timerDisplay = document.createElement('div');
             timerDisplay.id = 'pix-timer';
@@ -169,8 +154,9 @@
     </div>
 </main>
 
+<script th:src="@{/js/core.js}"></script>
 <script th:src="@{/js/api.js}"></script>
-<script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/payment.js}"></script>
+<script th:src="@{/js/header.js}"></script>
 </body>
 </html>

@@ -1,6 +1,3 @@
-const TOKEN_KEY = 'token';
-const PAYMENT_OK_KEY = 'payment_validated'; // flag simples pra evitar acesso direto na confirmação
-
 document.addEventListener('DOMContentLoaded', () => {
     carregarCarrinhoPagamento();
 
@@ -11,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function carregarCarrinhoPagamento() {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = getToken();
 
     if (!token) {
         console.warn('Nenhum token encontrado. Usuário pode não estar logado.');
@@ -72,7 +69,7 @@ function renderizarCarrinhoPagamento(carrinho) {
         div.className = 'cart-item';
 
         const nome = (item.nome || '').toLowerCase();
-        const imgSrc = resolverImagem(item);
+        const imgSrc = resolveProductImage(item);
 
         const precoUnit = Number(item.precoUnitario) || 0;
         const subtotal = Number(item.total ?? (precoUnit * (item.quantidade || 0)));
@@ -143,7 +140,7 @@ function validarCamposCartao() {
     });
 
     if (primeiroInvalido) {
-        showToast('Preencha todos os campos do cartão: Nome, Número, Validade e CVV.');
+        showToast('Preencha todos os campos do cartão: Nome, Número, Validade e CVV.', true);
         primeiroInvalido.focus();
         return false;
     }
@@ -158,18 +155,12 @@ function limparErrosCamposCartao() {
     });
 }
 
-/**
- * ✅ NOVO FLUXO:
- * - valida campos
- * - não chama /finalizar aqui
- * - só redireciona pra tela de confirmação
- */
 function onConcluirPagamento(event) {
     event.preventDefault();
 
     if (!validarCamposCartao()) return;
 
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = getToken();
     if (!token) {
         showToast('Você precisa estar logado para concluir o pagamento.');
         window.location.href = '/login';
@@ -183,95 +174,8 @@ function onConcluirPagamento(event) {
     window.location.href = '/confirmacaoPagamento';
 }
 
-/* =======================
-   TOAST SIMPLES
-======================= */
-function showToast(message) {
-    let container = document.getElementById('toast-container');
-
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toast-container';
-        container.style.position = 'fixed';
-        container.style.top = '20px';
-        container.style.right = '20px';
-        container.style.zIndex = '9999';
-        container.style.display = 'flex';
-        container.style.flexDirection = 'column';
-        container.style.gap = '10px';
-        document.body.appendChild(container);
-    }
-
-    const toast = document.createElement('div');
-    toast.textContent = message;
-
-    toast.style.background = '#ff4d4f';
-    toast.style.color = '#fff';
-    toast.style.padding = '12px 16px';
-    toast.style.borderRadius = '8px';
-    toast.style.fontSize = '14px';
-    toast.style.fontWeight = '600';
-    toast.style.boxShadow = '0 6px 18px rgba(0,0,0,0.2)';
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(-8px)';
-    toast.style.transition = 'all .25s ease';
-
-    container.appendChild(toast);
-
-    requestAnimationFrame(() => {
-        toast.style.opacity = '1';
-        toast.style.transform = 'translateY(0)';
-    });
-
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(-8px)';
-        setTimeout(() => toast.remove(), 250);
-    }, 3000);
-}
-
-/* =======================
-   IMAGENS
-======================= */
-function resolverImagem(item) {
-    const nome = (item.nome || '').toLowerCase();
-
-    // 👉 Gift Cards / Serviços
-    if (nome.includes('apple')) return '/img/apple-gift-card.png';
-    if (nome.includes('steam')) return '/img/steam-gift-card.png';
-    if (nome.includes('playstation') || nome.includes('psn') || nome.includes('ps4') || nome.includes('ps5')) {
-        return '/img/playstation-gift-card.png';
-    }
-    if (nome.includes('xbox')) return '/img/xbox.png';
-    if (nome.includes('airbnb')) return '/img/airbnb.png';
-    if (nome.includes('ifood')) return '/img/ifood.png';
-    if (nome.includes('netflix')) return '/img/netflix.jpg';
-    if (nome.includes('paramount')) return '/img/paramount.jpg';
-    if (nome.includes('spotify')) return '/img/spotify.png';
-    if (nome.includes('uber')) return '/img/uber.png';
-    if (nome.includes('shopee')) return '/img/shopee.jpg';
-    if (nome.includes('99')) return '/img/99-food.png';
-
-    // 👉 Jogos
-    if (nome.includes('cyberpunk')) return '/img/cyberpunk.png';
-    if (nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc')) return '/img/fc26.jpg';
-    if (nome.includes('forza')) return '/img/forza-horizon-5.webp';
-    if (nome.includes('ghost of tsushima') || nome.includes('tsushima')) return '/img/Ghost_of_Tsushima_capa.png';
-    if (nome.includes('god of war')) return '/img/god_of_war.jpg';
-    if (nome.includes('gta')) return '/img/GTA_V1.jpg';
-    if (nome.includes('red dead')) return '/img/red_dead_2.png';
-    if (nome.includes('the last of us')) return '/img/the_last_of_us.jpg';
-    if (nome.includes('witcher')) return '/img/the_witcher_3.png';
-
-    // 👉 Fallback genérico
-    if (nome.includes('gift') || nome.includes('card')) return '/img/steam-gift-card.png';
-    
-    // 👉 Fallback final
-    return '/img/steam-gift-card.png';
-}
-
 async function removerItem(produtoId) {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = getToken();
     if (!token) return;
 
     try {

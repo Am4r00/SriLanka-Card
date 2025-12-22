@@ -1,10 +1,7 @@
-// js/giftcards.js
-
-const TOKEN_KEY = 'token';
-
 let cardSelecionado = null;
 let listaCards = []; // vamos guardar os cards aqui para poder filtrar/ordenar
 let categoriaAtiva = 'todos'; // categoria selecionada
+let quantidadeNoCarrinhoPorCardId = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarGiftCards();
@@ -52,9 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/* ================================
- * 1) Buscar cards no backend
- * ================================ */
+//buscando cards 
 async function carregarGiftCards() {
     try {
         const resp = await fetch('/cards', {
@@ -81,6 +76,23 @@ async function carregarGiftCards() {
 
         listaCards = await resp.json();
         console.log('Cards recebidos:', listaCards);
+        quantidadeNoCarrinhoPorCardId = {};
+        try {
+            const token = typeof getToken === 'function' ? getToken() : null;
+            if (token && window.api && typeof window.api.getCart === 'function') {
+                const carrinho = await window.api.getCart();
+                if (carrinho && carrinho.itens) {
+                    carrinho.itens.forEach(item => {
+                        const id = item.produtoId;
+                        const q = item.quantidade || 0;
+                        quantidadeNoCarrinhoPorCardId[id] =
+                            (quantidadeNoCarrinhoPorCardId[id] || 0) + q;
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('Erro ao carregar carrinho para ajuste de estoque:', e);
+        }
         aplicarFiltros(); // primeira renderização
     } catch (err) {
         console.error('Erro de rede ao buscar cards:', err);
@@ -165,51 +177,8 @@ function aplicarFiltros() {
     renderizarCards(cards);
 }
 
-/* ================================
- * 2) Renderizar cards na tela
- * ================================ */
-
 function getImagemCard(card) {
-    const nome = (card.nome || '').toLowerCase();
-
-    // 👉 Gift Cards / Serviços
-    if (nome.includes('apple')) return '/img/apple-gift-card.png';
-    if (nome.includes('steam')) return '/img/steam-gift-card.png';
-    if (nome.includes('playstation') || nome.includes('psn') || nome.includes('ps4') || nome.includes('ps5')) {
-        return '/img/playstation-gift-card.png';
-    }
-    if (nome.includes('xbox')) return '/img/xbox.png';
-    if (nome.includes('airbnb')) return '/img/airbnb.png';
-    if (nome.includes('ifood')) return '/img/ifood.png';
-    if (nome.includes('netflix')) return '/img/netflix.jpg';
-    if (nome.includes('paramount')) return '/img/paramount.jpg';
-    if (nome.includes('spotify')) return '/img/spotify.png';
-    if (nome.includes('uber')) return '/img/uber.png';
-    if (nome.includes('shopee')) return '/img/shopee.jpg';
-    if (nome.includes('rappi')) return '/img/rappi.png';
-    if (nome.includes('youtube')) return '/img/youtube.png';
-    if (nome.includes('hbomax')) return '/img/hbomax.webp';
-    if (nome.includes('gloogleplay')) return '/img/gloogleplay.webp';
-    if (nome.includes('disney')) return '/img/disney.jpeg';
-    if (nome.includes('Deezer')) return '/img/Deezer.jpg';
-    if (nome.includes('99')) return '/img/99-food.png';
-
-    // 👉 Jogos
-    if (nome.includes('cyberpunk')) return '/img/cyberpunk.png';
-    if (nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc')) return '/img/fc26.jpg';
-    if (nome.includes('forza')) return '/img/forza-horizon-5.webp';
-    if (nome.includes('ghost of tsushima') || nome.includes('tsushima')) return '/img/Ghost_of_Tsushima_capa.png';
-    if (nome.includes('god of war')) return '/img/god_of_war.jpg';
-    if (nome.includes('gta')) return '/img/GTA_V1.jpg';
-    if (nome.includes('red dead')) return '/img/red_dead_2.png';
-    if (nome.includes('the last of us')) return '/img/the_last_of_us.jpg';
-    if (nome.includes('witcher')) return '/img/the_witcher_3.png';
-
-    // 👉 Fallback genérico
-    if (nome.includes('gift') || nome.includes('card')) return '/img/steam-gift-card.png';
-    
-    // 👉 Fallback final
-    return '/img/steam-gift-card.png';
+   return resolveProductImage(card);
 }
 
 function renderizarCards(cards) {
@@ -222,7 +191,9 @@ function renderizarCards(cards) {
         const cardEl = document.createElement('div');
         cardEl.classList.add('product-card');
 
-        const estoqueDisponivel = card.quantidade && card.quantidade > 0;
+        const quantidadeEmCarrinho = quantidadeNoCarrinhoPorCardId[card.id] || 0;
+        const restanteParaUsuario = (card.quantidade || 0) - quantidadeEmCarrinho;
+        const estoqueDisponivel = restanteParaUsuario > 0;
 
         if (!estoqueDisponivel) {
             cardEl.classList.add('product-card--disabled');
@@ -290,14 +261,10 @@ function fecharModal() {
     cardSelecionado = null;
 }
 
-/* ===========================================
- * 4) Adicionar o card selecionado ao carrinho
- * =========================================== */
-
 async function adicionarSelecionadoAoCarrinho() {
     if (!cardSelecionado) return;
 
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = getToken();
     if (!token) {
         showToast('Você precisa estar logado para comprar.', true);
         window.location.href = '/login';
@@ -330,6 +297,10 @@ async function adicionarSelecionadoAoCarrinho() {
             showToast('Não foi possível adicionar este item.', true);
             return;
         }
+    
+        quantidadeNoCarrinhoPorCardId[cardSelecionado.id] =
+        (quantidadeNoCarrinhoPorCardId[cardSelecionado.id] || 0) + quantidade;
+        aplicarFiltros();
 
         showToast('Item adicionado ao carrinho!', false);
         fecharModal();
@@ -342,29 +313,4 @@ async function adicionarSelecionadoAoCarrinho() {
         console.error('Erro de rede ao adicionar ao carrinho:', err);
         showToast('Erro de comunicação com o servidor.', true);
     }
-}
-
-/* ================================
- * 5) Toast (mensagens rápidas)
- * ================================ */
-
-function showToast(msg, isError) {
-    const toast = document.getElementById('toast');
-    if (!toast) return;
-
-    toast.textContent = msg;
-
-    toast.classList.remove('hidden', 'toast--error', 'show');
-    if (isError) {
-        toast.classList.add('toast--error');
-    }
-
-    // reflow
-    void toast.offsetWidth;
-
-    toast.classList.add('show');
-
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 2500);
 }

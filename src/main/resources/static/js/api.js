@@ -1,15 +1,12 @@
 // Helper para fazer requisições autenticadas
 const API_BASE_URL = '';
 
-// Função para obter o token do localStorage
-function getToken() {
-    return localStorage.getItem('token');
-}
-
 // Função para fazer requisições autenticadas
 async function apiRequest(url, options = {}) {
-    const token = getToken();
-    
+    const token = (typeof getToken === 'function')
+    ? getToken()
+    : localStorage.getItem('token');
+
     const defaultHeaders = {
         'Content-Type': 'application/json',
     };
@@ -104,7 +101,7 @@ const api = {
     
     // Cards/Produtos
     listarCards: async () => {
-        return await apiRequest('/cards/listar');
+        return await apiRequest('/cards');
     },
     
     buscarCard: async (id) => {
@@ -135,7 +132,7 @@ const api = {
     addToCart: async (productId, quantidade = 1) => {
         return await apiRequest('/api/carrinho', {
             method: 'POST',
-            body: JSON.stringify({ id: productId, quantidade: quantidade })
+            body: JSON.stringify({ id: productId, quantidade})
         });
     },
     
@@ -175,5 +172,3 @@ const api = {
 // Exportar para uso global
 window.api = api;
 window.apiRequest = apiRequest;
-window.getToken = getToken;
-

@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Esqueci a senha</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Esqueci a senha</title>
 
-  <!-- Fonte -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- CSS -->
-  <link rel="stylesheet" href="/css/forgot.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/forgot.css">
+
 </head>
 <body class="modal-open">
 
-  <!-- HOME REAL embutida atrás via iframe -->
-  <iframe src="home" class="home-bg" aria-hidden="true"></iframe>
+    <iframe src="home" class="home-bg" aria-hidden="true"></iframe>
 
-  <div class="overlay" role="dialog" aria-modal="true" aria-label="Esqueci a senha">
+    <div class="overlay" role="dialog" aria-modal="true" aria-label="Esqueci a senha">
         <a href="home" class="close-btn" aria-label="Fechar">
             <span>&times;</span>
         </a>
 
-  <!-- MODAL -->
-  <div class="overlay" role="dialog" aria-modal="true" aria-label="Esqueci a senha">
-    <main class="shell">
-      <section class="form-wrap">
-        <div class="brand">
-          <!-- LOGO (texto) -->
-          <a href="#" class="logo">SriLanka<span>Card</span></a>
 
-          <div>
-            <h1 class="title">Esqueci a senha</h1>
-            <p class="subtitle">Digite seu email para enviarmos um código de verificação.</p>
-          </div>
+        <div class="overlay" role="dialog" aria-modal="true" aria-label="Esqueci a senha">
+            <main class="shell">
+                <section class="form-wrap">
+                    <div class="brand">
+
+                        <a href="#" class="logo">SriLanka<span>Card</span></a>
+
+                        <div>
+                            <h1 class="title">Esqueci a senha</h1>
+                            <p class="subtitle">Digite seu email para enviarmos um código de verificação.</p>
+                        </div>
+                    </div>
+
+                    <form id="forgot-form" action="#" method="post" novalidate>
+                        <div class="field">
+                            <label class="label" for="email">Email</label>
+                            <input class="input" type="email" id="email" name="email" placeholder="voce@email.com"
+                                   autocomplete="username" required>
+                        </div>
+
+                        <button class="btn" type="submit">Enviar código</button>
+
+                        <p class="foot">
+                            Lembrou a senha? <a class="link" href="login.html">Entrar</a>
+                        </p>
+                    </form>
+                </section>
+
+                <aside class="media" aria-hidden="true">
+                    <img src="/img/Login.png" alt="">
+                </aside>
+            </main>
         </div>
 
-        <form id="forgot-form" action="#" method="post" novalidate>
-          <div class="field">
-            <label class="label" for="email">Email</label>
-            <input class="input" type="email" id="email" name="email" placeholder="voce@email.com" autocomplete="username" required>
-          </div>
-
-          <button class="btn" type="submit">Enviar código</button>
-
-          <p class="foot">
-            Lembrou a senha? <a class="link" href="login.html">Entrar</a>
-          </p>
-        </form>
-      </section>
-
-      <aside class="media" aria-hidden="true">
-        <img src="/img/Login.png" alt="">
-      </aside>
-    </main>
-  </div>
-
-  <!-- JS -->
-  <script src="/js/forgot.js"></script>
+        <script th:src="@{/js/core.js}"></script>
+        <script th:src="@{/js/api.js}"></script>
+        <script th:src="@{/js/forgot.js}"></script>
 </body>
 </html>

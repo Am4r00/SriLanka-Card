@@ -4,6 +4,7 @@ import com.SriLankaCard.service.jwtServices.CustomUserDetailsService;
 import com.SriLankaCard.service.jwtServices.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,8 +39,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             // OUTRAS PÁGINAS HTML
             "/contato", "/faq", "/sobre", "/giftcard",
-            "/produto", "/funcionarios", "/cart",
-            "/forgot", "/payment", "/verify", "/reset-password", "/addEmploye",
+            "/produto", "/funcionarios",
+            "/forgot", "/verify", "/reset-password",
             "/produtoDetalhe", "/test", "/static-test"
     );
 
@@ -76,16 +77,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         System.out.println("Header presente: " + (authHeader != null));
         System.out.println("Header valor: " + (authHeader != null ? (authHeader.startsWith("Bearer ") ? "Bearer [token]" : authHeader) : "null"));
 
-        // Se não houver token, permitir passar para que o Spring Security decida
-        // Isso é necessário para que páginas HTML possam ser carregadas
-        // O Spring Security vai verificar se a rota precisa de autenticação/role
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        String token = extractToken(request);
+
+        if (token == null) {
             System.out.println("=== JWT FILTER: Sem token, deixando Spring Security decidir ===");
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7);
         System.out.println("=== JWT FILTER: Processando token ===");
 
         try {
@@ -125,5 +124,24 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String extractToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt_token".equals(cookie.getName()) && cookie.getValue() != null && !cookie.getValue().isBlank()) {
+                    System.out.println("=== JWT FILTER: Token encontrado no cookie ===");
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 }

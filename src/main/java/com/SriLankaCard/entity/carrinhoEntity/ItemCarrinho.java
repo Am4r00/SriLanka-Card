@@ -4,6 +4,7 @@ import com.SriLankaCard.entity.produtoEntity.Card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -17,6 +18,7 @@ public class ItemCarrinho {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "carrinho_id", nullable = false)
     @JsonIgnore
+    @ToString.Exclude
     private Carrinho carrinho;
 
     @ManyToOne(fetch = FetchType.LAZY)
