@@ -7,7 +7,7 @@ function checkMatch() {
   const passwordValue = pwd ? pwd.value : '';
   const confirmValue = confirm ? confirm.value : '';
   const matchErr = document.getElementById('matchErr');
-  
+
   if (matchErr) {
     if (passwordValue && confirmValue && passwordValue !== confirmValue) {
       matchErr.style.display = 'block';
@@ -20,7 +20,7 @@ function checkMatch() {
   return true;
 }
 
-// Adicionar listener para verificar senhas em tempo real
+// Verificar senhas em tempo real
 if (pwd && confirm) {
   pwd.addEventListener('input', checkMatch);
   confirm.addEventListener('input', checkMatch);
@@ -40,172 +40,56 @@ toggles.forEach(toggle => {
   });
 });
 
-// Submit do formulário
+// Validação do formulário antes de enviar para /users/create-user
 if (form) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
+  form.addEventListener('submit', (e) => {
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const termsInput = document.getElementById('terms');
 
-    const name = nameInput ? nameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const password = pwd ? pwd.value : '';
-    const terms = !!(termsInput && termsInput.checked);
-
     const campos = [nameInput, emailInput, pwd, termsInput];
-
-    let  primeiroInvalido = null;
+    let primeiroInvalido = null;
 
     campos.forEach(el => {
-        if(!el) return;
+      if (!el) return;
 
-        const valor = el.type === 'checkbox' 
-        ? el.checked 
-        : el.value.trim();
+      const valor = el.type === 'checkbox'
+        ? el.checked
+        : (el.value || '').trim();
 
-        if(!valor){
-          el.classList.add('input-error');
-            if(!primeiroInvalido) primeiroInvalido = el;
-        }else{
-          el.classList.remove('input-error');
-        }
+      if (!valor) {
+        el.classList.add('input-error');
+        if (!primeiroInvalido) primeiroInvalido = el;
+      } else {
+        el.classList.remove('input-error');
+      }
     });
 
-    if(primeiroInvalido){
+    // Se algum campo obrigatório está vazio, bloqueia envio
+    if (primeiroInvalido) {
+      e.preventDefault();
       primeiroInvalido.focus();
       showToast('Preencha todos os campos obrigatórios.', true);
       return;
     }
 
+    // Senhas diferentes
     if (!checkMatch()) {
+      e.preventDefault();
       showToast('As senhas não coincidem.', true);
       return;
     }
 
-    if (!terms) {
+    // Termos não aceitos
+    if (!termsInput || !termsInput.checked) {
+      e.preventDefault();
       showToast('Você precisa aceitar os termos e condições.', true);
       return;
     }
 
-    console.log('=== SIGNUP: Iniciando cadastro ===');
-    console.log('Nome:', name);
-    console.log('Email:', email);
-    console.log('Senha digitada:', password);
-    console.log('É senha de admin?', password === 'admin12345678');
-
-    try {
-      let endpoint, payload;
-
-
-      if (password === "admin12345678") { //MUDAR ISSO DEPOIS..
-
-        endpoint = '/admin/create-user';
-        payload = { 
-          name: name, 
-          email: email
-
-        };
-        console.log('Criando ADMIN com senha especial');
-        console.log('Endpoint:', endpoint);
-        console.log('Payload:', payload);
-
-      } else {
-        // criar USUÁRIO COMUM - usar endpoint de admin mas especificando função USUARIO
-        endpoint = '/admin/create-user-common';
-        payload = { 
-          name: name, 
-          email: email,
-          password: password
-        };
-        console.log('Criando USUÁRIO COMUM');
-        console.log('Endpoint:', endpoint);
-        console.log('Payload:', payload);
-      }
-
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      console.log('=== RESPOSTA DO SERVIDOR ===');
-      console.log('Status:', response.status);
-      console.log('OK?', response.ok);
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('=== USUÁRIO CRIADO COM SUCESSO ===');
-        console.log('Dados retornados:', JSON.stringify(data, null, 2));
-        console.log('Funções do usuário criado:', data.funcoes);
-
-        if (password === "admin12345678") {
-          showToast('Administrador criado com sucesso!');
-        } else {
-          showToast('Usuário criado com sucesso!');
-        }
-
-        // Aguardar um pouco para o usuário ver o toast antes de redirecionar
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 1500);
-
-      } else {
-        // Se o erro for que o email já existe E a senha é admin12345678, tentar atualizar para ADMIN
-        if (response.status === 400 || response.status === 409) {
-          let errorData;
-          try {
-            errorData = await response.json();
-            const errorMessage = errorData.message || errorData.error || '';
-            console.log('Erro recebido:', errorMessage);
-            
-            // Se o email já existe e a senha é admin12345678, atualizar para ADMIN
-            if (password === "admin12345678" && errorMessage.includes("já") && errorMessage.includes("usado")) {
-              console.log('⚠️ Email já existe. Tentando atualizar para ADMIN...');
-              
-              const updateResponse = await fetch(`/admin/update-user-to-admin?email=${encodeURIComponent(email)}`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              });
-              
-              if (updateResponse.ok) {
-                const updatedData = await updateResponse.json();
-                console.log('Usuário atualizado para ADMIN:', updatedData);
-                showToast('Usuário atualizado para ADMIN com sucesso!');
-                setTimeout(() => {
-                  window.location.href = '/login';
-                }, 1500);
-                return;
-              } else {
-                console.error('Erro ao atualizar para ADMIN:', updateResponse);
-              }
-            }
-          } catch (e) {
-            console.error('Erro ao processar resposta de erro:', e);
-          }
-        }
-        
-        let errorMessage = 'Erro desconhecido';
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.message || errorData.error || JSON.stringify(errorData);
-          console.error('Erro do servidor:', errorData);
-        } catch (e) {
-          errorMessage = `Erro ${response.status}: ${response.statusText}`;
-          console.error('Erro na resposta:', response);
-        }
-        showToast(`Erro ao criar usuário: ${errorMessage}`, true);
-      }
-
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-      showToast(`Erro ao conectar com o servidor: ${error.message || 'Verifique sua conexão.'}`, true);
-    }
+    // Se chegou aqui, NÃO chamamos e.preventDefault()
+    // O formulário vai ser enviado normalmente para /users/create-user
+    // e o back-end (UserController.createUser) cuida do cadastro.
   });
 } else {
   console.error('Formulário de signup não encontrado!');

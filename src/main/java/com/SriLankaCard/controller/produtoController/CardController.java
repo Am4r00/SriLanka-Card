@@ -44,7 +44,8 @@ public class CardController {
         cardServiceImplements.deletarCard(id);
     }
 
-    @PatchMapping("/cards/{id}/promocao/{promo}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{id}/promocao/{promo}")
     public CardResponse atualizarPromocao(@PathVariable("id") Long id,
                                           @PathVariable("promo") boolean promo) {
         return cardServiceImplements.atualizarPromocao(promo, id);

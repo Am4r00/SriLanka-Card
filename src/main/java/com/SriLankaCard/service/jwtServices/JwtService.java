@@ -5,9 +5,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
@@ -18,9 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class JwtService {
 
-    private final Key SECRET_KEY = Keys.hmacShaKeyFor("minhaChaveSuperSecreta12345678901234567890".getBytes());
-    private final long EXPIRATION = 1000 * 60 * 60 * 10; // 10h
+    private final Key secretKey;
+    private final long expiration;
 
+    public JwtService(@Value("${jwt.secret}") String secret,
+                      @Value("${jwt.expiration-millis}") long expiration) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expiration = expiration;
+    }
     public String generateToken(User user) {
         // Converter Set<Funcao> para List<String> para serialização correta no JWT
         List<String> roles = user.getFuncao() != null 
@@ -34,8 +41,8 @@ public class JwtService {
                 .claim("name", user.getName())
                 .claim("role", roles) // Agora é uma List<String>
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -45,7 +52,7 @@ public class JwtService {
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

@@ -32,50 +32,26 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🌟 ROTAS WEB PÚBLICAS
+                        //Arquvivos estáticos que sempre são permitidos
+                        .requestMatchers("/css/**","/js/**","/img/**","/static/**","/fonts/**").permitAll()
+
+                        //Rotas públicas 
                         .requestMatchers(
-                                "/", "/home", "/login", "/signup",
-                                "/contato", "/faq", "/sobre", "/giftcard",
-                                "/produto", "/funcionarios", "/cart",
-                                "/forgot", "/payment", "/verify", "/reset-password", "/addEmploye",
+                                "/", "/home", "/login", "/signup", "/contato", "/faq", "/sobre", "/giftcard",
+                                "/forgot", "/verify", "/reset-password","/test", "/static-test",
+                                "/users/create-user","/auth/**","/cards","/cards/{id}","/error").permitAll()
 
-                                "/home_admin", "/test", "/static-test","/confirmacaoPagamento","/verify.html", "/usuariodetalhe"
-
-                        ).permitAll()
-
-
-                        // 🌟 ROTAS PRIVADAS — NECESSITAM LOGIN
-                        .requestMatchers("/produto", "/funcionarios", "/cart","/api/**","/confirmacaoPagamento")
-                        .authenticated()
-
-                        // 🌟 LIBERANDO AS ROTAS DE API NECESSÁRIAS
-                        .requestMatchers("/users/create-user").permitAll()
-                        .requestMatchers("/users/list", "/users/me").authenticated()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/create-user", "/admin/create-user-common", "/admin/test-create-admin", "/admin/update-user-to-admin").permitAll()
+                        //Rotas que precisam de login
+                        .requestMatchers(
+                                "/payment","/cart","/api/**","/confirmacaoPagamento", "/users/me",
+                                "/api/carrinho/**").authenticated()
                         
-                        // 🌟 API DE CARDS - Listar é público, criar/atualizar/deletar precisa de ADMIN
-                        .requestMatchers("/cards", "/cards/{id}").permitAll()
-                        
-                        // 🌟 ROTAS ADMIN - precisam estar autenticadas com role ADMIN
-                        // As rotas específicas com @PreAuthorize vão verificar a role
-                        .requestMatchers("/admin/**").authenticated()
-
-                        // 🌟 LIBERANDO ARQUIVOS ESTÁTICOS
-                        .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
-
-                        // 🌟 ROTAS DO CARRINHO – precisam estar autenticadas
-                        .requestMatchers("/api/carrinho/**").authenticated()
-
-                        // 🌟 ROTAS PROTEGIDAS POR ROLE - Cards
-                        .requestMatchers("/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**")
-                        .hasRole("ADMIN")
-                        
-                        // 🌟 Endpoint de erro do Spring (para não bloquear mensagens de erro)
-                        .requestMatchers("/error").permitAll()
-
-                        // 🌟 ARQUIVOS ESTÁTICOS
-                        .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**", "/fonts/**").permitAll()
+                        // Rotas protegidas por ROLE - ADMIN
+                        .requestMatchers(
+                                "/admin/**","/home_admin","/usuariodetalhe","/produto","/addEmploye",
+                                "/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**","/users/list",
+                                "/cards/{id}/promocao/{promo}"
+                        ).hasRole("ADMIN")
 
                         // RESTO PRECISA AUTENTICAÇÃO
                         .anyRequest().authenticated()

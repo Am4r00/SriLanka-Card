@@ -5,14 +5,10 @@
         <nav class="nav-links">
             <ul>
                 <li><a th:href="@{/giftcard}">GiftCards</a></li>
-
-                <!-- Apenas administradores -->
-                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                    <a th:href="@{/produto}">Produto</a>
-                </li>
-                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                    <a th:href="@{/usuariodetalhe}">Funcionários</a>
-                </li>
+                
+            <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/usuariodetalhe}" class="admin-panel-link">Painel Admin</a>
+            </li>
             </ul>
         </nav>
 
