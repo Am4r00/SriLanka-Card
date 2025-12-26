@@ -68,18 +68,16 @@ function checkAdminAccess() {
 
 // Função para alternar entre abas
 function switchTab(tabName) {
-    // Remover active de todas as abas
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+    });
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === `${tabName}-tab`);
+    });
 
-    // Adicionar active na aba selecionada
     if (tabName === 'users') {
-        document.querySelector('.tab:first-child').classList.add('active');
-        document.getElementById('users-tab').classList.add('active');
         loadUsers();
     } else if (tabName === 'products') {
-        document.querySelector('.tab:last-child').classList.add('active');
-        document.getElementById('products-tab').classList.add('active');
         loadProducts();
     }
 }
@@ -143,9 +141,6 @@ function renderUsers(users) {
                     <span class="status-badge ${statusClass}">${statusText}</span>
                 </td>
                 <td class="actions-cell">
-                    <button class="btn-edit" onclick="openEditUserModal(${user.id})" title="Editar">
-                        <i class="fas fa-edit"></i>
-                    </button>
                     <button class="action-icon delete-icon" onclick="deleteUser(${user.id})" title="Deletar">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -173,43 +168,6 @@ function openCreateUserModal() {
     document.getElementById('userModal').style.display = 'block';
 }
 
-// Abrir modal de edição de usuário
-async function openEditUserModal(userId) {
-    try {
-        const users = await apiRequest('/users/list');
-        const user = users.find(u => u.id === userId);
-
-        if (!user) {
-            showToast('Usuário não encontrado ', true);
-            return;
-        }
-
-        document.getElementById('userModalTitle').textContent = 'Editar Usuário';
-        document.getElementById('userId').value = user.id;
-        document.getElementById('userName').value = user.nome || '';
-        document.getElementById('userEmail').value = user.email || '';
-        document.getElementById('userPassword').value = ''; // Não preencher senha
-        document.getElementById('userPassword').required = false; // Senha opcional na edição
-
-        // Definir função (pegar a primeira se for array)
-        const funcoes = Array.isArray(user.funcoes) ? user.funcoes : (user.funcoes ? [user.funcoes] : []);
-        if (funcoes.length > 0) {
-            const funcao = typeof funcoes[0] === 'string' ? funcoes[0] : (funcoes[0].name || funcoes[0]);
-            document.getElementById('userRole').value = funcao;
-        }
-
-        // Definir status se disponível
-        if (user.status) {
-            document.getElementById('userStatus').value = user.status;
-        }
-
-        document.getElementById('userModal').style.display = 'block';
-    } catch (error) {
-        console.error('Erro ao carregar usuário:', error);
-        showToast('Erro ao carregar dados do usuário')
-    }
-}
-
 // Salvar usuário (criar ou editar)
 async function saveUser(event) {
     event.preventDefault();
@@ -225,50 +183,21 @@ async function saveUser(event) {
         let endpoint, payload;
 
         if (userId) {
-            // Editar usuário - atualizar nome, email e status
-            const updatePayload = {};
-
-            if (name && name.trim() !== '') {
-                updatePayload.name = name.trim();
-            }
-
-            if (email && email.trim() !== '') {
-                updatePayload.email = email.trim();
-            }
-
-            if (status) {
-                updatePayload.status = status;
-            }
-
-            if (Object.keys(updatePayload).length === 0) {
-                showToast('Nenhum campo foi alterado.', true);
+            showToast('Edição de usuários desabilitada por segurança.', true);
+            closeUserModal();
+            return;
+        } else {
+            if (!password || password.trim() === '') {
+                showToast('Senha é obrigatória para criar usuários.', true);
                 return;
             }
 
-            console.log('Atualizando usuário:', userId, 'com payload:', updatePayload);
-
-            await apiRequest(`/admin/update-user/${userId}`, {
-                method: 'PUT',
-                body: JSON.stringify(updatePayload)
-            });
-
-            showToast('Usuário atualizado com sucesso!', false);
-            closeUserModal();
-            // Limpar cache e recarregar lista
-            allUsers = [];
-            await loadUsers();
-            return;
-        } else {
-            // Criar novo usuário
             if (role === 'ADMIN') {
                 endpoint = '/admin/create-user';
-                payload = { name, email };
-            } else if (role === 'ESTOQUISTA') {
-                endpoint = '/admin/create-employee';
-                payload = { name, email };
+                payload = { name, email, password, status };
             } else {
                 endpoint = '/admin/create-user-common';
-                payload = { name, email, password };
+                payload = { name, email, password, status };
             }
         }
 
@@ -277,7 +206,7 @@ async function saveUser(event) {
             body: JSON.stringify(payload)
         });
 
-        showToast('Usuário salvo com sucesso! ', true);
+        showToast('Usuário salvo com sucesso! ', false);
         closeUserModal();
         // Limpar cache e recarregar lista
         allUsers = [];
@@ -544,6 +473,6 @@ window.onclick = function(event) {
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar se o usuário é ADMIN antes de carregar dados
     if (checkAdminAccess()) {
-        loadUsers();
+        switchTab('users');
     }
 });
