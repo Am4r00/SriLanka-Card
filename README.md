@@ -23,7 +23,7 @@ O **SriLanka Card** é uma plataforma e-commerce completa para venda de gift car
 ### 🎯 Principais Características
 
 - 🛒 **Carrinho de Compras** integrado com backend
-- 🔐 **Autenticação JWT** com roles (ADMIN, USUARIO, ESTOQUISTA)
+- 🔐 **Autenticação JWT** com roles (ADMIN, USUARIO)
 - 📦 **Gestão de Produtos** com categorização automática
 - 👥 **Painel Administrativo** completo
 - 💳 **Sistema de Gift Codes** com geração automática
@@ -219,7 +219,7 @@ SriLanka-Card/
 - ✅ **Login com JWT**
 - ✅ **Recuperação de Senha** (código por e-mail)
 - ✅ **Redefinição de Senha**
-- ✅ **Roles**: ADMIN, USUARIO, ESTOQUISTA
+- ✅ **Roles**: ADMIN, USUARIO
 
 ### 🛍 E-commerce
 
@@ -268,9 +268,8 @@ SriLanka-Card/
 
 | Método | Endpoint | Descrição | Autenticação |
 |--------|----------|-----------|--------------|
-| POST | `/admin/create-user` | Criar administrador | ❌ Público |
-| POST | `/admin/create-user-common` | Criar usuário comum | ❌ Público |
-| POST | `/admin/create-employee` | Criar estoquista | ✅ Admin |
+| POST | `/admin/create-user` | Criar administrador | ✅ Admin |
+| POST | `/admin/create-user-common` | Criar usuário comum | ✅ Admin |
 | PUT | `/admin/update-user/{id}` | Atualizar usuário | ✅ Admin |
 | DELETE | `/admin/delete-user/{id}` | Deletar usuário | ✅ Admin |
 | PATCH | `/admin/update-user/{id}/{status}` | Atualizar status | ✅ Admin |
@@ -311,14 +310,17 @@ SriLanka-Card/
 
 - **ADMIN**: Acesso completo ao sistema
 - **USUARIO**: Acesso às compras
-- **ESTOQUISTA**: Gestão de estoque
 
 ### Criar Primeiro Admin
 
-1. Acesse `/signup`
-2. Preencha nome e email
-3. Use a senha especial: `admin12345678`
-4. O sistema criará automaticamente um usuário ADMIN
+O sistema cria um admin padrão na inicialização usando as variáveis:
+
+```
+DEFAULT_ADMIN_EMAIL
+DEFAULT_ADMIN_PASSWORD
+```
+
+Se já existir usuário com esse e-mail, nada é alterado. Após subir, acesse o painel admin e crie novos administradores apenas pela aba dedicada (não há senha mágica).
 
 ---
 
