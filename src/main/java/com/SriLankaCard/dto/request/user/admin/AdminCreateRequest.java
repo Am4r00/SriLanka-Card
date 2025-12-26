@@ -17,7 +17,7 @@ public class AdminCreateRequest {
     @Email
     private String email;
 
-    // Password, status e funcoes são opcionais pois podem ser definidos pelo controller
+    @NotBlank
     @Size(min = 8, max = 18)
     private String password;
 
