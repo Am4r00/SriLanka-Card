@@ -130,10 +130,10 @@
         </header>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('users')">
+            <button class="tab active" data-tab="users" onclick="switchTab('users')">
                 <i class="fas fa-users"></i> Usuários
             </button>
-            <button class="tab" onclick="switchTab('products')">
+            <button class="tab" data-tab="products" onclick="switchTab('products')">
                 <i class="fas fa-box"></i> Produtos
             </button>
         </div>
@@ -235,7 +235,6 @@
                     <select id="userRole" required>
                         <option value="USUARIO">Usuário</option>
                         <option value="ADMIN">Administrador</option>
-                        <option value="ESTOQUISTA">Estoquista</option>
                     </select>
                 </div>
 

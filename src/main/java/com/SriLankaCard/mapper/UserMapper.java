@@ -66,20 +66,12 @@ public class UserMapper {
         user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());
         user.setStatus(dto.getStatus());
-        
-        // SEMPRE definir as funções - garantir que não seja null
-        if (dto.getFuncoes() != null && !dto.getFuncoes().isEmpty()) {
-            user.setFuncao(new HashSet<>(dto.getFuncoes())); // Criar nova instância para garantir
-            System.out.println("=== MAPPER: Funções definidas ===");
-            System.out.println("Funções recebidas do DTO: " + dto.getFuncoes());
-            System.out.println("Funções no User após set: " + user.getFuncao());
-        } else {
-            System.out.println("=== MAPPER: ERRO - Funções vazias ou null no DTO ===");
-            System.out.println("DTO funcoes: " + dto.getFuncoes());
-            // Mesmo assim, tentar definir como ADMIN se não foi fornecido
-            user.setFuncao(new HashSet<>(Set.of(Funcao.ADMIN)));
-            System.out.println("Funções definidas como ADMIN por fallback: " + user.getFuncao());
+
+        //Conferir regra de négocio !!!
+        if (dto.getFuncoes() == null || dto.getFuncoes().isEmpty()) {
+            throw new IllegalArgumentException("Funções obrigatórias para criar usuário");
         }
+        user.setFuncao(new HashSet<>(dto.getFuncoes()));
 
         return user;
     }
