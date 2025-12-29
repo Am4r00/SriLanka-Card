@@ -41,7 +41,7 @@ public class CardServiceImplements implements CardService {
 
         Card cardSalvo = cardRepository.save(card);
 
-        // Se quantidade foi informada e é maior que zero, gerar os gift codes automaticamente
+        // Se quantidade foi informada é maior que zero, gerar os gift codes automaticamente
         int quantidadeGerada = 0;
         if (request.getQuantidade() != null && request.getQuantidade() > 0) {
             try {
