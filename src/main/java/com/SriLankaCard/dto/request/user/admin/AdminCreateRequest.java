@@ -21,7 +21,9 @@ public class AdminCreateRequest {
     @Size(min = 8, max = 18)
     private String password;
 
+    @NotNull
     private UserStatus status;
 
+    @NotEmpty
     private Set<Funcao> funcoes;
 }
