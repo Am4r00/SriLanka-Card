@@ -3,9 +3,7 @@ package com.SriLankaCard.utils;
 import com.SriLankaCard.dto.request.user.admin.AdminCreateRequest;
 import com.SriLankaCard.dto.request.user.userPublic.RegisterUserRequest;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
-
-
-public class RegisterValidation {
+public class RegisterUtils {
 
     public static RegisterUserRequest checkRegister(RegisterUserRequest req){
         if(req == null)
@@ -21,7 +19,7 @@ public class RegisterValidation {
         if (req.getPassword() == null || req.getPassword().isEmpty())
             throw new InvalidArgumentsException("Senha é obrigatória.");
 
-        req.setEmail(req.getEmail().toLowerCase());
+        req.setEmail(req.getEmail().trim().toLowerCase());
 
         return req;
     }
