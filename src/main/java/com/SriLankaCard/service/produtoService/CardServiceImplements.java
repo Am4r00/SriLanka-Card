@@ -11,6 +11,7 @@ import com.SriLankaCard.exception.negocio.CardNotFoundException;
 import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
+import com.SriLankaCard.utils.ValidationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +33,7 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public CardResponse criarCard(CardRequest request) {
-        if (request == null) {
-            throw new InvalidCardException("Card vazio!");
-        }
+        ValidationUtils.validateNotNull(request,"Card está vazio");
 
         Card card = CardMapper.toCardByCardRequest(request);
         card.setAvaliacao(0);
@@ -64,9 +63,7 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public CardResponse atualiarCard(Long id, CardAdjustRequest adjust) {
-        if (id == null || id < 0 || adjust == null) {
-            throw new InvalidCardException("Parâmetro inválido para card. Verique se os parâmetros estão corretos");
-        }
+        ValidationUtils.validateNotNullAndPositive(id,adjust,"Parâmetro inválido para card. Verique se os parâmetros estão corretos !");
 
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
@@ -92,9 +89,7 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public CardResponse buscarPorId(Long id) {
-        if (id == null || id < 0) {
-            throw new InvalidCardException("ID inválido");
-        }
+        ValidationUtils.validateLongNumbers(id);
 
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
@@ -109,9 +104,8 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public void deletarCard(Long id) {
-        if (id == null || id < 0) {
-            throw new InvalidCardException("ID do card é inválido!");
-        }
+        ValidationUtils.validateLongNumbers(id);
+
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
         if(giftCodeRepository.existsGiftCodeByCard(card)){
@@ -123,9 +117,9 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public CardResponse atualizarPromocao(Boolean promo, Long id) {
-        if (promo == null || id == null || id < 0) {
-            throw new InvalidCardException("Parâmetro inválido!");
-        }
+        ValidationUtils.validateLongNumbers(id);
+        if (promo == null)
+            throw new InvalidCardException("Promoção está em branco! ");
 
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
