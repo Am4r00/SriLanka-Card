@@ -22,10 +22,36 @@ public class ValidationUtils {
             throw new InvalidArgumentsException(message);
     }
 
-    public static void validateNumber(Number o,String message){
-        if(o.doubleValue() <= 0){
-            throw new InvalidArgumentsException("Os argumentos precisam ser válidos ");
-        }
+    public static void validateNotNullOrNotBlank(Object o, String message){
+        validateNotNull(o,message);
+        if(o.toString().isBlank())
+            throw new InvalidArgumentsException(message);
+
+    }
+
+    public static void validateNotNullOrNotBlank(Object o, Object o2, String message){
+        validateNotNull(o,o2,message);
+        if(o.toString().isBlank() || o2.toString().isBlank())
+            throw new InvalidArgumentsException(message);
+
+    }
+
+    public static void validateNotNullOrNotBlank(Object o, Object o2, Object o3, String message){
+        validateNotNull(o,o2,o3,message);
+        if(o.toString().isBlank() || o2.toString().isBlank() || o3.toString().isBlank())
+            throw new InvalidArgumentsException(message);
+
+    }
+
+    public static void validateLongNumbers(Long number){
+        if(number == null || number <=0)
+            throw new InvalidArgumentsException("O número passado precisa ser maior que 0");
+    }
+
+    public static void validateNotNullAndPositive(Number o, Object o2, String message){
+        validateNotNull(o,o2,message);
+        if(o.doubleValue() <= 0)
+            throw new InvalidArgumentsException("O " + o.toString() + " precisa ser maior que 0");
     }
 
     public static void validateListNotEmpty(List<?> list){

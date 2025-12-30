@@ -52,8 +52,7 @@ public class AdminUserImple implements AdminUserService{
     @Override
     @Transactional
     public UserDetailResponse adjustStatus(Long id, UserStatus status) {
-        ValidationUtils.validateNotNull(id,status, "Os campos id ou status são obrigatórios");
-        ValidationUtils.validateNumber(id,"O número precisa ser maior que 0");
+        ValidationUtils.validateNotNullAndPositive(id,status,"O status e o id são obrigátorios ");
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("usário não encontrado "));
@@ -67,9 +66,7 @@ public class AdminUserImple implements AdminUserService{
     @Override
     @Transactional
     public UserResponse deleteUser(Long id) {
-        if (id == null || id <= 0) {
-            throw new InvalidArgumentsException("O id deve ser um número positivo.");
-        }
+        ValidationUtils.validateLongNumbers(id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("usário não encontrado "));
 
@@ -80,9 +77,7 @@ public class AdminUserImple implements AdminUserService{
     @Override
     @Transactional
     public UserDetailResponse updateUser(Long id, AdminUpdateRequest request) {
-        if (id == null || id <= 0) {
-            throw new InvalidArgumentsException("O id deve ser um número positivo.");
-        }
+        ValidationUtils.validateLongNumbers(id);
         
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));

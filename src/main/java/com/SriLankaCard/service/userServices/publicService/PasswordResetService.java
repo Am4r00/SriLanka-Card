@@ -4,6 +4,7 @@ import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.service.emailService.EmailService;
+import com.SriLankaCard.utils.ValidationUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +35,7 @@ public class PasswordResetService {
     }
 
     public void enviarCodigoReset(String email) {
-        if (email == null || email.isBlank()) {
-            throw new InvalidArgumentsException("Email é obrigatório");
-        }
+        ValidationUtils.validateNotNullOrNotBlank(email,"Email é obrigatório");
 
         User user = userRepository.findByEmailIgnoreCase(email.trim())
                 .orElseThrow(() -> new InvalidArgumentsException("Usuário não encontrado para este email"));
@@ -58,18 +57,12 @@ public class PasswordResetService {
     }
 
     public void resetarSenha(String email, String code, String novaSenha) {
-        if (email == null || email.isBlank()
-                || code == null || code.isBlank()
-                || novaSenha == null || novaSenha.isBlank()) {
-            throw new InvalidArgumentsException("Email, código e nova senha são obrigatórios");
-        }
+        ValidationUtils.validateNotNullOrNotBlank(email,code,novaSenha,"Email, código e nova senha são obrigatórios");
 
         String key = email.toLowerCase();
         ResetEntry entry = resetTokens.get(key);
 
-        if (entry == null) {
-            throw new InvalidArgumentsException("Nenhum código ativo. Solicite outro.");
-        }
+        ValidationUtils.validateNotNull(entry,"Nenhum código ativo. Solicite outro.");
 
         if (entry.expiresAt().isBefore(LocalDateTime.now())) {
             resetTokens.remove(key);
