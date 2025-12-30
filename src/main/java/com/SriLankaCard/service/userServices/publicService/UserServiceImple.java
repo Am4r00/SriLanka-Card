@@ -11,14 +11,14 @@ import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
 import com.SriLankaCard.mapper.UserMapper;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.service.emailService.EmailService;
-import com.SriLankaCard.utils.RegisterValidation;
+import com.SriLankaCard.utils.RegisterUtils;
+import com.SriLankaCard.utils.ValidationUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,13 +43,13 @@ public class UserServiceImple implements UserService {
     @Override
     @Transactional
     public UserResponse createUser(RegisterUserRequest user) {
-        var filterUser = RegisterValidation.checkRegister(user);
+        var filterUser = RegisterUtils.checkRegister(user);
 
-        if (userRepository.existsByEmailIgnoreCase(user.getEmail())) {
+        if (userRepository.existsByEmailIgnoreCase(filterUser.getEmail())) {
             throw new EmailAlreadyUsedException("O email: " + filterUser.getEmail() + " já esta sendo usado ");
         }
 
-        User novo = UserMapper.toUserRegister(user);
+        User novo = UserMapper.toUserRegister(filterUser);
 
         novo.setFuncao(new HashSet<Funcao>(List.of(Funcao.USUARIO)));
         novo.setStatus(UserStatus.ATIVO);
@@ -69,13 +69,10 @@ public class UserServiceImple implements UserService {
     @Transactional
     public List<UserResponse> findAll() {
         List<User> listaUsuarios = userRepository.findAll();
-        if (listaUsuarios.isEmpty()) {
-            throw new ListIsEmptyException("A lista está vazia ");
-        }
+        ValidationUtils.validateListNotEmpty(listaUsuarios);
+
         return mapToUserDetailDTOList(listaUsuarios);
     }
-
-
 
     private List<UserResponse> mapToUserDetailDTOList(List<User> userList) {
         return userList.stream()

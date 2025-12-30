@@ -12,7 +12,8 @@ import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.mapper.UserMapper;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.service.emailService.EmailService;
-import com.SriLankaCard.utils.RegisterValidation;
+import com.SriLankaCard.utils.RegisterUtils;
+import com.SriLankaCard.utils.ValidationUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,35 +34,27 @@ public class AdminUserImple implements AdminUserService{
     @Override
     @Transactional
     public UserDetailResponse adminCreateUser(AdminCreateRequest user) {
-
-       var filterUser = RegisterValidation.checkRegisterByAdmin(user);
-        if (userRepository.existsByEmailIgnoreCase(user.getEmail())) {
+       var filterUser = RegisterUtils.checkRegisterByAdmin(user);
+        if (userRepository.existsByEmailIgnoreCase(filterUser.getEmail())) {
             throw new EmailAlreadyUsedException("O email: " + filterUser.getEmail() + " já esta sendo usado ");
-        }
-
-        filterUser.setStatus(user.getStatus() != null ? user.getStatus() : UserStatus.ATIVO);
-
-        if(user.getFuncoes().isEmpty() || user.getFuncoes() == null){
-            throw new InvalidArgumentsException("Função é obrigatória ");
         }
         filterUser.setFuncoes(user.getFuncoes());
 
         User novo = UserMapper.toUserByAdminRequest(filterUser);
         novo.setPassword(passwordEncoder.encode(filterUser.getPassword()));
-        
-        emailService.enviarBoasVindas(user.getEmail(), user.getName()); 
+
         User salvo = userRepository.save(novo);
-            
+        emailService.enviarBoasVindas(user.getEmail(), user.getName());
+
         return UserMapper.toUserDetailByUser(salvo);
-        
     }
 
     @Override
     @Transactional
     public UserDetailResponse adjustStatus(Long id, UserStatus status) {
-        if(id == null || id <= 0 || status == null){
-            throw new InvalidArgumentsException("Os argumentos precisam ser válidos ");
-        }
+        ValidationUtils.validateNotNull(id,status, "Os campos id ou status são obrigatórios");
+        ValidationUtils.validateNumber(id,"O número precisa ser maior que 0");
+
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("usário não encontrado "));
 
@@ -93,14 +86,12 @@ public class AdminUserImple implements AdminUserService{
         
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
-        
-        // Atualizar apenas os campos que foram fornecidos
+
         if (request.getName() != null && !request.getName().trim().isEmpty()) {
             user.setName(request.getName().trim());
         }
-        
         if (request.getEmail() != null && !request.getEmail().trim().isEmpty()) {
-            // Verificar se o email já está em uso por outro usuário
+
             if (userRepository.existsByEmailIgnoreCase(request.getEmail()) && 
                 !user.getEmail().equalsIgnoreCase(request.getEmail())) {
                 throw new EmailAlreadyUsedException("O email " + request.getEmail() + " já está sendo usado.");
