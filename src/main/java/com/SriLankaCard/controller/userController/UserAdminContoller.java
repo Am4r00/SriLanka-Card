@@ -28,27 +28,7 @@ public class UserAdminContoller {
 
     @PostMapping("/create-user")
     public ResponseEntity<UserDetailResponse> createAdmin(@Valid @RequestBody AdminCreateRequest req) {
-        if (req.getPassword() == null || req.getPassword().isBlank()) {
-            throw new InvalidArgumentsException("Senha é obrigatória");
-        }
-        req.setStatus(req.getStatus() != null ? req.getStatus() : UserStatus.ATIVO);
-        req.setFuncoes(Set.of(Funcao.ADMIN));
-
-        UserDetailResponse created = adminUserImple.adminCreateUser(req);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
-    
-    //CORRIGIR 
-    @PostMapping("/create-user-common")
-    public ResponseEntity<UserDetailResponse> createCommonUser(@Valid @RequestBody AdminCreateRequest req) {
-        if (req.getPassword() == null || req.getPassword().isBlank()) {
-            throw new InvalidArgumentsException("Senha é obrigatória");
-        }
-        req.setStatus(req.getStatus() != null ? req.getStatus() : UserStatus.ATIVO);
-        req.setFuncoes(Set.of(Funcao.USUARIO));
-
-        UserDetailResponse created = adminUserImple.adminCreateUser(req);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminUserImple.adminCreateUser(req));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

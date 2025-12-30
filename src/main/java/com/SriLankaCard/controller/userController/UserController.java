@@ -19,14 +19,13 @@ public class UserController {
     @Autowired
     private UserServiceImple userServiceImple;
 
-    // EXIBE PÁGINA DE CADASTRO
+
     @GetMapping("/signup")
     public String signupPage(Model model) {
         model.addAttribute("usuario", new RegisterUserRequest());
-        return "signup"; // retorna signup.html via Thymeleaf
+        return "signup";
     }
 
-    // RECEBE FORMULÁRIO DO CADASTRO
     @PostMapping("/create-user")
     public String createUser(@ModelAttribute("usuario") @Valid RegisterUserRequest dto) {
         userServiceImple.createUser(dto);
