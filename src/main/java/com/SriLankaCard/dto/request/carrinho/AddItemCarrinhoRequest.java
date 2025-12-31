@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class AddItemCarrinhoRequest {
 
-    @NotNull
+    @NotNull(message = "O id é um campo obrigatório !")
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Quantidade deve ser maior ou igual a 1")
     @Min(1)
     private Integer quantidade;
 }
