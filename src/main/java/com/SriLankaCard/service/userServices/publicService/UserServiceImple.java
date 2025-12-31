@@ -69,7 +69,7 @@ public class UserServiceImple implements UserService {
     @Transactional
     public List<UserResponse> findAll() {
         List<User> listaUsuarios = userRepository.findAll();
-        ValidationUtils.validateListNotEmpty(listaUsuarios);
+        ValidationUtils.validateListNotEmpty(listaUsuarios,"Nenhum usuário foi encontrado !");
 
         return mapToUserDetailDTOList(listaUsuarios);
     }

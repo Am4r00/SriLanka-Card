@@ -54,8 +54,8 @@ public class ValidationUtils {
             throw new InvalidArgumentsException("O " + o.toString() + " precisa ser maior que 0");
     }
 
-    public static void validateListNotEmpty(List<?> list){
+    public static void validateListNotEmpty(List<?> list,String message){
         if(list == null || list.isEmpty())
-            throw new ListIsEmptyException("A lista está vazia ");
+            throw new ListIsEmptyException(message);
     }
 }
