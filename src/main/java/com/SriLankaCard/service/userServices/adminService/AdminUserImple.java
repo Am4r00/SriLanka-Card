@@ -8,7 +8,6 @@ import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
-import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.mapper.UserMapper;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.service.emailService.EmailService;
@@ -66,7 +65,7 @@ public class AdminUserImple implements AdminUserService{
     @Override
     @Transactional
     public UserResponse deleteUser(Long id) {
-        ValidationUtils.validateLongNumbers(id);
+        ValidationUtils.validateNumbers(id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("usário não encontrado "));
 
@@ -77,7 +76,7 @@ public class AdminUserImple implements AdminUserService{
     @Override
     @Transactional
     public UserDetailResponse updateUser(Long id, AdminUpdateRequest request) {
-        ValidationUtils.validateLongNumbers(id);
+        ValidationUtils.validateNumbers(id);
         
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));

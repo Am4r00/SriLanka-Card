@@ -25,12 +25,9 @@ public class EmailService {
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        // remetente explícito = o mesmo do spring.mail.username
         msg.setFrom("joao.amarodev@gmail.com");
 
-        // destinatário limpo
         msg.setTo(para.trim());
-
         msg.setSubject(assunto);
         msg.setText(corpo);
 

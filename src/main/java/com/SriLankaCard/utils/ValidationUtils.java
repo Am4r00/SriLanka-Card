@@ -43,7 +43,7 @@ public class ValidationUtils {
 
     }
 
-    public static void validateLongNumbers(Long number){
+    public static void validateNumbers(Long number){
         if(number == null || number <=0)
             throw new InvalidArgumentsException("O número passado precisa ser maior que 0");
     }

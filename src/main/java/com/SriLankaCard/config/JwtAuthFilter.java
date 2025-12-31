@@ -26,15 +26,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private static final Set<String> PUBLIC_URLS = Set.of(
             "/", "/home", "/login", "/signup",
 
-            // 🌟 ROTAS DO USERCONTROLLER
+            //  ROTAS DO USERCONTROLLER
             "/users/signup",
             "/users/create-user",
 
-            // 🌟 ROTAS DO AUTHCONTROLLER
+            //  ROTAS DO AUTHCONTROLLER
             "/auth/login",
             "/auth/registrar",
             
-            // 🌟 ROTAS DE CARDS (API)
+            //  ROTAS DE CARDS (API)
             "/cards",
 
             // OUTRAS PÁGINAS HTML

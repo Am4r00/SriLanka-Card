@@ -89,7 +89,7 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public CardResponse buscarPorId(Long id) {
-        ValidationUtils.validateLongNumbers(id);
+        ValidationUtils.validateNumbers(id);
 
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
@@ -104,7 +104,7 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public void deletarCard(Long id) {
-        ValidationUtils.validateLongNumbers(id);
+        ValidationUtils.validateNumbers(id);
 
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new CardNotFoundException("Card não encontrado!"));
@@ -117,7 +117,7 @@ public class CardServiceImplements implements CardService {
     @Override
     @Transactional
     public CardResponse atualizarPromocao(Boolean promo, Long id) {
-        ValidationUtils.validateLongNumbers(id);
+        ValidationUtils.validateNumbers(id);
         if (promo == null)
             throw new InvalidCardException("Promoção está em branco! ");
 

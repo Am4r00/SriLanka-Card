@@ -13,6 +13,7 @@ import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.carrinhoRepository.CarrinhoRepository;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
+import com.SriLankaCard.utils.ValidationUtils;
 import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -40,40 +41,24 @@ public class CarrinhoService {
 
     @Transactional
     public void adicionarItem(Long usuarioId, AddItemCarrinhoRequest request){
-        if (request == null) {
-            throw new InvalidArgumentsException("Cartão passado está vazio");
-        }
-
-        if (request.getId() == null) {
-            throw new InvalidArgumentsException("Produto não informado");
-        }
-
-        if (request.getQuantidade() == null || request.getQuantidade() <= 0) {
-            throw new InvalidArgumentsException("Quantidade deve ser maior que zero");
-        }
-
+        ValidationUtils.validateNotNullAndPositive(request.getQuantidade(),request,"Cartão passado está vazio" );
 
         Carrinho carrinho = getOrCreateCarrinho(usuarioId);
-
 
         Card card = cardRepository.findById(request.getId())
                 .orElseThrow(() -> new CardNotFoundException("Produto não encontrado"));
 
-
         Long disponiveisLong = giftCodeRepository
                 .countByCardAndStatus(card, GiftCodeStatus.DISPONIVEL);
         int estoqueDisponivel = disponiveisLong == null ? 0 : disponiveisLong.intValue();
-
 
         int qtdJaNoCarrinho = carrinho.getItens().stream()
                 .filter(item -> item.getCard().getId().equals(card.getId()))
                 .mapToInt(ItemCarrinho::getQuantidade)
                 .sum();
 
-
         int qtdSolicitada = request.getQuantidade();
         int qtdTotalDesejada = qtdJaNoCarrinho + qtdSolicitada;
-
 
         if (estoqueDisponivel <= 0) {
             throw new InvalidArgumentsException("Não há GiftCodes disponíveis para este produto.");
