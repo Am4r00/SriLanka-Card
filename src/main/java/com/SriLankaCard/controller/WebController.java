@@ -1,9 +1,7 @@
 package com.SriLankaCard.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class WebController {
@@ -58,11 +56,6 @@ public class WebController {
         return "payment";
     }
 
-    @GetMapping("/produto")
-    public String produto() {
-        return "produto";
-    }
-
     @GetMapping("/sobre")
     public String sobre() {
         return "sobre";
@@ -78,19 +71,15 @@ public class WebController {
         return "reset-password";
     }
 
-    @GetMapping("/addEmploye")
-    public String addEmploye() {
-        return "adicionar-funcionario";
-    }
-
     @GetMapping("/home_admin")
     public String homeAdmin() {
         return "home_admin";
     }
     
-    @GetMapping("/usuariodetalhe")
-    public String usuarioDetalhe() {
-        return "usuariodetalhe";}
+    @GetMapping("/painel-admin")
+    public String painelAdmin() {
+        return "painel-admin";
+    }
 
     @GetMapping("/confirmacaoPagamento")
     public String showConfirmacaoPage() {

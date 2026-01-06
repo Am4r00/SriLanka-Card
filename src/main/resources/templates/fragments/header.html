@@ -7,7 +7,7 @@
                 <li><a th:href="@{/giftcard}">GiftCards</a></li>
                 
             <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                    <a th:href="@{/usuariodetalhe}" class="admin-panel-link">Painel Admin</a>
+                    <a th:href="@{/painel-admin}" class="admin-panel-link">Painel Admin</a>
             </li>
             </ul>
         </nav>
