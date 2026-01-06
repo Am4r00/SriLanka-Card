@@ -22,9 +22,10 @@ public class CardRequest {
     @Min(0)
     private Integer quantidade;
 
-
+    @NotBlank
     private CardCategory category;
 
+    @NotNull
     private boolean promocao;
 
 }

@@ -7,6 +7,7 @@ import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
 import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
+import com.SriLankaCard.utils.ValidationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,22 +1,23 @@
 package com.SriLankaCard.service.emailService;
 
 
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
 
 @Service
 public class EmailService {
     private final JavaMailSender mailSender ;
-
+    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
 
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
     public void enviarEmail(String para, String assunto, String corpo){
-        // LOG SIMPLES PRA CONFERIR
-        System.out.println(">>> Enviando e-mail para: [" + para + "]");
+        log.info(">>> Enviando e-mail para: [" + para + "]");
 
         if (para == null || !para.contains("@")) {
             throw new IllegalArgumentException("Destinatário inválido: " + para);
@@ -24,12 +25,9 @@ public class EmailService {
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        // remetente explícito = o mesmo do spring.mail.username
         msg.setFrom("joao.amarodev@gmail.com");
 
-        // destinatário limpo
         msg.setTo(para.trim());
-
         msg.setSubject(assunto);
         msg.setText(corpo);
 

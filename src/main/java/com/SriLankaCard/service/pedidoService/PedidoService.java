@@ -17,6 +17,7 @@ import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.service.carrinho.CarrinhoService;
 import com.SriLankaCard.service.emailService.EmailService;
+import com.SriLankaCard.utils.ValidationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +50,7 @@ public class PedidoService {
         Carrinho carrinho = carrinhoRepository.findByUsuarioId(usuarioId)
                 .orElseThrow(() -> new CarrinhoNotFoundException("Carrinho não encontrado!"));
 
-        if (carrinho.getItens().isEmpty()) {
-            throw new InvalidArgumentsException("Carrinho não possui itens");
-        }
+        ValidationUtils.validateListNotEmpty(carrinho.getItens(),"Carrinho não possui itens");
 
         User user = userRepository.findById(usuarioId)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado !"));
@@ -65,7 +64,7 @@ public class PedidoService {
         // Lista de itens do pedido
         List<ItemPedido> itensPedido = new ArrayList<>();
 
-        // Guardar quais seriais foram usados por produto (Card)
+        // Guardar quais seriais foram usados por produto
         Map<Long, List<String>> codigosPorProduto = new HashMap<>();
 
         // Guardar todos os GiftCodes atualizados para salvar de uma vez

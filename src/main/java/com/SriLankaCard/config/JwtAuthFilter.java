@@ -7,6 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,34 +16,35 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
     private final CustomUserDetailsService userDetailsService;
-
+    private final JwtService jwtService;
 
     private static final Set<String> PUBLIC_URLS = Set.of(
             "/", "/home", "/login", "/signup",
 
-            // 🌟 ROTAS DO USERCONTROLLER
             "/users/signup",
             "/users/create-user",
 
-            // 🌟 ROTAS DO AUTHCONTROLLER
             "/auth/login",
             "/auth/registrar",
-            
-            // 🌟 ROTAS DE CARDS (API)
+
             "/cards",
 
-            // OUTRAS PÁGINAS HTML
             "/contato", "/faq", "/sobre", "/giftcard",
             "/produto", "/funcionarios",
             "/forgot", "/verify", "/reset-password",
             "/produtoDetalhe", "/test", "/static-test"
+    );
+
+    private static final List<String> STATIC_PATH_PREFIXES = List.of(
+            "/css/", "/js/", "/img/", "/static/", "/fonts/"
     );
 
     public JwtAuthFilter(JwtService jwtService, CustomUserDetailsService userDetailsService) {
@@ -56,74 +59,51 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String path = request.getServletPath();
-        System.out.println("JWT FILTER PATH: " + path);
 
-        // 🔥 LIBERAR TODAS AS ROTAS PÚBLICAS
-        if (PUBLIC_URLS.contains(path) ||
-                path.endsWith(".html") ||
-                path.startsWith("/css/") ||
-                path.startsWith("/js/") ||
-                path.startsWith("/img/") ||
-                path.startsWith("/static/") ||
-                path.startsWith("/fonts/")) {
-
+        if (isPublicPath(path)) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        // 🔥 VERIFICAÇÃO DE TOKEN
-        String authHeader = request.getHeader("Authorization");
-        System.out.println("=== JWT FILTER: Authorization header ===");
-        System.out.println("Header presente: " + (authHeader != null));
-        System.out.println("Header valor: " + (authHeader != null ? (authHeader.startsWith("Bearer ") ? "Bearer [token]" : authHeader) : "null"));
 
         String token = extractToken(request);
-
         if (token == null) {
-            System.out.println("=== JWT FILTER: Sem token, deixando Spring Security decidir ===");
             filterChain.doFilter(request, response);
             return;
         }
-
-        System.out.println("=== JWT FILTER: Processando token ===");
 
         try {
             String username = jwtService.extractUsername(token);
-            System.out.println("Username extraído: " + username);
 
-            if (username != null) {
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                System.out.println("UserDetails carregado. Authorities: " + userDetails.getAuthorities());
 
                 if (jwtService.isTokenValid(token, userDetails)) {
-                    System.out.println("=== JWT AUTH FILTER: Token válido, autenticando usuário ===");
-                    System.out.println("Username: " + username);
-                    System.out.println("Authorities: " + userDetails.getAuthorities());
-
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails, null, userDetails.getAuthorities()
                             );
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    System.out.println("=== JWT AUTH FILTER: Autenticação configurada com sucesso ===");
-                    System.out.println("SecurityContext Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
                 } else {
-                    System.out.println("=== JWT AUTH FILTER: Token inválido ===");
+                    log.debug("Token JWT inválido para usuário {}", username);
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-            } else {
-                System.out.println("=== JWT AUTH FILTER: Username é null ===");
             }
         } catch (Exception ex) {
-            System.out.println("=== JWT AUTH FILTER: Erro ao processar token ===");
-            System.out.println("Erro: " + ex.getMessage());
-            ex.printStackTrace();
+            log.warn("Erro ao validar JWT para {}: {}", path, ex.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isPublicPath(String path) {
+        if (PUBLIC_URLS.contains(path) || path.endsWith(".html")) {
+            return true;
+        }
+
+        return STATIC_PATH_PREFIXES.stream().anyMatch(path::startsWith);
     }
 
     private String extractToken(HttpServletRequest request) {
@@ -136,7 +116,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwt_token".equals(cookie.getName()) && cookie.getValue() != null && !cookie.getValue().isBlank()) {
-                    System.out.println("=== JWT FILTER: Token encontrado no cookie ===");
+                    log.debug("Token JWT obtido do cookie");
                     return cookie.getValue();
                 }
             }

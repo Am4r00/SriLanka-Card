@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CardAdjustRequest {
 
+    @NotBlank
     private String nome;
 
+    @NotBlank
     private  String observacoes;
 
     @DecimalMin("0.0")

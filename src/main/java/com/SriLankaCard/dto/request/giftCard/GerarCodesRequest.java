@@ -8,6 +8,7 @@ import lombok.Data;
 public class GerarCodesRequest {
     @NotNull
     private Long cardId;
+
     @NotNull
     @Min(1)
     private Integer quantidade;

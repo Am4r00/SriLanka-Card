@@ -23,22 +23,13 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmailIgnoreCase(request.getEmail())
-                .orElseThrow(() -> new InvalidArgumentsException("Email ou senha inválidos"));
+                .orElseThrow(() -> new InvalidArgumentsException("Email inválido !"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new InvalidArgumentsException("Email ou senha inválidos");
+            throw new InvalidArgumentsException("senha inválida !");
         }
-
         String token = jwtService.generateToken(user);
-        
-        System.out.println("=== LOGIN: Usuário autenticado ===");
-        System.out.println("Email: " + user.getEmail());
-        System.out.println("Funções do usuário: " + user.getFuncao());
-        System.out.println("É ADMIN? " + (user.getFuncao() != null && user.getFuncao().contains(com.SriLankaCard.entity.userEntity.enums.Funcao.ADMIN)));
-
         LoginResponse response = new LoginResponse(token, user.getName(), user.getEmail(), user.getFuncao());
-        System.out.println("=== LOGIN: Response criado ===");
-        System.out.println("Funções no response: " + response.getFuncoes());
         
         return response;
     }
