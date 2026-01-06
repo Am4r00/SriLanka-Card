@@ -51,7 +51,7 @@ public class SecurityConfig {
                         
                         // Rotas protegidas por ROLE - ADMIN
                         .requestMatchers(
-                                "/admin/**","/home_admin","/usuariodetalhe","/produto","/addEmploye",
+                                "/admin/**","/home_admin","/painel-admin","/produto","/addEmploye",
                                 "/cards/criar-Card", "/cards/atualizar/**", "/cards/deletar/**","/users/list",
                                 "/cards/{id}/promocao/{promo}"
                         ).hasRole("ADMIN")

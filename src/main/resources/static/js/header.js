@@ -136,7 +136,7 @@ async function updateAdminmenu() {
         if (!existingItem) {
             const li = document.createElement('li');
             const a = document.createElement('a');
-            a.href = '/usuariodetalhe';
+            a.href = '/painel-admin';
             a.textContent = 'Painel Admin';
             a.className = 'admin-panel-link';
             li.appendChild(a);
