@@ -395,7 +395,6 @@ async function openEditProductModal(productId) {
         document.getElementById('productName').value = product.nome || '';
         document.getElementById('productObservacoes').value = product.observacoes || '';
         document.getElementById('productValor').value = product.valor || 0;
-        document.getElementById('productQuantidade').value = product.quantidade || 0;
         document.getElementById('productPromocao').checked = product.promocao || false;
 
         document.getElementById('productModal').style.display = 'block';
@@ -413,7 +412,6 @@ async function saveProduct(event) {
     const nome = document.getElementById('productName').value;
     const observacoes = document.getElementById('productObservacoes').value;
     const valor = parseFloat(document.getElementById('productValor').value);
-    const quantidade = parseInt(document.getElementById('productQuantidade').value);
     const category = document.getElementById('productCategory').value
     const promocao = document.getElementById('productPromocao').checked;
 
@@ -438,14 +436,10 @@ async function saveProduct(event) {
 
             console.log('Promoção atualizada');
         } else {
-
-            const quantidadeValida = (quantidade && !isNaN(quantidade) && quantidade > 0) ? quantidade : 0;
-
             const payload = {
                 nome,
                 observacoes,
                 valor,
-                quantidade: quantidadeValida,
                 category: category,
                 promocao
             };

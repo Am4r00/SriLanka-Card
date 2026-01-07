@@ -2,7 +2,6 @@ package com.SriLankaCard.service.produtoService;
 
 import com.SriLankaCard.dto.request.cards.CardAdjustRequest;
 import com.SriLankaCard.dto.request.cards.CardRequest;
-import com.SriLankaCard.dto.request.giftCard.GerarCodesRequest;
 import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
 import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
@@ -20,14 +19,11 @@ public class CardServiceImplements implements CardService {
 
     private final CardRepository cardRepository;
     private final GiftCodeRepository giftCodeRepository;
-    private final GiftCodeService giftCodeService;
 
     public CardServiceImplements(CardRepository cardRepository,
-                                 GiftCodeRepository giftCodeRepository,
-                                 GiftCodeService giftCodeService) {
+                                 GiftCodeRepository giftCodeRepository) {
         this.cardRepository = cardRepository;
         this.giftCodeRepository = giftCodeRepository;
-        this.giftCodeService = giftCodeService;
     }
 
     @Override
@@ -39,25 +35,9 @@ public class CardServiceImplements implements CardService {
         card.setAvaliacao(0);
 
         Card cardSalvo = cardRepository.save(card);
-
-        // Se quantidade foi informada é maior que zero, gerar os gift codes automaticamente
-        int quantidadeGerada = 0;
-        if (request.getQuantidade() != null && request.getQuantidade() > 0) {
-            try {
-                GerarCodesRequest gerarCodesRequest = new GerarCodesRequest();
-                gerarCodesRequest.setCardId(cardSalvo.getId());
-                gerarCodesRequest.setQuantidade(request.getQuantidade());
-
-                giftCodeService.gerarCodigos(gerarCodesRequest);
-                quantidadeGerada = request.getQuantidade();
-
-                cardSalvo = cardRepository.save(cardSalvo);
-            } catch (Exception e) {
-                System.err.println("Erro ao gerar gift codes: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        return CardMapper.toCardResponseByCard(cardSalvo, quantidadeGerada);
+        Long count = giftCodeRepository.countByCardAndStatus(cardSalvo, GiftCodeStatus.DISPONIVEL);
+        int qtdDisponivel = count == null ? 0 : count.intValue();
+        return CardMapper.toCardResponseByCard(cardSalvo, qtdDisponivel);
     }
 
     @Override
