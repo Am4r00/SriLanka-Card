@@ -8,6 +8,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        .code-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .code-input {
+            width: 90px;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-weight: 600;
+            background: #f7f7fb;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .code-input:focus {
+            border-color: #6a1b9a;
+            box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.15);
+            outline: none;
+        }
+
         .tabs {
             display: flex;
             gap: 10px;
@@ -136,6 +156,9 @@
             <button class="tab" data-tab="products" onclick="switchTab('products')">
                 <i class="fas fa-box"></i> Produtos
             </button>
+            <button class="tab" data-tab="codes" onclick="switchTab('codes')">
+                <i class="fa-solid fa-qrcode"></i> Gerador de Codes
+            </button>
         </div>
 
         <div id="users-tab" class="tab-content active">
@@ -201,6 +224,31 @@
                 <tr>
                     <td colspan="7" style="text-align: center; padding: 20px;">
                         <i class="fas fa-spinner fa-spin"></i> Carregando produtos...
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="codes-tab" class="tab-content">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <h3>Gerador de Codes</h3>
+                <span style="color:#666;font-size:14px;">Use a coluna "Gerar" para adicionar novos codes </span>
+            </div>
+
+            <table class="product-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome do Produto</th>
+                    <th>Codes Disponíveis</th>
+                    <th>Gerar</th>
+                </tr>
+                </thead>
+                <tbody id="codeTableBody">
+                <tr>
+                    <td colspan="4" style="text-align:center;padding:20px;">
+                        <i class="fas fa-spinner fa-spin">Carregando produtos...</i>
                     </td>
                 </tr>
                 </tbody>
