@@ -79,17 +79,15 @@ function switchTab(tabName) {
         loadUsers();
     } else if (tabName === 'products') {
         loadProducts();
+    } else if(tabName === 'codes'){
+        loadCodesTab();
     }
 }
-
-// ==================== GERENCIAMENTO DE USUÁRIOS ====================
 
 // Carregar lista de usuários
 async function loadUsers() {
     try {
-        console.log('Carregando lista de usuários...');
         const users = await apiRequest('/users/list');
-        console.log('Usuários carregados:', users);
         allUsers = users;
         renderUsers(users);
         console.log('Lista de usuários renderizada');
@@ -243,16 +241,19 @@ function closeUserModal() {
     document.getElementById('userPassword').required = true; // Restaurar required
 }
 
-// ==================== GERENCIAMENTO DE PRODUTOS ====================
-
 // Carregar lista de produtos
 async function loadProducts() {
     try {
-        console.log('Carregando lista de produtos...');
-        const products = await apiRequest('/cards');
-        console.log('Produtos carregados:', products);
-        allProducts = products;
+        const products = await apiRequest('/cards')
+        allProducts = products || [];
         renderProducts(products);
+
+        if(document.querySelector('[data-tab="codes"].active')){
+            renderProducts(allProducts);}
+
+        console.log('Lista de produtos renderizada');
+        return allProducts;
+
         console.log('Lista de produtos renderizada');
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
@@ -263,6 +264,65 @@ async function loadProducts() {
                 </td>
             </tr>
         `;
+    }
+}
+
+async function loadCodesTab(){
+    if(!allProducts || allProducts.length === 0){
+        await loadProducts();
+    }
+
+    renderCodeProducts(allProducts);
+}
+
+function renderCodeProducts(products){
+    const tbody = document.getElementById('codeTableBody');
+
+    if(!products || products.length === 0){
+        tbody.innerHTML = `
+            <tr><td colspan="4" style="text-align:center;padding:20px;">
+                Nenhum produto encontrado.
+            </td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = products.map(p => `
+        <tr>
+            <td>${p.id || '-'}</td>
+            <td>${p.nome || '-'}</td>
+            <td>${p.quantidade || 0}</td>
+            <td>
+    <div class="code-actions">
+        <input type="number" min="1" value="1" id="code-qty-${p.id}" class="code-input">
+        <button class="btn btn-success" onclick="generateCodes(${p.id})">
+            Gerar
+        </button>
+    </div>
+</td>
+        </tr>
+    `).join('');
+}
+
+async function generateCodes(cardId){
+    const input = document.getElementById(`code-qty-${cardId}`);
+    const quantidade = parseInt(input?.value,10);
+
+    if (!quantidade || quantidade <= 0) {
+        showToast('Informe uma quantidade válida para gerar codes.', true);
+        return;
+    }
+
+    try{
+        await apiRequest('/admin/gift-codes/gerar',{
+            method: 'POST',
+            body: JSON.stringify({cardId, quantidade})
+        });
+        showToast('Codes gerados com sucesso !', false);
+
+        const produtos = await loadProducts();
+        renderCodeProducts(produtos);
+    }catch (e) {
+        showToast(`Erro ao gerar codes: ${e.message}`, true);
     }
 }
 
@@ -335,7 +395,6 @@ async function openEditProductModal(productId) {
         document.getElementById('productName').value = product.nome || '';
         document.getElementById('productObservacoes').value = product.observacoes || '';
         document.getElementById('productValor').value = product.valor || 0;
-        document.getElementById('productQuantidade').value = product.quantidade || 0;
         document.getElementById('productPromocao').checked = product.promocao || false;
 
         document.getElementById('productModal').style.display = 'block';
@@ -353,7 +412,6 @@ async function saveProduct(event) {
     const nome = document.getElementById('productName').value;
     const observacoes = document.getElementById('productObservacoes').value;
     const valor = parseFloat(document.getElementById('productValor').value);
-    const quantidade = parseInt(document.getElementById('productQuantidade').value);
     const category = document.getElementById('productCategory').value
     const promocao = document.getElementById('productPromocao').checked;
 
@@ -372,22 +430,16 @@ async function saveProduct(event) {
             });
             console.log('Produto atualizado:', updatedProduct);
 
-            // Atualizar promoção separadamente
-            await apiRequest(`/cards/cards/${productId}/promocao/${promocao}`, {
+            await apiRequest(`/cards/${productId}/promocao/${promocao}`, {
                 method: 'PATCH'
             });
 
             console.log('Promoção atualizada');
         } else {
-            // Criar produto
-            // Validar quantidade - se for NaN ou undefined, usar 0
-            const quantidadeValida = (quantidade && !isNaN(quantidade) && quantidade > 0) ? quantidade : 0;
-
             const payload = {
                 nome,
                 observacoes,
                 valor,
-                quantidade: quantidadeValida,
                 category: category,
                 promocao
             };
@@ -460,7 +512,6 @@ function closeProductModal() {
 window.onclick = function(event) {
     const userModal = document.getElementById('userModal');
     const productModal = document.getElementById('productModal');
-
     if (event.target === userModal) {
         closeUserModal();
     }
