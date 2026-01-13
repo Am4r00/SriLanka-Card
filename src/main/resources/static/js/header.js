@@ -43,6 +43,8 @@ async function updateHeader() {
         userDiv.style.cssText = 'display: flex; align-items: center; gap: 1rem;';
         
         const nameSpan = document.createElement('span');
+        nameSpan.addEventListener('click',openUserMenu);
+
         nameSpan.className = 'user-name';
         nameSpan.textContent =`Bem-vindo, ${displayName}`;
         nameSpan.style.cssText = 'color: #fff; font-weight: 500;';
@@ -148,6 +150,43 @@ async function updateAdminmenu() {
         }
     }
 }
+
+async function openUserMenu(){
+    const menu = document.getElementById('user-menu');
+    if(!menu) return;
+
+    const token = getToken();
+    const userEmail = localStorage.getItem('userEmail');
+
+    let nome = userEmail;
+    let email = userEmail;
+
+    if(token){
+        const decoded = decodeToken(token);
+        nome = decoded?.nome || decoded?.name || decoded?.username || userEmail;
+        email = decoded?.sub || decoded?.email || userEmail;
+    } else{
+        try{
+            const me = await apiRequest('/users/me');
+            nome = me?.name || nome;
+            email = me?.email || email;
+        }catch(_){}
+    }
+    document.getElementById('user-menu-name').textContent = nome || '-';
+    document.getElementById('user-menu-email').textContent = email || '-';
+
+    menu.classList.remove('hidden');
+}
+
+function closeUserMenu(){
+    const menu = document.getElementById('user-menu');
+    if(menu) menu.classList.add('hidden');
+}
+document.addEventListener('click', (e) => {
+    if (e.target?.id === 'user-menu-close' || e.target?.id === 'user-menu') {
+        closeUserMenu();
+    }
+});
 
 // Exportar funções
 window.updateHeader = updateHeader;

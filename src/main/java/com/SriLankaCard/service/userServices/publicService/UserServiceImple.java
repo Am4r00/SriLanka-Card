@@ -1,6 +1,7 @@
 package com.SriLankaCard.service.userServices.publicService;
 
 import com.SriLankaCard.dto.request.user.userPublic.RegisterUserRequest;
+import com.SriLankaCard.dto.request.user.userPublic.UpdateUserRequest;
 import com.SriLankaCard.dto.response.user.UserResponse;
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.entity.userEntity.enums.Funcao;
@@ -8,6 +9,8 @@ import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.exception.dominio.ListIsEmptyException;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
+import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
+import com.SriLankaCard.exception.negocio.InvalidPasswordException;
 import com.SriLankaCard.mapper.UserMapper;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.service.emailService.EmailService;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +67,37 @@ public class UserServiceImple implements UserService {
 
         User salvo = userRepository.save(novo);
         return UserMapper.toUserResponse(salvo);
+    }
+
+    @Override
+    @Transactional
+    public UserResponse updateUser(String email, UpdateUserRequest dto){
+        ValidationUtils.validateNotNull(email,dto,"Argumentos passados estão inválidos");
+
+        User user = userRepository.findByEmailIgnoreCase(email).orElseThrow(
+                () -> new  UserNotFoundException("Usuário não encontrado !"));
+
+        if(dto.getNome() != null) user.setName(dto.getNome());
+
+        if(dto.getEmail() != null) {
+            boolean mesmoEmail = user.getEmail().equalsIgnoreCase(dto.getEmail());
+            boolean emailEmUso = userRepository.existsByEmailIgnoreCase(dto.getEmail());
+            if(!mesmoEmail && emailEmUso){
+                throw new EmailAlreadyUsedException("O email digitado já está sendo usado !");
+            }
+            user.setEmail(dto.getEmail());
+        }
+
+        if(dto.getNovaSenha() != null){
+            if(!passwordEncoder.matches(dto.getSenhaAtual(),user.getPassword())){
+                throw new InvalidPasswordException("A senha digitada é diferente da senha anterior..");
+            }
+            user.setPassword(passwordEncoder.encode(dto.getNovaSenha()));
+        }
+        userRepository.save(user);
+        emailService.enviarAlteraçãoDeInformacoes(user.getEmail(),user.getName());
+
+        return UserMapper.toUserResponse(user);
     }
 
     @Override

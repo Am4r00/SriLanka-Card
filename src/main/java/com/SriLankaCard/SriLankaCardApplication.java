@@ -9,5 +9,6 @@ public class SriLankaCardApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SriLankaCardApplication.class, args);
+
     }}
 

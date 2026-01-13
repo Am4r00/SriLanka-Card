@@ -1,6 +1,7 @@
 package com.SriLankaCard.controller.userController;
 
 import com.SriLankaCard.dto.request.user.userPublic.RegisterUserRequest;
+import com.SriLankaCard.dto.request.user.userPublic.UpdateUserRequest;
 import com.SriLankaCard.dto.response.user.UserResponse;
 import com.SriLankaCard.service.userServices.publicService.UserServiceImple;
 import jakarta.validation.Valid;
@@ -18,7 +19,6 @@ public class UserController {
 
     @Autowired
     private UserServiceImple userServiceImple;
-
 
     @GetMapping("/signup")
     public String signupPage(Model model) {
@@ -40,8 +40,14 @@ public class UserController {
 
     @GetMapping("/me")
     @ResponseBody
-    public UserResponse getCurrentUser(Authentication authentication) {
-        String email = authentication.getName();
-        return userServiceImple.findByEmail(email);
+    public UserResponse getMe(Authentication auth) {
+        return userServiceImple.findByEmail(auth.getName());
+    }
+
+    @PatchMapping("/me")
+    @ResponseBody
+    public UserResponse updateMe(@Valid @RequestBody UpdateUserRequest dto, Authentication auth) {
+        String emailAtual = auth.getName();
+        return userServiceImple.updateUser(emailAtual, dto);
     }
 }

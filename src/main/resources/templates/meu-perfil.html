@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/core.js}"></script>
+    <script th:src="@{/js/api.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/meu-perfil.js}"></script>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    <main class="page-shell">
+        <section class="card-block perfil-card">
+            <div class="card-header">
+                <div>
+                    <p class="eyebrow">Conta</p>
+                    <h2>Meu Perfil</h2>
+                </div>
+            </div>
+            <form id="perfil-form" class="form-grid">
+                <div class="field">
+                    <label for="perfil-nome">Nome</label>
+                    <input id="perfil-nome" type="text" required>
+                </div>
+
+                <div class="field">
+                    <label for="perfil-email">Email</label>
+                    <input id="perfil-email" type="email" required>
+                </div>
+
+                <div class="field">
+                    <label for="perfil-senha-atual">Senha atual</label>
+                    <input id="perfil-senha-atual" type="password" placeholder="Necessária para alterar senha">
+                </div>
+
+                <div class="field two-col">
+                    <div>
+                        <label for="perfil-senha-nova">Nova Senha</label>
+                        <input id="perfil-senha-nova" type="password">
+                    </div>
+                    <div>
+                        <label for="perfil-senha-conf">Confirmar Senha</label>
+                        <input id="perfil-senha-conf" type="password">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Salvar</button>
+                </div>
+            </form>
+            <div id="perfil-msg" class="inline-msg"></div>
+        </section>
+    </main>
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

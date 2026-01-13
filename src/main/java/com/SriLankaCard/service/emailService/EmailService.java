@@ -45,4 +45,17 @@ public class EmailService {
 
         enviarEmail(para, assunto, corpo);
     }
+
+    public void enviarAlteraçãoDeInformacoes(String para, String nome){
+        String assunto = "Solicitação de Troca de informações ✅";
+
+        String corpo =
+                "Olá, " + (nome != null ? nome : "usuário") + "!\n\n" +
+                        "Suas informações foram alteradas com sucesso ! ✅\n" +
+                        "Qualquer dúvida, estamos por aqui.\n\n" +
+                        "Equipe SriLankaCard";
+
+        enviarEmail(para, assunto, corpo);
+
+    }
 }

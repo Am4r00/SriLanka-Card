@@ -23,5 +23,18 @@
                 <img th:src="@{/img/carrinho.png}" alt="shopping-cart-icon">
             </a>
         </div>
+        <div id="user-menu" class="user-menu hidden">
+            <div class="user-menu-card">
+                <div class="user-menu-header">
+                    <div id="user-menu-name"></div>
+                    <div id="user-menu-email"></div>
+                </div>
+                <div class="user-menu-actions">
+                    <a href="/meu-perfil" class="user-menu-btn">Perfil</a>
+                    <a href="/meus-pedidos" class="user-menu-btn secondary">Histórico de compras</a>
+                </div>
+                <button id="user-menu-close" class="user-menu-close">Fechar</button>
+            </div>
+        </div>
     </div>
 </header>

@@ -103,7 +103,85 @@
 }
 
 .user-name {
-    font-weight: 500;
+    font-weight: 600;
     color: #fff;
     white-space: nowrap;
+    cursor: pointer;
+    position: relative;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color .2s, border-color .2s, color .2s;
 }
+.user-name::after {
+    content: "▾";
+    font-size: 11px;
+    margin-left: 2px;
+    color: #cbd5e1;
+}
+.user-name:hover {
+    color: #e2e8f0;
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.28);
+}
+.user-menu.hidden {
+    display: none;
+}
+.user-menu {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 20px;
+    z-index: 999999 !important;
+}
+.user-menu-card {
+    position: relative;
+    z-index: 1000000 !important;
+    background: #111;
+    color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    width: 280px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+.user-menu-header {
+    margin-bottom: 12px;
+}
+.user-menu-actions {
+    display: grid;
+    gap: 10px;
+}
+.user-menu-btn {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    background: #6C42A1;
+    color: #fff;
+    font-weight: 600;
+}
+.user-menu-btn.secondary {
+    background: #2e2e2e;
+}
+.user-menu-close {
+    margin-top: 12px;
+    width: 100%;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid #444;
+    color: #bbb;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.user-name {
+    cursor: pointer;
+}
+
