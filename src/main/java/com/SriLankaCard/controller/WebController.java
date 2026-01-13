@@ -85,4 +85,14 @@ public class WebController {
     public String showConfirmacaoPage() {
         return "confirmacaoPagamento";
     }
+
+    @GetMapping("/meu-perfil")
+    public String meuPerfil() {
+        return "meu-perfil";
+    }
+
+    @GetMapping("/meus-pedidos")
+    public String meusPedidos() {
+        return "meus-pedidos";
+    }
 }

@@ -1,25 +1,29 @@
 package com.SriLankaCard.controller.pedidoController;
 
+import com.SriLankaCard.dto.response.pedido.PedidoHistoricoResponse;
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.repository.userRepository.UserRepository;
-import com.SriLankaCard.service.pedidoService.PedidoService;
+import com.SriLankaCard.service.pedidoService.PedidoServiceImple;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedidos")
 public class PedidoController {
 
-    private final PedidoService pedidoService;
+    private final PedidoServiceImple pedidoServiceImple;
     private final UserRepository userRepository;
 
-    public PedidoController(PedidoService pedidoService, UserRepository userRepository) {
-        this.pedidoService = pedidoService;
+    public PedidoController(PedidoServiceImple pedidoServiceImple, UserRepository userRepository) {
+        this.pedidoServiceImple = pedidoServiceImple;
         this.userRepository = userRepository;
     }
 
@@ -50,10 +54,16 @@ public class PedidoController {
                 .getId();
     }
 
+    @GetMapping("/historico")
+    public ResponseEntity<List<PedidoHistoricoResponse>> historico(){
+        Long usuarioId = getUserId();
+        return ResponseEntity.ok(pedidoServiceImple.listarPedidosUsuario(usuarioId));
+    }
+
     @PostMapping("/finalizar")
     public ResponseEntity<Void> finalizarPedido() {
         Long usuarioId = getUserId();
-        pedidoService.finalizarPedido(usuarioId);
+        pedidoServiceImple.finalizarPedido(usuarioId);
 
         return ResponseEntity.ok().build();
     }
