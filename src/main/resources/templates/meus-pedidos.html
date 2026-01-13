@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/core.js}"></script>
+    <script th:src="@{/js/api.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/meus-pedidos.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<main class="page-shell">
+    <section class="card-block pedidos-card">
+        <div class="card-header">
+            <div>
+                <p class="eyebrow">Histórico</p>
+                <h2>Meus Pedidos</h2>
+            </div>
+        </div>
+        <div id="pedidos-container" class="pedidos-container"></div>
+    </section>
+</main>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
