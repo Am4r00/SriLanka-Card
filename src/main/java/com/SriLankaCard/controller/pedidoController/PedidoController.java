@@ -5,6 +5,7 @@ import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import com.SriLankaCard.service.pedidoService.PedidoServiceImple;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,6 +59,12 @@ public class PedidoController {
     public ResponseEntity<List<PedidoHistoricoResponse>> historico(){
         Long usuarioId = getUserId();
         return ResponseEntity.ok(pedidoServiceImple.listarPedidosUsuario(usuarioId));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/historico")
+    public ResponseEntity<List<PedidoHistoricoResponse>> historicoAdmin(){
+        return ResponseEntity.ok(pedidoServiceImple.listarTodosPedidos());
     }
 
     @PostMapping("/finalizar")

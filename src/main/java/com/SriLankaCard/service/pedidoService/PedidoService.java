@@ -7,4 +7,5 @@ import java.util.List;
 public interface PedidoService {
     void finalizarPedido(Long usuarioId);
     List<PedidoHistoricoResponse> listarPedidosUsuario(Long id);
+    List<PedidoHistoricoResponse> listarTodosPedidos();
 }

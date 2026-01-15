@@ -10,7 +10,7 @@ import com.SriLankaCard.entity.produtoEntity.GiftCode;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
 import com.SriLankaCard.entity.userEntity.User;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
-import com.SriLankaCard.exception.negocio.CarrinhoNotFoundException;
+import com.SriLankaCard.exception.dominio.CarrinhoNotFoundException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.mapper.PedidoMapper;
 import com.SriLankaCard.repository.carrinhoRepository.CarrinhoRepository;
@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class PedidoServiceImple implements PedidoService {
@@ -65,20 +66,16 @@ public class PedidoServiceImple implements PedidoService {
         pedido.setQuantidadeTotal(carrinho.getQuantidade());
         pedido.setCriadoEm(LocalDateTime.now());
 
-        // Lista de itens do pedido
+
         List<ItemPedido> itensPedido = new ArrayList<>();
-
-        // Guardar quais seriais foram usados por produto
         Map<Long, List<String>> codigosPorProduto = new HashMap<>();
-
-        // Guardar todos os GiftCodes atualizados para salvar de uma vez
         List<GiftCode> giftCodesAtualizados = new ArrayList<>();
 
         for (ItemCarrinho itemCarrinho : carrinho.getItens()) {
             Card card = itemCarrinho.getCard();
             int quantidade = itemCarrinho.getQuantidade();
 
-            // Criar ItemPedido a partir do item do carrinho
+
             ItemPedido ip = new ItemPedido();
             ip.setPedido(pedido);
             ip.setProdutoId(card.getId());
@@ -89,7 +86,7 @@ public class PedidoServiceImple implements PedidoService {
 
             itensPedido.add(ip);
 
-            // Buscar GiftCodes disponíveis para este card
+
             List<GiftCode> disponiveis = giftCodeRepository
                     .findByCardAndStatus(card, GiftCodeStatus.DISPONIVEL);
 
@@ -99,7 +96,7 @@ public class PedidoServiceImple implements PedidoService {
                 );
             }
 
-            // Selecionar os códigos que serão usados
+
             List<String> seriaisDoItem = new ArrayList<>();
 
             for (int i = 0; i < quantidade; i++) {
@@ -116,7 +113,7 @@ public class PedidoServiceImple implements PedidoService {
 
         Pedido salvo = pedidoRepository.save(pedido);
 
-        // Atualiza os GiftCodes no banco (marcados como VENDIDO)
+
         giftCodeRepository.saveAll(giftCodesAtualizados);
 
         String corpoEmail = montarCorpoEmail(user, salvo, codigosPorProduto);
@@ -139,6 +136,12 @@ public class PedidoServiceImple implements PedidoService {
 
         List<Pedido> listaPedidos = pedidoRepository.findByUsuarioIdOrderByCriadoEmDesc(id);
 
+        return mapToUserDetailDTOList(listaPedidos);
+    }
+
+    @Override
+    public List<PedidoHistoricoResponse> listarTodosPedidos(){
+        List<Pedido> listaPedidos = pedidoRepository.findAll(Sort.by(Sort.Direction.DESC,"criadoEm"));
         return mapToUserDetailDTOList(listaPedidos);
     }
 
