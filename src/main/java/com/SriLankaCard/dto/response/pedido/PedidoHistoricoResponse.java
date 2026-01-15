@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PedidoHistoricoResponse {
     private Long id;
+    private Long usuarioId;
     private Double valorTotal;
     private Integer quantidadeTotal;
     private LocalDateTime criadoEm;
