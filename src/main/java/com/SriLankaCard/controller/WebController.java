@@ -95,4 +95,9 @@ public class WebController {
     public String meusPedidos() {
         return "meus-pedidos";
     }
+
+    @GetMapping("/erro")
+    public String erro() {
+        return "erro";
+    }
 }
