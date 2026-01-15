@@ -41,6 +41,58 @@ body{
   backdrop-filter: blur(8px);
 }
 
+/* Ajuste perfil para seguir o tema escuro/translúcido */
+.perfil-card{
+  background: rgba(0,0,0,0.58);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #f8fafc;
+}
+.perfil-card .card-header h2{
+  color: #fff;
+}
+.perfil-card .eyebrow{
+  color: #cbd5e1;
+}
+.perfil-card .form-grid label{
+  color: #fff;
+}
+.perfil-card .form-grid input{
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.08);
+  color: #f8fafc;
+}
+.perfil-card .form-grid input:focus{
+  border-color: #A379D5;
+  box-shadow: 0 0 0 3px rgba(163,121,213,0.18);
+}
+
+/* Ajuste pedidos para seguir o tema escuro/translúcido */
+.pedidos-card{
+  background: rgba(0,0,0,0.58);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #f8fafc;
+}
+.pedidos-card h2{
+  color:#fff;
+}
+.pedidos-card .eyebrow{
+  color:#cbd5e1;
+}
+.pedido-card{
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+  color: #f8fafc;
+}
+.pedido-card summary{
+  color: #cbd5e1;
+}
+.pedido-card ul{
+  color: #e2e8f0;
+}
+
 .card-header{
   display:flex;
   align-items:center;

@@ -95,7 +95,7 @@ body{
 .btn.secondary{
   background-color:transparent; border:2px solid #fff; color:#fff;
 }
-.btn.secondary:hover{ background-color:#fff; color:#6C42A1; }
+.btn.secondary:hover{ background-color:#1f2937; border-color:#1f2937; color:#fff; }
 
 /* Responsividade */
 @media (max-width:768px){
