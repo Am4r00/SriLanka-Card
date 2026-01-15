@@ -21,40 +21,57 @@
                     <h2>Meu Perfil</h2>
                 </div>
             </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <button type="button" class="btn primary" style="width:auto;padding:10px 16px;" onclick="habilitarEdicao()">Editar perfil</button>
+                <button type="button" class="btn secondary" style="width:auto;padding:10px 16px;" onclick="abrirModalSenha()">Alterar senha da conta</button>
+            </div>
             <form id="perfil-form" class="form-grid">
                 <div class="field">
                     <label for="perfil-nome">Nome</label>
-                    <input id="perfil-nome" type="text" required>
+                    <input id="perfil-nome" type="text" required disabled>
                 </div>
 
                 <div class="field">
                     <label for="perfil-email">Email</label>
-                    <input id="perfil-email" type="email" required>
-                </div>
-
-                <div class="field">
-                    <label for="perfil-senha-atual">Senha atual</label>
-                    <input id="perfil-senha-atual" type="password" placeholder="Necessária para alterar senha">
-                </div>
-
-                <div class="field two-col">
-                    <div>
-                        <label for="perfil-senha-nova">Nova Senha</label>
-                        <input id="perfil-senha-nova" type="password">
-                    </div>
-                    <div>
-                        <label for="perfil-senha-conf">Confirmar Senha</label>
-                        <input id="perfil-senha-conf" type="password">
-                    </div>
+                    <input id="perfil-email" type="email" required disabled>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn primary">Salvar</button>
+                    <button type="submit" class="btn primary" id="perfil-salvar" disabled>Salvar</button>
                 </div>
             </form>
             <div id="perfil-msg" class="inline-msg"></div>
         </section>
     </main>
     <div th:replace="fragments/footer :: footer"></div>
+
+    <div id="modal-senha" class="overlay" style="display:none;">
+        <div class="shell" style="max-width:520px; background:rgba(0,0,0,0.75); border:1px solid rgba(255,255,255,0.08);">
+            <div class="form-wrap" style="background:transparent;color:#fff; padding:28px;">
+                <div class="brand">
+                    <p class="title" style="color:#fff;">Alterar senha</p>
+                    <p class="subtitle" style="color:#cbd5e1;">Informe sua senha atual e defina uma nova.</p>
+                </div>
+                <form id="senha-form" onsubmit="salvarSenha(event)">
+                    <div class="field">
+                        <label for="senha-atual" style="color:#fff;">Senha atual</label>
+                        <input class="input" id="senha-atual" type="password" required style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.18);">
+                    </div>
+                    <div class="field">
+                        <label for="senha-nova" style="color:#fff;">Nova senha</label>
+                        <input class="input" id="senha-nova" type="password" required style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.18);">
+                    </div>
+                    <div class="field">
+                        <label for="senha-conf" style="color:#fff;">Confirmar nova senha</label>
+                        <input class="input" id="senha-conf" type="password" required style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.18);">
+                    </div>
+                    <div class="actions" style="justify-content:flex-end; gap:10px;">
+                        <button type="button" class="btn secondary" onclick="fecharModalSenha()" style="width:auto;padding:12px 16px;border:2px solid #fff;">Cancelar</button>
+                        <button type="submit" class="btn primary" style="width:auto;padding:12px 16px;">Salvar senha</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

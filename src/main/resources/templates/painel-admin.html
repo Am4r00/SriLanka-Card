@@ -159,6 +159,9 @@
             <button class="tab" data-tab="codes" onclick="switchTab('codes')">
                 <i class="fa-solid fa-qrcode"></i> Gerador de Codes
             </button>
+            <button class="tab" data-tab="orders" onclick="switchTab('orders')">
+                <i class="fas fa-receipt"></i> Pedidos
+            </button>
         </div>
 
         <div id="users-tab" class="tab-content active">
@@ -254,6 +257,31 @@
                 </tbody>
             </table>
         </div>
+
+        <div id="orders-tab" class="tab-content">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <h3>Pedidos</h3>
+                <span style="color:#666;font-size:14px;">Histórico geral de pedidos</span>
+            </div>
+            <table class="product-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário</th>
+                    <th>Valor Total</th>
+                    <th>Qtd Itens</th>
+                    <th>Data</th>
+                </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                <tr>
+                    <td colspan="5" style="text-align:center;padding:20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando pedidos...
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div id="userModal" class="modal">
@@ -333,10 +361,13 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="productPromocao"> Em Promoção
+                <div class="form-group promo-toggle">
+                    <span class="toggle-text">Sem promoção</span>
+                    <label class="switch">
+                        <input type="checkbox" id="productPromocao">
+                        <span class="slider"></span>
                     </label>
+                    <span class="toggle-text">Com promoção</span>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Salvar</button>

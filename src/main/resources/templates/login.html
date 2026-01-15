@@ -61,6 +61,7 @@
                         <a class="link" th:href="@{/signup}">Criar conta</a>
                     </p>
                 </form>
+
             </section>
 
             <aside class="media" aria-hidden="true">
@@ -68,6 +69,34 @@
             </aside>
 
         </main>
+    </div>
+    <div id="modal-reativar" class="overlay" style="display:none;">
+        <div class="shell">
+            <a href="#" class="close-btn" onclick="fecharReativar(event)"><span>&times;</span></a>
+            <div class="form-wrap">
+                <div class="brand">
+                    <p class="title">Reativar conta</p>
+                    <p class="subtitle">Envie o código para seu email e ative a conta.</p>
+                </div>
+
+                <form id="form-reativar" onsubmit="reenviarAtivacao(event)">
+                    <div class="field">
+                        <label for="reativar-email">Email</label>
+                        <input id="reativar-email" type="email" class="input" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="reativar-code">Código de ativação</label>
+                        <input id="reativar-code" type="text" class="input" placeholder="Digite o código recebido">
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="btn" onclick="enviarCodigoAtivacao()">Enviar código</button>
+                        <button type="submit" class="btn primary">Ativar conta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <script th:src="@{/js/core.js}"></script>
     <script th:src="@{/js/login.js}"></script>
