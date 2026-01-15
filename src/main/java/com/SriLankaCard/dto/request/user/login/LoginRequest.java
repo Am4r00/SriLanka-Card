@@ -1,5 +1,6 @@
 package com.SriLankaCard.dto.request.user.login;
 
+import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

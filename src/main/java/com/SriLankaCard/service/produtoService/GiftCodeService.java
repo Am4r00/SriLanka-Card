@@ -4,7 +4,7 @@ import com.SriLankaCard.dto.request.giftCard.GerarCodesRequest;
 import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCode;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
-import com.SriLankaCard.exception.negocio.CardNotFoundException;
+import com.SriLankaCard.exception.dominio.CardNotFoundException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;
