@@ -41,7 +41,6 @@ body{
   backdrop-filter: blur(8px);
 }
 
-/* Ajuste perfil para seguir o tema escuro/translúcido */
 .perfil-card{
   background: rgba(0,0,0,0.58);
   border: 1px solid rgba(255,255,255,0.08);
@@ -66,7 +65,6 @@ body{
   box-shadow: 0 0 0 3px rgba(163,121,213,0.18);
 }
 
-/* Ajuste pedidos para seguir o tema escuro/translúcido */
 .pedidos-card{
   background: rgba(0,0,0,0.58);
   border: 1px solid rgba(255,255,255,0.08);
@@ -163,7 +161,6 @@ body{
   gap: 14px;
 }
 
-/* Override pedido-card to tema escuro */
 .pedido-card{
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 12px;
@@ -182,7 +179,6 @@ body{
   color: #e2e8f0;
 }
 
-/* === HOME via IFRAME (fundo desfocado) === */
 .home-bg{
   position:fixed;
   inset:0;
@@ -195,7 +191,6 @@ body{
   pointer-events: none;
 }
 
-/* OVERLAY + MODAL */
 .overlay{
   position:fixed; inset:0; display:grid; place-items:center;
   background: rgba(15,23,42,.28);
@@ -230,7 +225,6 @@ body{
 }
 .subtitle{color:var(--muted); margin:0 0 28px}
 
-/* LOGO */
 .logo{
   font-size:1.5rem;
   font-weight:700;
@@ -253,37 +247,32 @@ body{
 .input:focus{border-color:var(--ring); box-shadow:0 0 0 4px rgba(124,58,237,.15)}
 .input:active{transform:translateY(.5px)}
 
-/* Container para alinhar os campos na mesma linha */
 .input-group {
     display: flex;
-    align-items: center; /* Alinha os itens pela base, se o label for diferente */
-    gap: 15px; /* Espaço entre os campos */
+    align-items: center;
+    gap: 15px;
 }
 
-/* Estilo para o campo de Bairro */
 .input-group .input[name="bairro"] {
-    width: 100%; /* Permite que ele cresça */
-    min-width: 150px; /* Largura mínima para o campo de bairro */
+    width: 100%;
+    min-width: 150px;
 }
 
-/* Estilo para o campo de Número */
 .input-group-item {
     display: flex;
     flex-direction: column;
 }
 
 .input-group-item .input {
-    width: 80px; /* Largura fixa para o campo de número */
+    width: 80px;
     max-width: 100px;
-    flex-shrink: 0; /* Impede que ele encolha */
+    flex-shrink: 0;
 }
 
-/* Estilo para o campo de Bairro */
 .input-group .input[name="bairro"] {
-  width: 100%; /* Permite que ele cresça */
-  min-width: 150px; /* Largura mínima para o campo de bairro */
+  width: 100%;
+  min-width: 150px;
 }
-
 
 .password-wrap{position:relative}
 .toggle{
@@ -319,9 +308,8 @@ body{
   .media{display:block; min-height:520px}
 }
 
-/* Botão para fechar o modal */
 .close-btn {
-    position: fixed; /* Posiciona em relação à janela do navegador */
+    position: fixed;
     top: 20px;
     right: 20px;
     font-size: 2.5rem;
@@ -348,7 +336,7 @@ body{
 }
 
 .btn-check {
-    display: none; /* oculta o checkbox real */
+    display: none;
 }
 
 .btn-role {
@@ -356,9 +344,9 @@ body{
     padding: 10px 20px;
     font-weight: 600;
     border-radius: 12px;
-    border: 2px solid #ffffff; /* borda branca quando não selecionado */
-    background-color: #ffffff;  /* fundo branco quando não selecionado */
-    color: #000000;             /* texto preto */
+    border: 2px solid #ffffff;
+    background-color: #ffffff;
+    color: #000000;
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
@@ -369,12 +357,11 @@ body{
 }
 
 .btn-check:checked + .btn-role {
-    background-color: #5ac561; /* verde sucesso quando selecionado */
-    border-color: #5ac561;     /* borda verde */
-    color: #ffffff;            /* texto branco */
+    background-color: #5ac561;
+    border-color: #5ac561;
+    color: #ffffff;
 }
 
-/* Modal senha refinado */
 .modal-senha-card{
   display: block;
   max-width: 480px;
@@ -410,9 +397,6 @@ body{
   box-shadow: 0 0 0 3px rgba(163,121,213,0.18);
 }
 
-
-
-/* O resto do seu CSS permanece o mesmo */
 .overlay {
     position: fixed;
     inset: 0;
@@ -427,7 +411,6 @@ body{
 }
 
 .shell {
-    /* Mantenha o position: relative; aqui se precisar de outros elementos */
     position: relative;
     width: 100%;
     max-width: 880px;

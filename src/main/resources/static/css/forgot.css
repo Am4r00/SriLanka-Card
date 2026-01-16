@@ -24,7 +24,6 @@ body{
     linear-gradient(135deg,var(--bg-start),var(--bg-end));
 }
 
-/* === HOME via IFRAME (fundo desfocado) === */
 .home-bg{
   position:fixed; inset:0; width:100%; height:100%; border:none;
   filter: blur(10px) brightness(0.85) saturate(1.05);
@@ -32,7 +31,6 @@ body{
   z-index:0; pointer-events:none;
 }
 
-/* OVERLAY + MODAL */
 .overlay{
   position:fixed; inset:0; display:grid; place-items:center;
   background: rgba(15,23,42,.28);
@@ -62,7 +60,6 @@ body{
 .title{ font-size:28px; font-weight:800; letter-spacing:.2px; margin:8px 0 6px }
 .subtitle{ color:var(--muted); margin:0 0 28px }
 
-/* LOGO (texto) */
 .logo{
   font-size:1.5rem; font-weight:700; text-decoration:none; color:#4f46e5;
 }
@@ -98,9 +95,8 @@ body{
   .media{ display:block; min-height:520px }
 }
 
-/* Botão para fechar o modal */
 .close-btn {
-    position: fixed; /* Posiciona em relação à janela do navegador */
+    position: fixed;
     top: 20px;
     right: 20px;
     font-size: 2.5rem;
@@ -121,7 +117,6 @@ body{
     display: block;
 }
 
-/* O resto do seu CSS permanece o mesmo */
 .overlay {
     position: fixed;
     inset: 0;
@@ -136,11 +131,9 @@ body{
 }
 
 .shell {
-    /* Mantenha o position: relative; aqui se precisar de outros elementos */
     position: relative;
     width: 100%;
     max-width: 880px;
-    /* ... (restante do código) */
 }
 
 

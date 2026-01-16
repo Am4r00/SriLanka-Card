@@ -1,12 +1,12 @@
 :root {
     --primary-color: #6C42A1;
     --secondary-color: #A379D5;
-    --dark-bg: #030438; /* Fundo principal: Azul marinho/Roxo */
-    --light-bg: #1e293b; /* Fundo dos cards: Cinza escuro */
+    --dark-bg: #030438;
+    --light-bg: #1e293b;
     --text-color: #e2e8f0;
     --subtle-text: #94a3b8;
     --border-color: #334155;
-    --card-bg: #1e293b; /* Fundo dos cards de pagamento/carrinho */
+    --card-bg: #1e293b;
     --white: #fff;
     --accent-color: #0d9488;
 }
@@ -21,11 +21,10 @@ body {
     margin: 0;
     padding: 0;
     color: var(--text-color);
-    background-color: var(--dark-bg); /* O novo fundo azul marinho */
+    background-color: var(--dark-bg);
     line-height: 1.6;
 }
 
-/* --- Navbar --- */
 .navbar {
     background-color: rgba(0, 0, 0, .4);
     backdrop-filter: blur(10px);
@@ -112,7 +111,6 @@ body {
     box-shadow: 0 12px 30px rgba(163, 121, 213, 0.6);
 }
 
-/* --- Layout Principal --- */
 .main-content {
     max-width: 1200px;
     margin: 2rem auto;
@@ -124,7 +122,6 @@ body {
     gap: 2rem;
 }
 
-/* --- Seção de Carrinho --- */
 .shopping-cart h2 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -213,7 +210,6 @@ body {
     font-weight: 500;
 }
 
-/* --- Seção de Pagamento --- */
 .payment-section {
     display: flex;
     flex-direction: column;
@@ -247,7 +243,7 @@ body {
     cursor: pointer;
 }
 .payment-form {
-    display: none; /* Escondido por padrão, JS vai mostrar */
+    display: none;
     margin-top: 1rem;
 }
 .payment-option.active .payment-form {
@@ -275,7 +271,6 @@ body {
     gap: 1rem;
 }
 
-/* --- Seção de Desconto --- */
 .discount-input {
     display: flex;
     align-items: center;
@@ -308,7 +303,6 @@ body {
     font-weight: 600;
 }
 
-/* --- Botão de Pagamento --- */
 .cta-button {
     width: 100%;
     padding: 1rem;
@@ -326,7 +320,6 @@ body {
     background-color: var(--secondary-color);
 }
 
-/* --- Responsividade --- */
 @media (max-width: 900px) {
     .content-wrapper {
         grid-template-columns: 1fr;

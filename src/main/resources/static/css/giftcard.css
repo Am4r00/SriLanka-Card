@@ -27,7 +27,6 @@ body {
     padding: 0 2rem;
 }
 
-/* --- Banner de Promoção --- */
 .promo-banner {
     background: linear-gradient(to right, #1d4380, #366ac7);
     border-radius: 1rem;
@@ -61,14 +60,12 @@ body {
     background-color: #ffe066;
 }
 
-/* --- Layout de Grid Principal --- */
 .page-container {
     display: grid;
     grid-template-columns: 250px 1fr;
     gap: 2rem;
 }
 
-/* --- Sidebar (Filtros) --- */
 .sidebar {
     background-color: var(--light-bg);
     padding: 1.5rem;
@@ -113,7 +110,6 @@ body {
     background-color: var(--secondary-color);
 }
 
-/* --- Conteúdo e Ordenação --- */
 .main-content {
     display: flex;
     flex-direction: column;
@@ -169,14 +165,12 @@ body {
     cursor: pointer;
 }
 
-/* --- Grid de Produtos --- */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.5rem;
 }
 
-/* CARD DO PRODUTO */
 .product-card {
     background-color: var(--light-bg);
     padding: 1.5rem 1rem;
@@ -241,7 +235,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* CARD ESGOTADO (não clicável) */
 .product-card--disabled {
     opacity: 0.5;
     cursor: default;
@@ -256,7 +249,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* --- Responsividade --- */
 @media (max-width: 900px) {
     .page-container {
         grid-template-columns: 1fr;
@@ -297,8 +289,6 @@ body {
         margin-bottom: 1rem;
     }
 }
-
-/* =========== MODAL GIFT CARD =========== */
 
 .gift-modal.hidden {
     display: none;
@@ -430,8 +420,6 @@ body {
     background-color: #8259c0;
     transform: translateY(-1px);
 }
-
-/* ============ TOAST ============ */
 
 .toast {
     position: fixed;

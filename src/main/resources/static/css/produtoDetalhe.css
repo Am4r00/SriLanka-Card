@@ -5,7 +5,6 @@ body {
     background-color: #070b2b;
 }
 
-/* Navbar */
 .navbar {
     background-color: #0d0d2e;
     padding: 1.2rem 3rem;
@@ -61,7 +60,6 @@ body {
     filter: brightness(0) invert(1);
 }
 
-/* Conteúdo */
 .product-details {
     display: flex;
     justify-content: center;
@@ -138,9 +136,6 @@ body {
 }
 .buy-now:hover { background: #f7d75c; }
 
-/* ===========================
-   RODAPÉ COMPLETO
-=========================== */
 .footer {
     background-color: #0d0d2e;
     color: #ccc;

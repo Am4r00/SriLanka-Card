@@ -1,5 +1,3 @@
-
-/* Fonte base */
 body{
   font-family:'Poppins',sans-serif;
   margin:0;
@@ -9,16 +7,11 @@ body{
   display:flex;
   flex-direction:column;
 
-  /* >>> Imagem de fundo + overlay sutil para legibilidade <<< */
-  /* Troque o caminho da imagem abaixo se quiser */
   background:
-    linear-gradient(rgba(2,6,23,.35), rgba(2,6,23,.35)), /* overlay escuro sutil */
+    linear-gradient(rgba(2,6,23,.35), rgba(2,6,23,.35)),
     url("../img/ImagemFundoBoa.png") center center / cover no-repeat;
 }
 
-/* --------------------
-   Navbar
--------------------- */
 .navbar{
   background-color:rgba(0,0,0,.4);
   backdrop-filter:blur(10px);
@@ -50,30 +43,25 @@ body{
   box-shadow:0 0 15px rgba(108,66,161,.5);
 }
 
-/* ... seu CSS existente da navbar ... */
-
 .cart-link {
-    display: flex; /* Para centralizar a imagem */
+    display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease; /* Adicione uma pequena transição para um efeito visual */
+    transition: transform 0.3s ease;
 }
 
 .cart-link img {
-    width: 28px; /* O tamanho da imagem */
+    width: 28px;
     height: 28px;
-    filter: brightness(0) invert(1); /* Deixa a imagem branca para combinar com o texto */
+    filter: brightness(0) invert(1);
     transition: filter 0.3s ease;
 }
 
 .cart-link:hover img {
-    filter: brightness(1) saturate(10) hue-rotate(240deg); /* Aumenta a luminosidade e muda a cor para o hover */
+    filter: brightness(1) saturate(10) hue-rotate(240deg);
 }
 .cta-button:hover{ background-color:#A379D5; }
 
-/* --------------------
-   Seção Principal
--------------------- */
 .hero{
   flex-grow:1; display:flex; justify-content:center; align-items:center;
   text-align:center; padding:2rem;
@@ -97,7 +85,6 @@ body{
 }
 .btn.secondary:hover{ background-color:#1f2937; border-color:#1f2937; color:#fff; }
 
-/* Responsividade */
 @media (max-width:768px){
   .navbar-container{ flex-direction:column; gap:1.5rem; }
   .nav-links ul{ flex-direction:column; text-align:center; gap:.5rem; }
@@ -107,10 +94,10 @@ body{
 }
 
 .about-footer {
-    background-color: #0d0d1e; /* Um tom mais escuro para o rodapé */
+    background-color: #0d0d1e;
     padding: 4rem 3rem;
     color: #a0aec0;
-    margin-top: auto; /* Garante que o rodapé fique no final da página */
+    margin-top: auto;
 }
 
 .footer-container {
@@ -179,7 +166,6 @@ body{
     color: #a0aec0;
 }
 
-/* Responsividade para o rodapé */
 @media (max-width: 768px) {
     .footer-container {
         flex-direction: column;

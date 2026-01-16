@@ -8,9 +8,8 @@
     --success: #22c55e;
 }
 
-/* Fundo principal da página */
 .confirm-main {
-    min-height: calc(100vh - 80px); /* descontando altura do header */
+    min-height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,13 +17,11 @@
     background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
 }
 
-/* Wrapper central */
 .confirm-wrapper {
     width: 100%;
     max-width: 540px;
 }
 
-/* Card de confirmação */
 .confirm-card {
     background: linear-gradient(145deg, #020617, #02091f);
     border-radius: 1.5rem;
@@ -38,7 +35,6 @@
     overflow: hidden;
 }
 
-/* Glow de fundo suave */
 .confirm-card::before {
     content: "";
     position: absolute;
@@ -48,13 +44,11 @@
     pointer-events: none;
 }
 
-/* Conteúdo acima do glow */
 .confirm-card > * {
     position: relative;
     z-index: 1;
 }
 
-/* Ícone / círculo de sucesso */
 .confirm-icon-wrapper {
     display: flex;
     justify-content: center;
@@ -80,27 +74,23 @@
     font-weight: 700;
 }
 
-/* Título principal */
 .confirm-title {
     font-size: 1.9rem;
     margin: 0 0 0.75rem;
     font-weight: 600;
 }
 
-/* Texto principal */
 .confirm-text {
     margin: 0 0 0.35rem;
     font-size: 1rem;
 }
 
-/* Texto secundário */
 .confirm-subtext {
     margin: 0 0 1.75rem;
     font-size: 0.95rem;
     color: var(--text-muted);
 }
 
-/* Botões de ação */
 .confirm-actions {
     display: flex;
     flex-wrap: wrap;
@@ -123,7 +113,6 @@
     transition: all 0.18s ease-out;
 }
 
-/* Botão principal */
 .confirm-btn-primary {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-soft));
     color: #fff;
@@ -139,7 +128,6 @@
             0 0 0 1px rgba(129, 140, 248, 0.4);
 }
 
-/* Botão secundário */
 .confirm-btn-secondary {
     background: rgba(15, 23, 42, 0.8);
     color: var(--text-color);
@@ -151,7 +139,6 @@
     border-color: rgba(148, 163, 184, 0.9);
 }
 
-/* Responsivo */
 @media (max-width: 480px) {
     .confirm-card {
         padding: 2.2rem 1.5rem 2rem;

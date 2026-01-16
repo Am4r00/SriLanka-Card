@@ -1,14 +1,8 @@
-/* ===========================
-   BASE GERAL (BODY)
-=========================== */
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     color: #fff;
-    /* Imagem de Fundo: Se o fundo não carregar, verifique se ImagemFundoBoa.png
-       está em src/main/resources/static/img/ e se o caminho '../img/' está correto
-       (ou tente url('/img/ImagemFundoBoa.png') se necessário). */
     background: linear-gradient(rgba(2,6,23,.5), rgba(2,6,23,.7)),
     url("../img/ImagemFundoBoa.png") center/cover no-repeat;
     display: flex;
@@ -16,15 +10,6 @@ body {
     min-height: 100vh;
 }
 
-/*
-   REGRAS REMOVIDAS:
-   - Todas as regras sob o comentário "---------- Navbar ----------"
-   - Todas as regras sob o comentário "---------- Rodapé ----------"
-*/
-
-/* ===========================
-   FAQ Section
-=========================== */
 .faq-section {
     flex-grow: 1;
     display: flex;
@@ -91,9 +76,6 @@ body {
     padding: 0.5rem 0;
 }
 
-/* ===========================
-   Responsividade
-=========================== */
 @media (max-width: 768px) {
     .faq-container { padding: 2rem; }
     .faq-container h1 { font-size: 2.2rem; }

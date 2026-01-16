@@ -1,11 +1,8 @@
-
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     color: #fff;
-    /* Certifique-se de que o caminho para esta imagem (../img/ImagemFundoBoa.png) está correto
-       no contexto do Spring Boot, ou seja, /img/ImagemFundoBoa.png deve estar na pasta static. */
     background: linear-gradient(rgba(2,6,23,.5), rgba(2,6,23,.7)),
     url("../img/ImagemFundoBoa.png") center/cover no-repeat;
     display: flex;

@@ -1,4 +1,3 @@
-/* ------------- overrides para garantir fundo sem imagem ------------- */
 :root{
     --primary-color:#6C42A1; --secondary-color:#A379D5; --dark-bg:#030438;
     --light-bg:#1e293b; --text-color:#e2e8f0; --subtle-text:#94a3b8;
@@ -13,22 +12,17 @@ html, body{
     min-height:100%;
 }
 
-/* remover imagens aplicadas em classes comuns de hero/banner */
 .hero, .promo-banner, .header-hero, .page-hero, .main-hero, .site-hero {
     background-image: none !important;
     background-color: transparent;
 }
 
-/* remover pseudo-elementos que possam conter imagem */
 html::before, html::after, body::before, body::after {
     background-image: none !important;
 }
 
-/* remover imagem do footer/section caso exista */
 footer, .about-footer { background-image: none !important; }
 
-/* ===================== seu css de funcionarios ===================== */
-/* === ESTILO GLOBAL === */
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -38,7 +32,6 @@ body {
     line-height: 1.6;
 }
 
-/* === NAVBAR === */
 .navbar {
     background-color: rgba(0, 0, 0, .4);
     backdrop-filter: blur(10px);
@@ -118,7 +111,6 @@ body {
     background-color: var(--secondary-color);
 }
 
-/* === CONTAINER PRINCIPAL === */
 .container {
     max-width: 1200px;
     margin: 3rem auto;
@@ -129,7 +121,6 @@ body {
     text-align: center;
 }
 
-/* === TÍTULO === */
 .container h1 {
     text-align: center;
     font-size: 2rem;
@@ -137,7 +128,6 @@ body {
     color: var(--white);
 }
 
-/* === BOTÃO PRINCIPAL === */
 .add.btn {
     display: inline-block;
     background: none;
@@ -155,12 +145,10 @@ body {
 
 .button-container {
     display: flex;
-    justify-content: center; /* centraliza horizontalmente */
+    justify-content: center;
     margin-top: 1rem;
 }
 
-
-/* === TABELA DE FUNCIONÁRIOS === */
 .table-container {
     background-color: var(--light-bg);
     padding: 2rem;
@@ -193,27 +181,24 @@ body {
     background-color: rgba(255,255,255,0.03);
 }
 
-/* === BOTÕES DE AÇÃO === */
 .btn.edit,
 .btn.delete {
-    background: none;       /* sem fundo */
-    color: var(--white);    /* texto branco */
-    border: none;           /* sem borda */
-    padding: 6px;             /* sem padding */
-    cursor: pointer;        /* pointer ao passar o mouse */
-    text-decoration: underline; /* opcional: sublinha ao estilo link */
+    background: none;
+    color: var(--white);
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    text-decoration: underline;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .btn.edit:hover,
 .btn.delete:hover {
-    color: var(--secondary-color); /* muda cor ao passar o mouse */
-    text-decoration: underline;    /* mantém sublinhado */
+    color: var(--secondary-color);
+    text-decoration: underline;
 }
 
-
-/* === FORMULÁRIO DE CADASTRO/EDIÇÃO === */
 .form-container {
     background-color: var(--light-bg);
     padding: 2rem;
@@ -239,7 +224,6 @@ body {
 }
 .submit-btn:hover { background-color:var(--secondary-color); }
 
-/* === RESPONSIVIDADE === */
 @media (max-width:768px) {
     .navbar ul { flex-direction:column; gap:1rem; }
     .table-container { overflow-x:auto; }

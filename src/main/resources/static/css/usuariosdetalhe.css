@@ -1,8 +1,8 @@
 :root {
-    --primary-color: #6a1b9a; /* Roxo principal */
-    --secondary-color: #9c27b0; /* Roxo mais claro */
-    --background-gradient: linear-gradient(135deg, #4b0082, #8a2be2); /* Gradiente de fundo */
-    --delete-color: #e53935; /* Vermelho para deletar */
+    --primary-color: #6a1b9a;
+    --secondary-color: #9c27b0;
+    --background-gradient: linear-gradient(135deg, #4b0082, #8a2be2);
+    --delete-color: #e53935;
     --white-color: #ffffff;
     --text-color: #333;
     --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -12,7 +12,7 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: var(--background-gradient); /* Fundo similar ao da imagem */
+    background: var(--background-gradient);
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -76,7 +76,6 @@ header {
     background-color: var(--secondary-color);
 }
 
-/* --- Tabela de Usuários --- */
 .user-table {
     width: 100%;
     border-collapse: collapse;
@@ -154,11 +153,10 @@ header {
     color: darkred;
 }
 
-/* --- Modal de Edição (Popup) --- */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000; /* Garante que fique acima de tudo */
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;

@@ -21,7 +21,6 @@ body {
     line-height: 1.6;
 }
 
-/* --- Estilos do fundo (iframe) --- */
 body.modal-open {
     overflow: hidden;
 }
@@ -38,7 +37,6 @@ body.modal-open {
     pointer-events: none;
 }
 
-/* --- Layout Principal --- */
 .page-content {
     min-height: 100vh;
     display: flex;
@@ -51,7 +49,6 @@ body.modal-open {
     text-align: center;
 }
 
-/* --- Modal do Carrinho --- */
 .cart-modal {
     position: fixed;
     top: 0;
@@ -118,7 +115,6 @@ body.modal-open {
     text-decoration: none;
 }
 
-/* --- Itens do Carrinho --- */
 .cart-items {
     padding: 1rem 0;
     flex-grow: 1;
