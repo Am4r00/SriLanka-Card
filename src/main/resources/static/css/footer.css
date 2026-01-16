@@ -32,6 +32,13 @@
     margin-bottom: 1rem;
 }
 
+.footer-links ul,
+.footer-social ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 .footer-links a,
 .footer-social a {
     text-decoration: none;

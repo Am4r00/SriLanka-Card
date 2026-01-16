@@ -1,4 +1,4 @@
-package com.SriLankaCard.exception.negocio;
+package com.SriLankaCard.exception.dominio;
 
 public class CardNotFoundException extends RuntimeException{
 

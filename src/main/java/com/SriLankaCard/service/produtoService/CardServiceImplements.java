@@ -6,7 +6,7 @@ import com.SriLankaCard.dto.response.produtoResponse.CardResponse;
 import com.SriLankaCard.entity.produtoEntity.Card;
 import com.SriLankaCard.entity.produtoEntity.GiftCodeStatus;
 import com.SriLankaCard.exception.negocio.InvalidCardException;
-import com.SriLankaCard.exception.negocio.CardNotFoundException;
+import com.SriLankaCard.exception.dominio.CardNotFoundException;
 import com.SriLankaCard.mapper.CardMapper;
 import com.SriLankaCard.repository.produtoRepository.CardRepository;
 import com.SriLankaCard.repository.produtoRepository.GiftCodeRepository;

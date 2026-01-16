@@ -42,7 +42,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/home", "/login", "/signup", "/contato", "/faq", "/sobre", "/giftcard",
                                 "/forgot", "/verify", "/reset-password","/test", "/static-test",
-                                "/users/create-user","/auth/**","/cards","/cards/{id}","/error").permitAll()
+                                "/users/create-user","/users/send-activation-code","/users/activate","/erro",
+                                "/auth/**","/cards","/cards/{id}","/error").permitAll()
 
                         //Rotas que precisam de login
                         .requestMatchers(

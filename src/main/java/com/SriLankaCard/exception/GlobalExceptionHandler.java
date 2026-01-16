@@ -4,10 +4,11 @@ import com.SriLankaCard.dto.response.exceptionHandler.ResponseError;
 import com.SriLankaCard.exception.dominio.EmailNotFoundException;
 import com.SriLankaCard.exception.dominio.UserNotFoundException;
 import com.SriLankaCard.exception.negocio.InvalidCardException;
-import com.SriLankaCard.exception.negocio.CardNotFoundException;
-import com.SriLankaCard.exception.negocio.CarrinhoNotFoundException;
+import com.SriLankaCard.exception.dominio.CardNotFoundException;
+import com.SriLankaCard.exception.dominio.CarrinhoNotFoundException;
 import com.SriLankaCard.exception.negocio.EmailAlreadyUsedException;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
+import com.SriLankaCard.exception.negocio.UserInativoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,18 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(exception, HttpStatus.NOT_FOUND,request);
     }
 
+    @ExceptionHandler(UserInativoException.class)
+    public ResponseEntity<ResponseError> treatUserInactive(UserInativoException ex, HttpServletRequest req) {
+        ResponseError err = new ResponseError(
+                HttpStatus.FORBIDDEN.value(),
+                "USER_INACTIVE",
+                Instant.now(),
+                req.getRequestURI()
+        );
+        return new ResponseEntity<>(err, HttpStatus.FORBIDDEN);
+    }
+
+
     private ResponseEntity<ResponseError> buildErrorResponse(Exception exception, HttpStatus httpStatus,HttpServletRequest request) {
         ResponseError error = new ResponseError(
                 httpStatus.value(),
@@ -85,4 +98,5 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, httpStatus);
     }
+
 }

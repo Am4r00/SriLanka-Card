@@ -50,21 +50,6 @@ async function updateHeader() {
         nameSpan.style.cssText = 'color: #fff; font-weight: 500;';
         userDiv.appendChild(nameSpan);
         
-        const logout = document.createElement('a');
-        logout.className = 'logout-link';
-        logout.href = '#';
-        logout.textContent = 'Sair';
-        logout.style.cssText = 'color: #ef4444; text-decoration: none; cursor: pointer;';
-        logout.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('userEmail');
-            // Remover cookie também
-            document.cookie = 'jwt_token=; path=/; max-age=0; SameSite=Lax';
-            window.location.href = '/';
-        });
-        userDiv.appendChild(logout);
-        
         authContainer.appendChild(userDiv);
     } else {
         // Usuário não logado - mostrar login e signup
@@ -116,6 +101,7 @@ function setupLogoRedirect() {
 document.addEventListener('DOMContentLoaded', async () => {
     await updateHeader();
     setupLogoRedirect();
+    setupCartGuard();
     
     // Atualizar quando o carrinho mudar
     const originalAddToCart = window.addToCart;
@@ -188,8 +174,29 @@ document.addEventListener('click', (e) => {
     }
 });
 
+function logoutUser(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('userEmail');
+    document.cookie = 'jwt_token=; path=/; max-age=0; SameSite=Lax';
+    window.location.href = '/';
+}
+
 // Exportar funções
 window.updateHeader = updateHeader;
 window.isAuthenticated = isAuthenticated;
 window.updateCartCount = updateCartCount;
+window.logoutUser = logoutUser;
+
+function setupCartGuard(){
+    const cartLink = document.querySelector('.cart-link');
+    if(!cartLink) return;
+    cartLink.addEventListener('click',(e)=>{
+        const token = getToken();
+        if(!token){
+            e.preventDefault();
+            showToast('Faça login para acessar o carrinho.', true);
+            setTimeout(()=> window.location.href='/login', 800);
+        }
+    });
+}
 

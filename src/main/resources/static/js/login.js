@@ -40,38 +40,29 @@ if (form) {
       });
 
       if (response.ok) {
+
+
+
         const data = await response.json();
-        
-        // Salvar token no localStorage
+
         localStorage.setItem('token', data.token);
         localStorage.setItem('userEmail', email);
-        
-        // Salvar token em cookie também (para requisições de navegação)
+
         document.cookie = `jwt_token=${data.token}; path=/; max-age=${60 * 60 * 10}; SameSite=Lax`;
-        
-        // Mostrar informações do login
-        console.log('=== LOGIN: Dados recebidos ===');
-        console.log('Data completa:', JSON.stringify(data, null, 2));
-        console.log('Funções recebidas:', data.funcoes);
-        console.log('Tipo de funcoes:', typeof data.funcoes);
-        console.log('É array?', Array.isArray(data.funcoes));
-        console.log('Valor bruto:', data.funcoes);
-        
-        // Verificar se é admin e redirecionar
-        // O backend retorna funcoes como Set<Funcao> que vira array no JSON
+
         let isAdmin = false;
         
         if (data.funcoes) {
-          // Se for array (formato mais comum)
+
           if (Array.isArray(data.funcoes)) {
             console.log('Funções é um array:', data.funcoes);
-            // Verificar cada elemento do array
+
             data.funcoes.forEach((f, index) => {
               console.log(`Função[${index}]:`, f, 'Tipo:', typeof f);
             });
             
             isAdmin = data.funcoes.some(f => {
-              // Pode vir como string "ADMIN" ou objeto {name: "ADMIN"}
+
               const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
               console.log('Comparando função:', funcaoValue, 'com ADMIN');
               const match = funcaoValue === 'ADMIN' || funcaoValue === 'ROLE_ADMIN' || funcaoValue.includes('ADMIN');
@@ -80,17 +71,15 @@ if (form) {
             });
             console.log('Verificação array - isAdmin:', isAdmin);
           } 
-          // Se for string
+
           else if (typeof data.funcoes === 'string') {
             console.log('Funções é uma string:', data.funcoes);
             isAdmin = data.funcoes.includes('ADMIN') || data.funcoes === 'ADMIN';
             console.log('Verificação string - isAdmin:', isAdmin);
           }
-          // Se for objeto (Set serializado de forma diferente)
+
           else if (typeof data.funcoes === 'object' && data.funcoes !== null) {
-            console.log('Funções é um objeto:', data.funcoes);
             const funcoesArray = Object.values(data.funcoes);
-            console.log('Valores do objeto:', funcoesArray);
             isAdmin = funcoesArray.some(f => {
               const funcaoValue = typeof f === 'string' ? f : (f.name || f.toString() || f);
               return funcaoValue === 'ADMIN' || funcaoValue.includes('ADMIN');
@@ -100,12 +89,7 @@ if (form) {
         } else {
           console.warn('⚠️ Funções não encontradas na resposta!');
         }
-        
-        console.log('=== RESULTADO FINAL ===');
-        console.log('isAdmin:', isAdmin);
-        console.log('Redirecionando para:', isAdmin ? '/home_admin' : '/home');
-        
-        // Redirecionar baseado no tipo de usuário
+
         if (isAdmin) {
           console.log('Redirecionando para /home_admin');
           showToast('Login realizado com sucesso! Redirecionando...');
@@ -120,8 +104,13 @@ if (form) {
           }, 1000);
         }
       } else {
-        const errorData = await response.json();
-        showToast(`Erro no login: ${errorData.message || 'Credenciais inválidas'}`, true);
+          const errorData = await response.json();
+          if (response.status === 403 && (errorData.message === 'USER_INACTIVE' || errorData.errorCode === 'USER_INACTIVE')) {
+              abrirModalReativacao(email);
+              return;
+          }
+          showToast(`Erro no login: ${errorData.message || 'Credenciais inválidas'}`, true);
+
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
@@ -130,7 +119,49 @@ if (form) {
   });
 }
 
-/* Se quiser fechar o modal e voltar à home:
-   document.querySelector('.overlay')?.remove();
-   document.body.classList.remove('modal-open');
-*/
+function abrirModalReativacao(email) {
+    const modal = document.getElementById('modal-reativar');
+    const emailInput = document.getElementById('reativar-email');
+    if (!modal || !emailInput) return;
+    emailInput.value = email || '';
+    modal.style.display = 'grid'; // ou 'block', conforme seu CSS .overlay
+}
+
+function fecharReativar(e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById('modal-reativar');
+    if (modal) modal.style.display = 'none';
+}
+
+async function enviarCodigoAtivacao() {
+    const email = document.getElementById('reativar-email').value.trim();
+    if (!email) { showToast('Informe o email.', true); return; }
+    try {
+        await fetch('/users/send-activation-code', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ email })
+        });
+        showToast('Código enviado para seu email.', false);
+    } catch (err) {
+        showToast('Erro ao enviar código.', true);
+    }
+}
+
+async function reenviarAtivacao(e) {
+    e.preventDefault();
+    const email = document.getElementById('reativar-email').value.trim();
+    const code  = document.getElementById('reativar-code').value.trim();
+    if (!email || !code) { showToast('Preencha email e código.', true); return; }
+    try {
+        await fetch('/users/activate', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ email, code })
+        });
+        showToast('Conta ativada! Agora faça login.', false);
+        fecharReativar();
+    } catch (err) {
+        showToast('Erro ao ativar conta.', true);
+    }
+}

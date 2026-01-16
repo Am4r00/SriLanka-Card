@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ops! Algo deu errado | SriLankaCard</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="hero" style="min-height:70vh;">
+    <div class="hero-content" style="background:rgba(0,0,0,0.55); padding:24px 28px; border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.25);">
+        <h1 style="margin:0 0 12px;">Ops! Página não encontrada</h1>
+        <p style="font-size:1.1rem; margin:0 0 20px;">
+            Parece que você clicou em um link que não existe ou foi movido.
+        </p>
+        <div class="hero-buttons" style="justify-content:center; gap:12px;">
+            <a href="/home" class="btn primary">Voltar para a Home</a>
+            <a href="/contato" class="btn secondary" style="border:2px solid #fff; color:#fff;">Falar com suporte</a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/core.js}"></script>
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/header.js}"></script>
+</body>
+</html>

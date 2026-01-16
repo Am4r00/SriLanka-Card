@@ -2,6 +2,8 @@
 const cartItemsContainer = document.getElementById('cart-items');
 const cartHeader = document.getElementById('cart-title');
 const cartTotalLabel = document.getElementById('cart-total-label');
+let cartQuantidade = 0;
+let cartValor = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarCarrinho();
@@ -16,6 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Se não houver histórico, redirecionar para home
                 window.location.href = '/';
+            }
+        });
+    }
+
+    const checkoutBtn = document.getElementById('checkout-button');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', (e) => {
+            if (cartQuantidade <= 0 || cartValor <= 0) {
+                e.preventDefault();
+                e.stopPropagation();
+                showToast('Seu carrinho está vazio. Adicione itens antes de finalizar.', true);
             }
         });
     }
@@ -34,6 +47,8 @@ async function carregarCarrinho() {
         const carrinho = await api.getCart();
         
         if (!carrinho || !carrinho.itens || carrinho.itens.length === 0) {
+            cartQuantidade = 0;
+            cartValor = 0;
             if (cartItemsContainer) {
                 cartItemsContainer.innerHTML = '<div class="empty-cart">Seu carrinho está vazio.</div>';
             }
@@ -50,6 +65,7 @@ async function carregarCarrinho() {
         if (cartHeader) {
             const totalItems = carrinho.quantidade || carrinho.itens.reduce((sum, item) => sum + (item.quantidade || 1), 0);
             cartHeader.textContent = `Meu Carrinho (${totalItems})`;
+            cartQuantidade = totalItems;
         }
         
         // Limpar container e renderizar itens
@@ -64,6 +80,7 @@ async function carregarCarrinho() {
         
         // Atualizar total
         updateCartTotal(carrinho.valorTotal || 0);
+        cartValor = Number(carrinho.valorTotal) || 0;
     } catch (error) {
         console.error('Erro ao carregar carrinho:', error);
         if (cartItemsContainer) {

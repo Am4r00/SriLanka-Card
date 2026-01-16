@@ -3,7 +3,9 @@ package com.SriLankaCard.service.jwtServices;
 import com.SriLankaCard.dto.request.user.login.LoginRequest;
 import com.SriLankaCard.dto.response.login.LoginResponse;
 import com.SriLankaCard.entity.userEntity.User;
+import com.SriLankaCard.entity.userEntity.enums.UserStatus;
 import com.SriLankaCard.exception.negocio.InvalidArgumentsException;
+import com.SriLankaCard.exception.negocio.UserInativoException;
 import com.SriLankaCard.repository.userRepository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,9 +27,9 @@ public class AuthService {
         User user = userRepository.findByEmailIgnoreCase(request.getEmail())
                 .orElseThrow(() -> new InvalidArgumentsException("Email inválido !"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new InvalidArgumentsException("senha inválida !");
-        }
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) throw new InvalidArgumentsException("senha inválida !");
+        if (user.getStatus() == UserStatus.INATIVO) throw  new UserInativoException("O usuário está inativo será nescessário ativar ele novamente");
+
         String token = jwtService.generateToken(user);
         LoginResponse response = new LoginResponse(token, user.getName(), user.getEmail(), user.getFuncao());
         

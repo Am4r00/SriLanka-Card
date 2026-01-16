@@ -13,6 +13,7 @@ public class PedidoMapper {
         PedidoHistoricoResponse pedidoHistoricoResponse = new PedidoHistoricoResponse();
 
         pedidoHistoricoResponse.setId(pedido.getId());
+        pedidoHistoricoResponse.setUsuarioId(pedido.getUsuarioId());
         pedidoHistoricoResponse.setValorTotal(pedido.getValorTotal());
         pedidoHistoricoResponse.setQuantidadeTotal(pedido.getQuantidadeTotal());
         pedidoHistoricoResponse.setCriadoEm(pedido.getCriadoEm());

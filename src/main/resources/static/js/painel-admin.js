@@ -1,6 +1,7 @@
 // Variáveis globais
 let allUsers = [];
 let allProducts = [];
+let allOrders = [];
 
 // Função para verificar se o usuário é ADMIN
 function checkAdminAccess() {
@@ -81,6 +82,8 @@ function switchTab(tabName) {
         loadProducts();
     } else if(tabName === 'codes'){
         loadCodesTab();
+    } else if(tabName === 'orders'){
+        loadOrders();
     }
 }
 
@@ -189,14 +192,8 @@ async function saveUser(event) {
                 showToast('Senha é obrigatória para criar usuários.', true);
                 return;
             }
-
-            if (role === 'ADMIN') {
-                endpoint = '/admin/create-user';
-                payload = { name, email, password, status };
-            } else {
-                endpoint = '/admin/create-user-common';
-                payload = { name, email, password, status };
-            }
+            endpoint = '/admin/create-user';
+            payload = { name, email, password, status, funcoes: [role] };
         }
 
         await apiRequest(endpoint, {
@@ -273,6 +270,53 @@ async function loadCodesTab(){
     }
 
     renderCodeProducts(allProducts);
+}
+
+async function loadOrders(){
+    try{
+        const pedidos = await apiRequest('/api/pedidos/admin/historico');
+        allOrders = pedidos || [];
+        renderOrders(allOrders);
+    }catch (e){
+        console.error('Erro ao carregar pedidos:', e);
+        document.getElementById('ordersTableBody').innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align:center;padding:20px;color:#e53935;">
+                    <i class="fas fa-exclamation-triangle"></i> Erro ao carregar pedidos: ${e.message}
+                </td>
+            </tr>
+        `;
+    }
+}
+
+function renderOrders(orders){
+    const tbody = document.getElementById('ordersTableBody');
+    if(!tbody) return;
+
+    if(!orders || orders.length === 0){
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align:center;padding:20px;">
+                    Nenhum pedido encontrado.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = orders.map(p => {
+        const valor = p.valorTotal ? `R$ ${p.valorTotal.toFixed(2)}` : '-';
+        const data = p.criadoEm ? new Date(p.criadoEm).toLocaleString('pt-BR') : '-';
+        return `
+            <tr>
+                <td>${p.id || '-'}</td>
+                <td>${p.usuarioId || '-'}</td>
+                <td>${valor}</td>
+                <td>${p.quantidadeTotal || 0}</td>
+                <td>${data}</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 function renderCodeProducts(products){

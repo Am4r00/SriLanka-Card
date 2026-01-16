@@ -171,6 +171,38 @@
 .user-menu-btn.secondary {
     background: #2e2e2e;
 }
+.user-menu-btn.danger {
+    background: #b91c1c;
+    border: none;
+}
+.user-menu-btn.danger:hover {
+    background: #dc2626;
+}
+.user-menu-footer-actions{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 10px;
+}
+.user-menu-footer-actions .user-menu-btn,
+.user-menu-footer-actions .user-menu-close{
+    width: 100%;
+    justify-self: stretch;
+}
+.user-menu-close {
+    margin-top: 0;
+    display: block;
+    padding: 10px 12px;
+    background: #2e2e2e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 600;
+}
+.user-menu-close:hover{
+    background: #404040;
+}
 .user-menu-close {
     margin-top: 12px;
     width: 100%;
