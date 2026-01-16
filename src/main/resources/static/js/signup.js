@@ -42,7 +42,8 @@ toggles.forEach(toggle => {
 
 // Validação do formulário antes de enviar para /users/create-user
 if (form) {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const termsInput = document.getElementById('terms');
@@ -67,7 +68,6 @@ if (form) {
 
     // Se algum campo obrigatório está vazio, bloqueia envio
     if (primeiroInvalido) {
-      e.preventDefault();
       primeiroInvalido.focus();
       showToast('Preencha todos os campos obrigatórios.', true);
       return;
@@ -75,21 +75,57 @@ if (form) {
 
     // Senhas diferentes
     if (!checkMatch()) {
-      e.preventDefault();
       showToast('As senhas não coincidem.', true);
       return;
     }
 
     // Termos não aceitos
     if (!termsInput || !termsInput.checked) {
-      e.preventDefault();
       showToast('Você precisa aceitar os termos e condições.', true);
       return;
     }
 
-    // Se chegou aqui, NÃO chamamos e.preventDefault()
-    // O formulário vai ser enviado normalmente para /users/create-user
-    // e o back-end (UserController.createUser) cuida do cadastro.
+    try {
+      const resp = await fetch('/users/create-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+          password: pwd.value.trim()
+        })
+      });
+
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        const raw = data.message || '';
+        let msg = 'Erro ao criar conta. Verifique os dados.';
+        if (resp.status === 409) {
+          msg = raw || 'Email já está em uso.';
+        } else if (resp.status === 400) {
+          const lower = raw.toLowerCase();
+          if (lower.includes('email') || lower.includes('e-mail')) {
+            msg = 'Email inválido. Informe um endereço de email válido.';
+          } else if (lower.includes('senha') || lower.includes('password')) {
+            msg = 'Senha inválida. Verifique os requisitos.';
+          } else if (lower.includes('nome') || lower.includes('name')) {
+            msg = 'Nome inválido. Preencha corretamente.';
+          } else {
+            msg = raw || msg;
+          }
+        } else {
+          msg = raw || msg;
+        }
+        showToast(msg, true);
+        return;
+      }
+
+      showToast('Conta criada com sucesso! Redirecionando...', false);
+      setTimeout(() => window.location.href = '/login', 800);
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao comunicar com o servidor. Tente novamente.', true);
+    }
   });
 } else {
   console.error('Formulário de signup não encontrado!');

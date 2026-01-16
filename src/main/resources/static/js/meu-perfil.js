@@ -33,14 +33,14 @@ async function salvarPerfil(e) {
 }
 
 function habilitarEdicao(){
-    document.getElementById('perfil-nome').disabled = false;
-    document.getElementById('perfil-email').disabled = false;
+    document.getElementById('perfil-nome').readOnly = false;
+    document.getElementById('perfil-email').readOnly = false;
     document.getElementById('perfil-salvar').disabled = false;
 }
 
 function bloquearEdicao(){
-    document.getElementById('perfil-nome').disabled = true;
-    document.getElementById('perfil-email').disabled = true;
+    document.getElementById('perfil-nome').readOnly = true;
+    document.getElementById('perfil-email').readOnly = true;
     document.getElementById('perfil-salvar').disabled = true;
 }
 

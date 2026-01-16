@@ -158,6 +158,17 @@ function limparErrosCamposCartao() {
 function onConcluirPagamento(event) {
     event.preventDefault();
 
+    const countEl = document.getElementById('payment-item-count');
+    const totalEl = document.getElementById('payment-total-label');
+    const itensTexto = countEl?.textContent || '';
+    const qtd = parseInt(itensTexto) || 0;
+    const totalStr = totalEl?.textContent || '';
+    const total = parseFloat(totalStr.replace(/[^\d,.-]/g,'').replace(',','.')) || 0;
+    if (qtd <= 0 || total <= 0) {
+        showToast('Seu carrinho está vazio. Adicione itens antes de pagar.', true);
+        return;
+    }
+
     if (!validarCamposCartao()) return;
 
     const token = getToken();

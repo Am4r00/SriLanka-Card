@@ -101,6 +101,7 @@ function setupLogoRedirect() {
 document.addEventListener('DOMContentLoaded', async () => {
     await updateHeader();
     setupLogoRedirect();
+    setupCartGuard();
     
     // Atualizar quando o carrinho mudar
     const originalAddToCart = window.addToCart;
@@ -185,4 +186,17 @@ window.updateHeader = updateHeader;
 window.isAuthenticated = isAuthenticated;
 window.updateCartCount = updateCartCount;
 window.logoutUser = logoutUser;
+
+function setupCartGuard(){
+    const cartLink = document.querySelector('.cart-link');
+    if(!cartLink) return;
+    cartLink.addEventListener('click',(e)=>{
+        const token = getToken();
+        if(!token){
+            e.preventDefault();
+            showToast('Faça login para acessar o carrinho.', true);
+            setTimeout(()=> window.location.href='/login', 800);
+        }
+    });
+}
 
