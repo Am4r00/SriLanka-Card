@@ -1,9 +1,7 @@
-// Variáveis globais
 let allUsers = [];
 let allProducts = [];
 let allOrders = [];
 
-// Função para verificar se o usuário é ADMIN
 function checkAdminAccess() {
     const token = getToken();
     if (!token) {
@@ -19,26 +17,21 @@ function checkAdminAccess() {
         if (!decoded) {
             throw new Error('Token inválido');
         }
-
-        // O campo role pode vir como array (Set<Funcao> serializado) ou string
         const role = decoded.role || decoded.funcao;
         console.log('Role encontrado no token:', role, 'Tipo:', typeof role);
 
         let isAdmin = false;
 
         if (Array.isArray(role)) {
-            // Se for array, verificar se contém ADMIN
             isAdmin = role.some(r => {
                 const roleValue = typeof r === 'string' ? r : (r.name || r.toString() || r);
                 return roleValue === 'ADMIN' || roleValue === 'ROLE_ADMIN' || roleValue.includes('ADMIN');
             });
             console.log('Verificação array - isAdmin:', isAdmin);
         } else if (typeof role === 'string') {
-            // Se for string, verificar diretamente
             isAdmin = role === 'ADMIN' || role === 'ROLE_ADMIN' || role.includes('ADMIN');
             console.log('Verificação string - isAdmin:', isAdmin);
         } else if (role && typeof role === 'object') {
-            // Se for objeto, verificar valores
             const roleValues = Object.values(role);
             isAdmin = roleValues.some(r => {
                 const roleValue = typeof r === 'string' ? r : (r.name || r.toString() || r);
@@ -67,7 +60,6 @@ function checkAdminAccess() {
     }
 }
 
-// Função para alternar entre abas
 function switchTab(tabName) {
     document.querySelectorAll('.tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.tab === tabName);
@@ -87,7 +79,6 @@ function switchTab(tabName) {
     }
 }
 
-// Carregar lista de usuários
 async function loadUsers() {
     try {
         const users = await apiRequest('/users/list');
@@ -106,7 +97,6 @@ async function loadUsers() {
     }
 }
 
-// Renderizar usuários na tabela
 function renderUsers(users) {
     const tbody = document.getElementById('userTableBody');
 
@@ -151,7 +141,6 @@ function renderUsers(users) {
     }).join('');
 }
 
-// Filtrar usuários
 function filterUsers() {
     const searchTerm = document.getElementById('searchUserInput').value.toLowerCase();
     const filtered = allUsers.filter(user =>
@@ -161,7 +150,6 @@ function filterUsers() {
     renderUsers(filtered);
 }
 
-// Abrir modal de criação de usuário
 function openCreateUserModal() {
     document.getElementById('userModalTitle').textContent = 'Criar Usuário';
     document.getElementById('userForm').reset();
@@ -169,7 +157,6 @@ function openCreateUserModal() {
     document.getElementById('userModal').style.display = 'block';
 }
 
-// Salvar usuário (criar ou editar)
 async function saveUser(event) {
     event.preventDefault();
 
@@ -203,7 +190,6 @@ async function saveUser(event) {
 
         showToast('Usuário salvo com sucesso! ', false);
         closeUserModal();
-        // Limpar cache e recarregar lista
         allUsers = [];
         await loadUsers();
     } catch (error) {
@@ -212,7 +198,6 @@ async function saveUser(event) {
     }
 }
 
-// Deletar usuário
 async function deleteUser(userId) {
     if (!confirm('Tem certeza que deseja deletar este usuário?')) {
         return;
@@ -223,7 +208,6 @@ async function deleteUser(userId) {
             method: 'DELETE'
         });
         showToast('Usuário deletado com sucesso!', false);
-        // Limpar cache e recarregar lista
         allUsers = [];
         await loadUsers();
     } catch (error) {
@@ -232,13 +216,11 @@ async function deleteUser(userId) {
     }
 }
 
-// Fechar modal de usuário
 function closeUserModal() {
     document.getElementById('userModal').style.display = 'none';
     document.getElementById('userPassword').required = true; // Restaurar required
 }
 
-// Carregar lista de produtos
 async function loadProducts() {
     try {
         const products = await apiRequest('/cards')
@@ -248,10 +230,8 @@ async function loadProducts() {
         if(document.querySelector('[data-tab="codes"].active')){
             renderProducts(allProducts);}
 
-        console.log('Lista de produtos renderizada');
         return allProducts;
 
-        console.log('Lista de produtos renderizada');
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
         document.getElementById('productTableBody').innerHTML = `
@@ -263,12 +243,10 @@ async function loadProducts() {
         `;
     }
 }
-
 async function loadCodesTab(){
     if(!allProducts || allProducts.length === 0){
         await loadProducts();
     }
-
     renderCodeProducts(allProducts);
 }
 
@@ -370,7 +348,6 @@ async function generateCodes(cardId){
     }
 }
 
-// Renderizar produtos na tabela
 function renderProducts(products) {
     const tbody = document.getElementById('productTableBody');
 
@@ -412,7 +389,6 @@ function renderProducts(products) {
     }).join('');
 }
 
-// Filtrar produtos
 function filterProducts() {
     const searchTerm = document.getElementById('searchProductInput').value.toLowerCase();
     const filtered = allProducts.filter(product =>
@@ -421,7 +397,6 @@ function filterProducts() {
     renderProducts(filtered);
 }
 
-// Abrir modal de criação de produto
 function openCreateProductModal() {
     document.getElementById('productModalTitle').textContent = 'Criar Produto';
     document.getElementById('productForm').reset();
@@ -429,7 +404,6 @@ function openCreateProductModal() {
     document.getElementById('productModal').style.display = 'block';
 }
 
-// Abrir modal de edição de produto
 async function openEditProductModal(productId) {
     try {
         const product = await apiRequest(`/cards/${productId}`);
@@ -448,7 +422,6 @@ async function openEditProductModal(productId) {
     }
 }
 
-// Salvar produto (criar ou editar)
 async function saveProduct(event) {
     event.preventDefault();
 
@@ -466,7 +439,6 @@ async function saveProduct(event) {
 
     try {
         if (productId) {
-            // Editar produto
             const payload = { nome, observacoes, valor };
             const updatedProduct = await apiRequest(`/cards/atualizar/${productId}`, {
                 method: 'PATCH',
@@ -491,7 +463,6 @@ async function saveProduct(event) {
             console.log('Payload enviado:', payload);
             console.log('Token atual:', getToken() ? 'Token presente' : 'Token ausente');
 
-            // Verificar token antes de enviar
             const token = getToken();
             if (!token) {
                 showToast('Você precisa estar logado para criar produtos. Redirecionando para login...', true);
@@ -499,7 +470,6 @@ async function saveProduct(event) {
                 return;
             }
 
-            // Decodificar token para verificar role
             try {
                 const decoded = decodeToken(token);
                 console.log('Token decodificado:', decoded);
@@ -518,7 +488,6 @@ async function saveProduct(event) {
 
         showToast('Produto salvo com sucesso!', false);
         closeProductModal();
-        // Limpar cache e recarregar lista
         allProducts = [];
         await loadProducts();
     } catch (error) {
@@ -527,7 +496,6 @@ async function saveProduct(event) {
     }
 }
 
-// Deletar produto
 async function deleteProduct(productId) {
     if (!confirm('Tem certeza que deseja deletar este produto?')) {
         return;
@@ -547,12 +515,10 @@ async function deleteProduct(productId) {
     }
 }
 
-// Fechar modal de produto
 function closeProductModal() {
     document.getElementById('productModal').style.display = 'none';
 }
 
-// Fechar modais ao clicar fora
 window.onclick = function(event) {
     const userModal = document.getElementById('userModal');
     const productModal = document.getElementById('productModal');
@@ -564,9 +530,7 @@ window.onclick = function(event) {
     }
 }
 
-// Carregar dados ao inicializar
 document.addEventListener('DOMContentLoaded', () => {
-    // Verificar se o usuário é ADMIN antes de carregar dados
     if (checkAdminAccess()) {
         switchTab('users');
     }

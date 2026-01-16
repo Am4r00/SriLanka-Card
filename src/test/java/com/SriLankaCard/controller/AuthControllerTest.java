@@ -69,10 +69,9 @@ class AuthControllerTest {
     @Test
     @DisplayName("Deve fazer login com sucesso")
     void deveFazerLoginComSucesso() throws Exception {
-        // Arrange
+
         when(authService.login(any(LoginRequest.class))).thenReturn(loginResponse);
 
-        // Act & Assert
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
@@ -85,11 +84,11 @@ class AuthControllerTest {
     @Test
     @DisplayName("Deve retornar erro quando credenciais são inválidas")
     void deveRetornarErroQuandoCredenciaisInvalidas() throws Exception {
-        // Arrange
+
         when(authService.login(any(LoginRequest.class)))
                 .thenThrow(new com.SriLankaCard.exception.negocio.InvalidArgumentsException("Email ou senha inválidos"));
 
-        // Act & Assert
+
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
@@ -99,11 +98,11 @@ class AuthControllerTest {
     @Test
     @DisplayName("Deve validar formato do request")
     void deveValidarFormatoDoRequest() throws Exception {
-        // Arrange
+
         LoginRequest invalidRequest = new LoginRequest();
         invalidRequest.setEmail(""); // Email vazio
 
-        // Act & Assert
+
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))

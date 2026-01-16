@@ -72,17 +72,17 @@ class AuthServiceTest {
     @Test
     @DisplayName("Deve fazer login com sucesso quando credenciais são válidas")
     void deveFazerLoginComSucesso() {
-        // Arrange
+
         when(userRepository.findByEmailIgnoreCase(loginRequest.getEmail()))
                 .thenReturn(Optional.of(user));
         when(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))
                 .thenReturn(true);
         when(jwtService.generateToken(user)).thenReturn(jwtToken);
 
-        // Act
+
         LoginResponse response = authService.login(loginRequest);
 
-        // Assert
+
         assertNotNull(response);
         assertEquals(jwtToken, response.getToken());
         assertEquals(user.getEmail(), response.getEmail());
@@ -97,11 +97,11 @@ class AuthServiceTest {
     @Test
     @DisplayName("Deve lançar exceção quando email não existe")
     void deveLancarExcecaoQuandoEmailNaoExiste() {
-        // Arrange
+
         when(userRepository.findByEmailIgnoreCase(loginRequest.getEmail()))
                 .thenReturn(Optional.empty());
 
-        // Act & Assert
+
         InvalidArgumentsException exception = assertThrows(
                 InvalidArgumentsException.class,
                 () -> authService.login(loginRequest)
@@ -116,13 +116,13 @@ class AuthServiceTest {
     @Test
     @DisplayName("Deve lançar exceção quando senha está incorreta")
     void deveLancarExcecaoQuandoSenhaIncorreta() {
-        // Arrange
+
         when(userRepository.findByEmailIgnoreCase(loginRequest.getEmail()))
                 .thenReturn(Optional.of(user));
         when(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))
                 .thenReturn(false);
 
-        // Act & Assert
+
         InvalidArgumentsException exception = assertThrows(
                 InvalidArgumentsException.class,
                 () -> authService.login(loginRequest)
@@ -137,7 +137,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("Deve fazer login com usuário comum (não admin)")
     void deveFazerLoginComUsuarioComum() {
-        // Arrange
+
         Set<Funcao> funcoesUsuario = new HashSet<>();
         funcoesUsuario.add(Funcao.USUARIO);
         user.setFuncao(funcoesUsuario);
@@ -148,10 +148,10 @@ class AuthServiceTest {
                 .thenReturn(true);
         when(jwtService.generateToken(user)).thenReturn(jwtToken);
 
-        // Act
+
         LoginResponse response = authService.login(loginRequest);
 
-        // Assert
+
         assertNotNull(response);
         assertEquals(jwtToken, response.getToken());
         assertTrue(response.getFuncoes().contains(Funcao.USUARIO));

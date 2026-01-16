@@ -63,7 +63,7 @@ class UserControllerTest {
     @Test
     @DisplayName("Deve retornar página de signup")
     void deveRetornarPaginaSignup() throws Exception {
-        // Act & Assert
+
         mockMvc.perform(get("/users/signup"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("signup"))
@@ -73,11 +73,11 @@ class UserControllerTest {
     @Test
     @DisplayName("Deve criar usuário e redirecionar para login")
     void deveCriarUsuarioERedirecionar() throws Exception {
-        // Arrange
+
         when(userServiceImple.createUser(any(RegisterUserRequest.class)))
                 .thenReturn(userResponse);
 
-        // Act & Assert
+
         mockMvc.perform(post("/users/create-user")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -92,10 +92,10 @@ class UserControllerTest {
     @DisplayName("Deve listar todos os usuários")
     @WithMockUser(username = "admin@test.com", roles = {"ADMIN"})
     void deveListarTodosUsuarios() throws Exception {
-        // Arrange
+
         when(userServiceImple.findAll()).thenReturn(userList);
 
-        // Act & Assert
+
         mockMvc.perform(get("/users/list"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -107,11 +107,11 @@ class UserControllerTest {
     @DisplayName("Deve retornar usuário atual autenticado")
     @WithMockUser(username = "test@example.com", roles = {"USER"})
     void deveRetornarUsuarioAtual() throws Exception {
-        // Arrange
+
         when(userServiceImple.findByEmail("test@example.com"))
                 .thenReturn(userResponse);
 
-        // Act & Assert
+
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -123,11 +123,11 @@ class UserControllerTest {
     @DisplayName("Deve retornar erro quando usuário não encontrado")
     @WithMockUser(username = "naoexiste@example.com", roles = {"USER"})
     void deveRetornarErroQuandoUsuarioNaoEncontrado() throws Exception {
-        // Arrange
+
         when(userServiceImple.findByEmail(anyString()))
                 .thenThrow(new com.SriLankaCard.exception.dominio.UserNotFoundException("Usuário não encontrado"));
 
-        // Act & Assert
+
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isNotFound());
     }

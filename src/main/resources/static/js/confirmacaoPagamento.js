@@ -11,11 +11,9 @@ async function finalizarPedidoAoAbrir() {
         return;
     }
 
-    // Evita acesso direto, mas sem redirecionar de volta rapidamente
     const ok = sessionStorage.getItem(PAYMENT_OK_KEY);
     if (!ok) {
         console.warn('Confirmação acessada sem marcação de pagamento válido.');
-        // Apenas mantém o usuário na tela de confirmação
         return;
     }
 
@@ -29,7 +27,6 @@ async function finalizarPedidoAoAbrir() {
         });
 
         if (resp.ok) {
-            // Pedido finalizado com sucesso, não redireciona
             sessionStorage.removeItem(PAYMENT_OK_KEY);
             return;
         }
@@ -46,11 +43,9 @@ async function finalizarPedidoAoAbrir() {
 
         console.error('Erro ao finalizar compra. Status:', resp.status);
         showToast(msg, true);
-        // Mantém usuário na tela; ele decide voltar se quiser
 
     } catch (e) {
         console.error('Erro de rede ao finalizar pedido:', e);
         showToast('Erro de comunicação com o servidor.', true);
-        // Mantém usuário na tela mesmo em erro
     }
 }

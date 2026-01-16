@@ -1,5 +1,4 @@
 isAuthenticated();
-// Função para atualizar o header
 async function updateHeader() {
     const token = getToken();
     const userEmail = localStorage.getItem('userEmail');
@@ -18,8 +17,7 @@ async function updateHeader() {
                 userEmail;
         }
     }
-    
-    // Elementos do header
+
     const loginLink = document.querySelector('.login-link');
     const signupButton = document.querySelector('.cta-button');
     const userName = document.querySelector('.user-name');
@@ -29,13 +27,10 @@ async function updateHeader() {
     if (!authContainer) return;
     
     if (isAuthenticated() && userEmail) {
-        // Usuário logado - mostrar email e botão de logout
         if (loginLink) loginLink.style.display = 'none';
         if (signupButton && signupButton.closest('a')) {
             signupButton.closest('a').style.display = 'none';
         }
-        
-        // Limpar container e criar elementos de usuário logado
         authContainer.innerHTML = '';
         
         const userDiv = document.createElement('div');
@@ -52,25 +47,20 @@ async function updateHeader() {
         
         authContainer.appendChild(userDiv);
     } else {
-        // Usuário não logado - mostrar login e signup
         if (loginLink) loginLink.style.display = 'block';
         if (signupButton && signupButton.closest('a')) {
             signupButton.closest('a').style.display = 'block';
         }
-        
-        // Remover elementos de usuário logado
         const userDiv = document.querySelector('.user-info');
         if (userDiv) {
             userDiv.remove();
         }
     }
-    
-    // Atualizar contador do carrinho
+
     await updateCartCount();
     await updateAdminmenu();
 }
 
-// Função para configurar o redirecionamento do logo
 function setupLogoRedirect() {
     const logoLink = document.getElementById('logo-link');
     if (!logoLink) return;
@@ -81,29 +71,22 @@ function setupLogoRedirect() {
         const token = getToken();
         
         if (!token) {
-            // Não logado - vai para home normal
             window.location.href = '/';
             return;
         }
-        
-        // Verificar se é admin
+
         const admin = await isAdmin();
         if (admin) {
             window.location.href = '/home_admin';
         } else {
-            // Usuário normal - vai para home
             window.location.href = '/home';
         }
     });
 }
-
-// Inicializar header quando a página carregar
 document.addEventListener('DOMContentLoaded', async () => {
     await updateHeader();
     setupLogoRedirect();
     setupCartGuard();
-    
-    // Atualizar quando o carrinho mudar
     const originalAddToCart = window.addToCart;
     if (originalAddToCart) {
         window.addToCart = async function(product) {
@@ -181,7 +164,6 @@ function logoutUser(){
     window.location.href = '/';
 }
 
-// Exportar funções
 window.updateHeader = updateHeader;
 window.isAuthenticated = isAuthenticated;
 window.updateCartCount = updateCartCount;

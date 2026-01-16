@@ -4,7 +4,6 @@ const email = (params.get('email') || '').trim();
 const emailText = document.getElementById('emailText');
 if (emailText) emailText.textContent = email || '(email não informado)';
 
-// form principal
 const form = document.getElementById('verify-form');
 
 if (form) {
@@ -14,7 +13,6 @@ if (form) {
         const codeEl = document.getElementById('code');
         const code = codeEl?.value.trim();
 
-        // valida 6 dígitos
         if (!code || !/^\d{6}$/.test(code)) {
             codeEl?.reportValidity?.();
             showToast('Digite um código válido de 6 dígitos.', true);
@@ -29,14 +27,10 @@ if (form) {
             return;
         }
 
-        // Redirecionar para a tela de criar nova senha
         window.location.href = `/reset-password?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`;
     });
 }
 
-// ================================
-// Reenvio de código com timer
-// ================================
 const resendLink = document.getElementById('resendLink');
 const timer = document.getElementById('timer');
 
@@ -96,7 +90,6 @@ resendLink?.addEventListener('click', async (e) => {
     }
 });
 
-// estilo simples pro disabled
 const style = document.createElement('style');
 style.innerHTML = `.disabled{ pointer-events:none; opacity:.6 }`;
 document.head.appendChild(style);

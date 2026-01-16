@@ -1,4 +1,3 @@
-// Elementos do DOM
 const cartItemsContainer = document.getElementById('cart-items');
 const cartHeader = document.getElementById('cart-title');
 const cartTotalLabel = document.getElementById('cart-total-label');
@@ -7,16 +6,13 @@ let cartValor = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarCarrinho();
-    
-    // Adicionar evento ao botão de fechar do carrinho
+
     const closeBtn = document.getElementById('cart-close-btn');
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
-            // Voltar para a página anterior
             if (window.history.length > 1) {
                 window.history.back();
             } else {
-                // Se não houver histórico, redirecionar para home
                 window.location.href = '/';
             }
         });
@@ -60,15 +56,13 @@ async function carregarCarrinho() {
             }
             return;
         }
-        
-        // Atualizar título com quantidade total
+
         if (cartHeader) {
             const totalItems = carrinho.quantidade || carrinho.itens.reduce((sum, item) => sum + (item.quantidade || 1), 0);
             cartHeader.textContent = `Meu Carrinho (${totalItems})`;
             cartQuantidade = totalItems;
         }
-        
-        // Limpar container e renderizar itens
+
         if (cartItemsContainer) {
             cartItemsContainer.innerHTML = '';
             
@@ -77,8 +71,7 @@ async function carregarCarrinho() {
                 cartItemsContainer.appendChild(cartItem);
             });
         }
-        
-        // Atualizar total
+
         updateCartTotal(carrinho.valorTotal || 0);
         cartValor = Number(carrinho.valorTotal) || 0;
     } catch (error) {
@@ -89,7 +82,6 @@ async function carregarCarrinho() {
     }
 }
 
-// Função para criar elemento de item do carrinho
 function createCartItemElement(item) {
     const cartItem = document.createElement('div');
     cartItem.className = 'cart-item';
@@ -123,8 +115,7 @@ function createCartItemElement(item) {
             </button>
         </div>
     `;
-    
-    // Adicionar evento de remover
+
     const removeBtn = cartItem.querySelector('.remove-item-btn');
     if (removeBtn) {
         removeBtn.addEventListener('click', async (e) => {
@@ -146,7 +137,6 @@ async function removerItem(produtoId) {
 
     try {
         await api.removeFromCart(produtoId);
-        // Recarregar carrinho após remover
         await carregarCarrinho();
     } catch (err) {
         console.error('Erro de rede ao remover item:', err);
@@ -161,6 +151,5 @@ function updateCartTotal(valorTotal) {
     }
 }
 
-// Exportar funções para uso global
 window.carregarCarrinho = carregarCarrinho;
 window.removerItem = removerItem;

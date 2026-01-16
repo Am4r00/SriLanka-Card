@@ -1,5 +1,3 @@
-
-// Função para formatar preço
 function formatPrice(value) {
     return new Intl.NumberFormat('pt-BR', {
         style: 'currency',
@@ -7,7 +5,6 @@ function formatPrice(value) {
     }).format(value);
 }
 
-// Função para criar card de produto
 function createProductCard(card) {
     const cardElement = document.createElement('a');
     cardElement.href = '#';
@@ -20,7 +17,6 @@ function createProductCard(card) {
     return cardElement;
 }
 
-// Função para carregar e exibir produtos
 async function loadProducts(containerSelector, filter = null) {
     const container = document.querySelector(containerSelector);
     if (!container) {
@@ -29,7 +25,6 @@ async function loadProducts(containerSelector, filter = null) {
     }
     
     try {
-        // Mostrar loading
         container.innerHTML = '<div class="loading">Carregando produtos...</div>';
         
         const cards = await api.listarCards();
@@ -38,17 +33,13 @@ async function loadProducts(containerSelector, filter = null) {
             container.innerHTML = '<div class="no-products">Nenhum produto encontrado.</div>';
             return;
         }
-        
-        // Filtrar produtos se necessário
         let filteredCards = cards;
         if (filter) {
             filteredCards = cards.filter(filter);
         }
-        
-        // Limpar container
+
         container.innerHTML = '';
-        
-        // Criar e adicionar cards
+
         filteredCards.forEach(card => {
             const cardElement = createProductCard(card);
             container.appendChild(cardElement);
@@ -59,8 +50,6 @@ async function loadProducts(containerSelector, filter = null) {
         container.innerHTML = '<div class="error">Erro ao carregar produtos. Tente novamente mais tarde.</div>';
     }
 }
-
-// Função para buscar produto por ID
 async function loadProductDetails(productId) {
     try {
         const cards = await api.listarCards();
@@ -72,7 +61,6 @@ async function loadProductDetails(productId) {
     }
 }
 
-// Função para adicionar ao carrinho
 function addToCart(product) {
     if (!product || product.quantidade <= 0) {
         showToast('Produto esgotado!', true);
@@ -86,7 +74,6 @@ function addToCart(product) {
     showToast('Produto adicionado ao carrinho!', false);
 }
 
-// Exportar funções
 window.loadProducts = loadProducts;
 window.loadProductDetails = loadProductDetails;
 window.addToCart = addToCart;
@@ -96,6 +83,7 @@ window.formatPrice = formatPrice;
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
 });
+
 
 
 

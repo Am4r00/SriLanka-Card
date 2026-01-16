@@ -1,9 +1,6 @@
-//chaves padrão
 const TOKEN_KEY = 'token';
 const PAYMENT_OK_KEY = 'payment_validated';
 
-
-//Token
 function getToken(){
     try{
         return localStorage.getItem('token');
@@ -23,7 +20,6 @@ function clearAuth(){
     }
 }
 
-//decodificando JWT
 function decodeToken(token){
     if(!token || typeof  token !== 'string') return null;
 
@@ -47,12 +43,10 @@ function decodeToken(token){
     }
 }
 
-//verificando user
 function isAuthenticated(){
     return !!getToken();
 }
 
-//roles helpers admin
 function normalizeRole(val){
     if(!val) return '';
     if(typeof val == 'string') return val;
@@ -76,7 +70,6 @@ function hasAdminRole(raw){
     );
 }
 
-//verificar  se o user é admin
 async function isAdmin(){
     const token = getToken();
 
@@ -94,7 +87,6 @@ try{
                 return true;
             }
         }
-        //fallback
         if(window.api && typeof window.api.getCurrentUser === 'function'){
             try{
                 const user = await window.api.getCurrentUser();
@@ -110,10 +102,7 @@ try{
     }
     return false;
 }
-     
-    
 
-//toast Global
 function showToast(msg,isError = false){
 
     const existingToast = document.getElementById('toast-notification');
@@ -163,7 +152,6 @@ function showToast(msg,isError = false){
     }, 3000);
 }
 
-//Imagens do produtos
 function resolveProductImage(itemOrName){
     const nome = (
         typeof itemOrName === 'string'
@@ -173,7 +161,6 @@ function resolveProductImage(itemOrName){
 
     if(!nome) return '/img/steam-gift-card.png';
 
-    // Gift cards / serviços
     if (nome.includes('apple')) return '/img/apple-gift-card.png';
     if (nome.includes('steam')) return '/img/steam-gift-card.png';
     if (nome.includes('playstation') || nome.includes('psn') || nome.includes('ps4') || nome.includes('ps5')) {
@@ -197,7 +184,6 @@ function resolveProductImage(itemOrName){
     if (nome.includes('deezer')) return '/img/Deezer.jpg';
     if (nome.includes('99')) return '/img/99-food.png';
 
-    // Jogos
     if (nome.includes('cyberpunk')) return '/img/cyberpunk.png';
     if (nome.includes('fc 26') || nome.includes('fc26') || nome.includes('ea fc') || nome.includes('eafc')) {
         return '/img/fc26.jpg';
@@ -221,11 +207,9 @@ function resolveProductImage(itemOrName){
     return '/img/steam-gift-card.png';
 }
 
-//contador carrinho
 async function updateCartCount(){
     if(!window.api || typeof window.api.getCartItemCount !== 'function')
         return;
-
 
 try {
     const count = await window.api.getCartItemCount();
@@ -268,14 +252,11 @@ try {
 
 window.TOKEN_KEY = TOKEN_KEY;
 window.PAYMENT_OK_KEY = PAYMENT_OK_KEY;
-
-// expõe no escopo global
 window.getToken = getToken;
 window.clearAuth = clearAuth;
 window.decodeToken = decodeToken;
 window.isAuthenticated = isAuthenticated;
 window.isAdmin = isAdmin;
-
 window.showToast = showToast;
 window.resolveProductImage = resolveProductImage;
 window.updateCartCount = updateCartCount;

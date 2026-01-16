@@ -71,17 +71,17 @@ class UserServiceImpleTest {
     @Test
     @DisplayName("Deve criar usuário com sucesso")
     void deveCriarUsuarioComSucesso() {
-        // Arrange
+
         when(userRepository.existsByEmailIgnoreCase(registerRequest.getEmail()))
                 .thenReturn(false);
         when(passwordEncoder.encode(registerRequest.getPassword()))
                 .thenReturn(encodedPassword);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        // Act
+
         UserResponse response = userService.createUser(registerRequest);
 
-        // Assert
+
         assertNotNull(response);
         assertEquals(user.getEmail(), response.getEmail());
         assertEquals(user.getName(), response.getNome());
@@ -94,11 +94,11 @@ class UserServiceImpleTest {
     @Test
     @DisplayName("Deve lançar exceção quando email já está em uso")
     void deveLancarExcecaoQuandoEmailJaExiste() {
-        // Arrange
+
         when(userRepository.existsByEmailIgnoreCase(registerRequest.getEmail()))
                 .thenReturn(true);
 
-        // Act & Assert
+
         EmailAlreadyUsedException exception = assertThrows(
                 EmailAlreadyUsedException.class,
                 () -> userService.createUser(registerRequest)
@@ -113,7 +113,7 @@ class UserServiceImpleTest {
     @Test
     @DisplayName("Deve retornar lista de usuários quando existem usuários")
     void deveRetornarListaDeUsuarios() {
-        // Arrange
+
         List<User> users = new ArrayList<>();
         users.add(user);
 
@@ -128,10 +128,9 @@ class UserServiceImpleTest {
 
         when(userRepository.findAll()).thenReturn(users);
 
-        // Act
         List<UserResponse> response = userService.findAll();
 
-        // Assert
+
         assertNotNull(response);
         assertEquals(2, response.size());
         verify(userRepository, times(1)).findAll();
@@ -140,10 +139,10 @@ class UserServiceImpleTest {
     @Test
     @DisplayName("Deve lançar exceção quando lista está vazia")
     void deveLancarExcecaoQuandoListaVazia() {
-        // Arrange
+
         when(userRepository.findAll()).thenReturn(new ArrayList<>());
 
-        // Act & Assert
+
         ListIsEmptyException exception = assertThrows(
                 ListIsEmptyException.class,
                 () -> userService.findAll()
@@ -156,15 +155,15 @@ class UserServiceImpleTest {
     @Test
     @DisplayName("Deve encontrar usuário por email com sucesso")
     void deveEncontrarUsuarioPorEmail() {
-        // Arrange
+
         String email = "test@example.com";
         when(userRepository.findByEmailIgnoreCase(email))
                 .thenReturn(Optional.of(user));
 
-        // Act
+
         UserResponse response = userService.findByEmail(email);
 
-        // Assert
+
         assertNotNull(response);
         assertEquals(user.getEmail(), response.getEmail());
         assertEquals(user.getName(), response.getNome());
@@ -174,12 +173,12 @@ class UserServiceImpleTest {
     @Test
     @DisplayName("Deve lançar exceção quando usuário não encontrado por email")
     void deveLancarExcecaoQuandoUsuarioNaoEncontrado() {
-        // Arrange
+
         String email = "naoexiste@example.com";
         when(userRepository.findByEmailIgnoreCase(email))
                 .thenReturn(Optional.empty());
 
-        // Act & Assert
+
         UserNotFoundException exception = assertThrows(
                 UserNotFoundException.class,
                 () -> userService.findByEmail(email)
@@ -192,7 +191,7 @@ class UserServiceImpleTest {
     @Test
     @DisplayName("Deve criar usuário com role USUARIO por padrão")
     void deveCriarUsuarioComRoleUsuario() {
-        // Arrange
+
         when(userRepository.existsByEmailIgnoreCase(registerRequest.getEmail()))
                 .thenReturn(false);
         when(passwordEncoder.encode(registerRequest.getPassword()))
@@ -204,10 +203,10 @@ class UserServiceImpleTest {
             return savedUser;
         });
 
-        // Act
+
         userService.createUser(registerRequest);
 
-        // Assert
+
         verify(userRepository, times(1)).save(any(User.class));
     }
 }

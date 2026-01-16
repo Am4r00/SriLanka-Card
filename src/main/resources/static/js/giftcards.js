@@ -1,6 +1,6 @@
 let cardSelecionado = null;
-let listaCards = []; // vamos guardar os cards aqui para poder filtrar/ordenar
-let categoriaAtiva = 'todos'; // categoria selecionada
+let listaCards = [];
+let categoriaAtiva = 'todos';
 let quantidadeNoCarrinhoPorCardId = {};
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addBtn.addEventListener('click', adicionarSelecionadoAoCarrinho);
     }
 
-    // hooks para pesquisa / ordenação
     const searchInput = document.getElementById('search-input');
     const searchBtn = document.getElementById('search-btn');
     const sortSelect = document.getElementById('sort-select');
@@ -38,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sortSelect.addEventListener('change', () => aplicarFiltros());
     }
 
-    // Event listeners para filtros de categoria
     const categoryLinks = document.querySelectorAll('.category-link');
     categoryLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -49,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-//buscando cards 
 async function carregarGiftCards() {
     try {
         const resp = await fetch('/cards', {
@@ -62,7 +59,6 @@ async function carregarGiftCards() {
         console.log('Resposta /cards -> status:', resp.status);
 
         if (resp.status === 204) {
-            // sem conteúdo (lista vazia)
             listaCards = [];
             aplicarFiltros();
             return;
@@ -93,16 +89,13 @@ async function carregarGiftCards() {
         } catch (e) {
             console.error('Erro ao carregar carrinho para ajuste de estoque:', e);
         }
-        aplicarFiltros(); // primeira renderização
+        aplicarFiltros();
     } catch (err) {
         console.error('Erro de rede ao buscar cards:', err);
         showToast('Falha de comunicação com o servidor.', true);
     }
 }
 
-/* ================================
- * Função para determinar categoria do produto
- * ================================ */
 function getCategoria(card) {
     if (!card || card.category == null) {
         return null;
@@ -110,12 +103,10 @@ function getCategoria(card) {
 
     const rawLower = String(card.category).toLowerCase();
 
-    // Se o back já envia exatamente 'jogos', 'comida', etc, usa direto:
     if (['jogos', 'comida', 'musica', 'servicos'].includes(rawLower)) {
         return rawLower;
     }
 
-    // Se vier como ENUM em maiúsculo (JOGOS, COMIDA, ...)
     const rawUpper = rawLower.toUpperCase();
 
     const CATEGORY_MAP = {
@@ -128,13 +119,9 @@ function getCategoria(card) {
     return CATEGORY_MAP[rawUpper] || rawLower;
 }
 
-/* ================================
- * Selecionar categoria
- * ================================ */
 function selecionarCategoria(categoria) {
     categoriaAtiva = categoria;
 
-    // Atualizar visual dos links
     const categoryLinks = document.querySelectorAll('.category-link');
     categoryLinks.forEach(link => {
         if (link.getAttribute('data-categoria') === categoria) {
@@ -144,14 +131,12 @@ function selecionarCategoria(categoria) {
         }
     });
 
-    // Aplicar filtros
     aplicarFiltros();
 }
 
 function aplicarFiltros() {
     let cards = [...listaCards];
 
-    // Filtro por categoria
     if (categoriaAtiva !== 'todos') {
         cards = cards.filter(c => getCategoria(c) === categoriaAtiva);
     }
@@ -159,13 +144,11 @@ function aplicarFiltros() {
     const searchInput = document.getElementById('search-input');
     const sortSelect = document.getElementById('sort-select');
 
-    // filtro por texto
     if (searchInput && searchInput.value.trim() !== '') {
         const termo = searchInput.value.trim().toLowerCase();
         cards = cards.filter(c => (c.nome || '').toLowerCase().includes(termo));
     }
 
-    // ordenação
     if (sortSelect) {
         if (sortSelect.value === 'preco-asc') {
             cards.sort((a, b) => (a.valor || 0) - (b.valor || 0));
@@ -231,10 +214,6 @@ function renderizarCards(cards) {
         grid.appendChild(cardEl);
     });
 }
-
-/* ================================
- * 3) Modal de detalhes
- * ================================ */
 
 function abrirModal(card) {
     cardSelecionado = card;
@@ -304,8 +283,7 @@ async function adicionarSelecionadoAoCarrinho() {
 
         showToast('Item adicionado ao carrinho!', false);
         fecharModal();
-        
-        // Atualizar contador do carrinho no header
+
         if (window.updateCartCount && typeof window.updateCartCount === 'function') {
             await window.updateCartCount();
         }

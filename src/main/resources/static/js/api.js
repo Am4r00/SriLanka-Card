@@ -1,7 +1,5 @@
-// Helper para fazer requisições autenticadas
 const API_BASE_URL = '';
 
-// Função para fazer requisições autenticadas
 async function apiRequest(url, options = {}) {
     const token = (typeof getToken === 'function')
     ? getToken()
@@ -30,10 +28,8 @@ async function apiRequest(url, options = {}) {
         console.log('Status da resposta:', response.status, response.statusText);
         
         if (response.status === 401) {
-            // Token inválido ou expirado
             localStorage.removeItem('token');
             localStorage.removeItem('userEmail');
-            // Remover cookie também
             document.cookie = 'jwt_token=; path=/; max-age=0; SameSite=Lax';
             window.location.href = '/login';
             return null;
@@ -56,28 +52,21 @@ async function apiRequest(url, options = {}) {
             }
             throw new Error(errorMessage);
         }
-        
-        // Tentar fazer parse JSON
-        // Se a resposta estiver vazia (como em DELETE), retornar null
+
         try {
             const text = await response.text();
-            // Se o texto estiver vazio, retornar null
             if (!text || text.trim() === '') {
                 return null;
             }
-            // Tentar fazer parse JSON
             try {
                 return JSON.parse(text);
             } catch (parseError) {
-                // Se não conseguir fazer parse, pode ser que não seja JSON válido
-                // Retornar null para respostas vazias ou inválidas
                 if (parseError.message && parseError.message.includes('Unexpected end of JSON input')) {
                     return null;
                 }
                 throw parseError;
             }
         } catch (error) {
-            // Se houver erro ao ler o texto, retornar null (resposta vazia)
             if (error.message && error.message.includes('Unexpected end of JSON input')) {
                 return null;
             }
@@ -89,17 +78,14 @@ async function apiRequest(url, options = {}) {
     }
 }
 
-// Funções específicas da API
 const api = {
-    // Autenticação
     login: async (email, password) => {
         return await apiRequest('/auth/login', {
             method: 'POST',
             body: JSON.stringify({ email, password }),
         });
     },
-    
-    // Cards/Produtos
+
     listarCards: async () => {
         return await apiRequest('/cards');
     },
@@ -108,8 +94,7 @@ const api = {
         const cards = await api.listarCards();
         return cards.find(c => c.id === id);
     },
-    
-    // Usuário
+
     getCurrentUser: async () => {
         return await apiRequest('/users/me');
     },
@@ -117,8 +102,7 @@ const api = {
     listarUsuarios: async () => {
         return await apiRequest('/users/list');
     },
-    
-    // Carrinho - busca do backend
+
     getCart: async () => {
         try {
             const cart = await apiRequest('/api/carrinho');
@@ -157,8 +141,7 @@ const api = {
             return { valorTotal: 0, quantidadeTotal: 0 };
         }
     },
-    
-    // Função auxiliar para compatibilidade (retorna contagem do backend)
+
     getCartItemCount: async () => {
         try {
             const totals = await api.getCartTotal();
@@ -169,6 +152,5 @@ const api = {
     }
 };
 
-// Exportar para uso global
 window.api = api;
 window.apiRequest = apiRequest;

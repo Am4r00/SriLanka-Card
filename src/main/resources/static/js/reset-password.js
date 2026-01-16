@@ -1,23 +1,18 @@
-// Pegar email e código da querystring
 const params = new URLSearchParams(window.location.search);
 const email = (params.get('email') || '').trim();
 const code = (params.get('code') || '').trim();
 
-// Verificar se email e código foram fornecidos
 if (!email || !code) {
     showToast('Email ou código não encontrado. Volte e solicite o código novamente.', true);
     setTimeout(() => {
         window.location.href = '/forgot';
     }, 2000);
 }
-
-// Elementos do formulário
 const form = document.getElementById('reset-password-form');
 const newPasswordInput = document.getElementById('newPassword');
 const confirmPasswordInput = document.getElementById('confirmPassword');
 const matchErr = document.getElementById('matchErr');
 
-// Função para verificar se as senhas coincidem
 function checkPasswordMatch() {
     const newPassword = newPasswordInput?.value || '';
     const confirmPassword = confirmPasswordInput?.value || '';
@@ -34,13 +29,10 @@ function checkPasswordMatch() {
     return true;
 }
 
-// Adicionar listeners para verificar senhas em tempo real
 if (newPasswordInput && confirmPasswordInput) {
     newPasswordInput.addEventListener('input', checkPasswordMatch);
     confirmPasswordInput.addEventListener('input', checkPasswordMatch);
 }
-
-// Mostrar/ocultar senha (se houver botões de toggle)
 const toggles = document.querySelectorAll('.toggle[data-target]');
 toggles.forEach(toggle => {
     toggle.addEventListener('click', () => {
@@ -53,8 +45,6 @@ toggles.forEach(toggle => {
         }
     });
 });
-
-// Submit do formulário
 if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -62,7 +52,6 @@ if (form) {
         const newPassword = newPasswordInput?.value.trim() || '';
         const confirmPassword = confirmPasswordInput?.value.trim() || '';
 
-        // Validações
         if (!newPassword || newPassword.length < 6) {
             showToast('A senha deve ter no mínimo 6 caracteres.', true);
             return;

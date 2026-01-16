@@ -35,7 +35,7 @@
 <script th:src="@{/js/api.js}"></script>
 <script th:src="@{/js/header.js}"></script>
 <script>
-  // Verificar se é admin ao carregar a página
+
   document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -47,8 +47,7 @@
     try {
       const user = await api.getCurrentUser();
       console.log('Usuário atual:', user);
-      
-      // Verificar se é admin
+
       const isAdmin = user.funcoes && (
         Array.isArray(user.funcoes) ? user.funcoes.some(f => f === 'ADMIN') :
         user.funcoes.includes('ADMIN')

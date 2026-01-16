@@ -178,10 +178,7 @@ function onConcluirPagamento(event) {
         return;
     }
 
-    // marca que passou pela validação do payment
     sessionStorage.setItem(PAYMENT_OK_KEY, 'true');
-
-    // redireciona pra confirmação (lá é que finaliza)
     window.location.href = '/confirmacaoPagamento';
 }
 
