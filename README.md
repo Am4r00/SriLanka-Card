@@ -27,6 +27,8 @@ O **SriLanka Card** é uma plataforma e-commerce completa para venda de gift car
 - 📦 **Gestão de Produtos** com categorização automática
 - 👥 **Painel Administrativo** completo
 - 💳 **Sistema de Gift Codes** com geração automática
+- 🧾 **Checkout Completo** com histórico de pedidos e e-mail contendo os códigos comprados
+- 🪪 **Ativação e Perfil** com reenvio de código, atualização de dados e troca de senha
 - 📧 **Envio de E-mails** para boas-vindas e recuperação de senha
 - 🎨 **Interface Moderna** com design responsivo
 
@@ -219,6 +221,8 @@ SriLanka-Card/
 - ✅ **Login com JWT**
 - ✅ **Recuperação de Senha** (código por e-mail)
 - ✅ **Redefinição de Senha**
+- ✅ **Ativação/Reativação de Conta** via código de 6 dígitos (expira em 15 min)
+- ✅ **Perfil e Senha do Próprio Usuário** via `/users/me`
 - ✅ **Roles**: ADMIN, USUARIO
 
 ### 🛍 E-commerce
@@ -227,8 +231,8 @@ SriLanka-Card/
 - ✅ **Categorização Automática** (Jogos, Comida, Música, Serviços)
 - ✅ **Carrinho de Compras** integrado
 - ✅ **Sistema de Estoque** (Gift Codes)
-- ✅ **Promoções e Descontos**
 - ✅ **Busca e Filtros**
+- ✅ **Checkout** valida estoque de Gift Codes, cria Pedido e envia seriais por e-mail
 
 ### 👨‍💼 Painel Administrativo
 
@@ -237,48 +241,60 @@ SriLanka-Card/
 - ✅ **Geração Automática de Gift Codes**
 - ✅ **Controle de Estoque**
 - ✅ **Atualização de Status de Usuários**
+- ✅ **Histórico de Pedidos** para admins
 
 ### 📧 E-mail
 
 - ✅ **E-mail de Boas-vindas**
+- ✅ **Confirmação de Pedido** com seriais dos Gift Codes comprados
 - ✅ **Código de Recuperação de Senha**
+- ✅ **Aviso de Alteração de Perfil/Senha**
 
 ---
 
 ## 🔌 API Endpoints
 
-### Autenticação
+### Autenticação e Recuperação
 
 | Método | Endpoint | Descrição | Autenticação |
 |--------|----------|-----------|--------------|
 | POST | `/auth/login` | Login de usuário | ❌ Público |
-| POST | `/auth/registrar` | Registro de usuário | ❌ Público |
 | POST | `/auth/forgot-password` | Solicitar código de recuperação | ❌ Público |
 | POST | `/auth/reset-password` | Redefinir senha | ❌ Público |
+
+### Ativação de Conta
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| POST | `/users/send-activation-code` | Enviar/reenviar código de ativação (15 min de validade) | ❌ Público (e-mail já cadastrado) |
+| POST | `/users/activate` | Ativar ou reativar conta com código | ❌ Público |
 
 ### Usuários
 
 | Método | Endpoint | Descrição | Autenticação |
 |--------|----------|-----------|--------------|
-| GET | `/users/list` | Listar todos os usuários | ✅ Autenticado |
+| GET | `/users/list` | Listar todos os usuários | ✅ Admin |
 | GET | `/users/me` | Obter usuário atual | ✅ Autenticado |
-| POST | `/users/create-user` | Criar usuário comum | ❌ Público |
+| PATCH | `/users/me` | Atualizar dados e senha do logado | ✅ Autenticado |
+| POST | `/users/create-user` | Criar usuário comum (form) | ❌ Público |
 
 ### Administração
 
 | Método | Endpoint | Descrição | Autenticação |
 |--------|----------|-----------|--------------|
-| POST | `/admin/create-user` | Criar administrador | ✅ Admin |
-| POST | `/admin/create-user-common` | Criar usuário comum | ✅ Admin |
-| PUT | `/admin/update-user/{id}` | Atualizar usuário | ✅ Admin |
-| DELETE | `/admin/delete-user/{id}` | Deletar usuário | ✅ Admin |
+| POST | `/admin/create-user` | Criar usuário com roles | ✅ Admin |
+| PUT  | `/admin/update-user/{id}` | Atualizar usuário | ✅ Admin |
 | PATCH | `/admin/update-user/{id}/{status}` | Atualizar status | ✅ Admin |
+| DELETE | `/admin/delete-user/{id}` | Deletar usuário | ✅ Admin |
+| POST | `/admin/gift-codes/gerar` | Gerar Gift Codes para um card | ✅ Admin |
 
 ### Produtos (Cards)
 
 | Método | Endpoint | Descrição | Autenticação |
 |--------|----------|-----------|--------------|
-| GET | `/cards/listar` | Listar todos os cards | ❌ Público |
+| GET | `/cards` | Listar todos os cards | ❌ Público |
+| GET | `/cards/categoria/{categoria}` | Listar cards por categoria | ❌ Público |
+| GET | `/cards/promocao?ativa={true|false}` | Listar cards em promoção | ❌ Público |
 | GET | `/cards/{id}` | Buscar card por ID | ❌ Público |
 | POST | `/cards/criar-Card` | Criar novo card | ✅ Admin |
 | PATCH | `/cards/atualizar/{id}` | Atualizar card | ✅ Admin |
@@ -294,6 +310,14 @@ SriLanka-Card/
 | DELETE | `/api/carrinho/itens/{produtoId}` | Remover item | ✅ Autenticado |
 | DELETE | `/api/carrinho` | Limpar carrinho | ✅ Autenticado |
 | GET | `/api/carrinho/total` | Obter totais | ✅ Autenticado |
+
+### Pedidos
+
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| POST | `/api/pedidos/finalizar` | Finalizar pedido com base no carrinho do usuário | ✅ Autenticado |
+| GET | `/api/pedidos/historico` | Histórico de pedidos do usuário logado | ✅ Autenticado |
+| GET | `/api/pedidos/admin/historico` | Histórico completo para admins | ✅ Admin |
 
 ---
 
@@ -321,6 +345,16 @@ DEFAULT_ADMIN_PASSWORD
 ```
 
 Se já existir usuário com esse e-mail, nada é alterado. Após subir, acesse o painel admin e crie novos administradores apenas pela aba dedicada (não há senha mágica).
+
+---
+
+## 💳 Checkout e Pedidos
+
+- O fluxo de pagamento roda em `/payment` (requer login), carrega o carrinho via `/api/carrinho` e direciona para `/confirmacaoPagamento`.
+- Ao abrir a tela de confirmação é chamado `POST /api/pedidos/finalizar`, que valida estoque, cria o pedido e marca Gift Codes como `VENDIDO`.
+- Um e-mail é enviado ao comprador com o resumo da compra e os seriais de cada Gift Code; o carrinho é limpo após a conclusão.
+- Histórico para o usuário: `GET /api/pedidos/historico` (renderizado em `/meus-pedidos`).
+- Histórico para admins: `GET /api/pedidos/admin/historico` (aba "Pedidos" do painel admin).
 
 ---
 
@@ -361,14 +395,21 @@ O Hibernate está configurado com `ddl-auto=update`, então as tabelas são cria
 | `/` ou `/home` | Página inicial | ❌ Público |
 | `/login` | Página de login | ❌ Público |
 | `/signup` | Página de cadastro | ❌ Público |
+| `/forgot` | Recuperação de senha | ❌ Público |
+| `/verify` | Verificar código de recuperação | ❌ Público |
+| `/reset-password` | Criar nova senha | ❌ Público |
+| `/contato` | Página de contato | ❌ Público |
+| `/faq` | Perguntas frequentes | ❌ Público |
+| `/sobre` | Sobre o projeto | ❌ Público |
 | `/giftcard` | Catálogo de produtos | ❌ Público |
 | `/cart` | Carrinho de compras | ✅ Autenticado |
-| `/payment` | Finalização de compra | ✅ Autenticado |
-| `/forgot` | Recuperação de senha | ❌ Público |
-| `/verify` | Verificar código | ❌ Público |
-| `/reset-password` | Criar nova senha | ❌ Público |
-| `/home_admin` | Painel administrativo | ✅ Admin |
-| `/usuariodetalhe` | Gestão de usuários/produtos | ✅ Admin |
+| `/payment` | Checkout | ✅ Autenticado |
+| `/confirmacaoPagamento` | Confirmação e disparo do pedido | ✅ Autenticado |
+| `/meu-perfil` | Gestão do próprio perfil e senha | ✅ Autenticado |
+| `/meus-pedidos` | Histórico de pedidos do usuário | ✅ Autenticado |
+| `/home_admin` | Dashboard admin | ✅ Admin |
+| `/painel-admin` | Painel admin (usuários, produtos, gift codes, pedidos) | ✅ Admin |
+| `/erro` | Página de erro | ❌ Público |
 
 ---
 
@@ -394,10 +435,26 @@ O Hibernate está configurado com `ddl-auto=update`, então as tabelas são cria
 - Adição/remoção de itens
 - Cálculo de totais
 
-### `admin-panel.js`
-- Gestão de usuários
-- Gestão de produtos
-- CRUD completo
+### `payment.js`
+- Carrega itens do carrinho no checkout
+- Validação de dados de pagamento e remoção de itens antes da compra
+
+### `confirmacaoPagamento.js`
+- Dispara `POST /api/pedidos/finalizar` e limpa o carrinho após sucesso
+- Garante que apenas fluxos válidos de pagamento cheguem à confirmação
+
+### `meu-perfil.js`
+- Busca e atualiza dados do usuário logado (`/users/me`)
+- Troca de senha com validação e feedback visual
+
+### `meus-pedidos.js`
+- Lista histórico de pedidos do usuário
+- Exibe itens e totais com datas formatadas
+
+### `painel-admin.js`
+- Controle de usuários (listagem, criação, exclusão)
+- Gestão de produtos e promoções
+- Geração de Gift Codes e visualização de pedidos
 
 ---
 
@@ -424,6 +481,15 @@ spring.datasource.password=sua_senha
 ### JWT
 
 O JWT é configurado automaticamente pelo Spring Security. O token expira em 10 horas.
+
+### Admin padrão
+
+Um administrador é criado na inicialização (exceto no perfil `test`) com as credenciais abaixo (sobrescreva via ambiente):
+
+```properties
+app.default-admin.email=${DEFAULT_ADMIN_EMAIL:admin@srilankacard.com}
+app.default-admin.password=${DEFAULT_ADMIN_PASSWORD:admin12345678}
+```
 
 ---
 
