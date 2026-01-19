@@ -52,7 +52,7 @@ async function carregarCarrinho() {
                 cartHeader.textContent = 'Meu Carrinho (0)';
             }
             if (cartTotalLabel) {
-                cartTotalLabel.textContent = 'Total: R$ 0,00';
+                cartTotalLabel.textContent = 'R$ 0,00';
             }
             return;
         }
@@ -147,7 +147,7 @@ async function removerItem(produtoId) {
 function updateCartTotal(valorTotal) {
     if (cartTotalLabel) {
         const valorFormatado = valorTotal.toFixed(2).replace('.', ',');
-        cartTotalLabel.textContent = `Total: R$ ${valorFormatado}`;
+        cartTotalLabel.textContent = `R$ ${valorFormatado}`;
     }
 }
 
